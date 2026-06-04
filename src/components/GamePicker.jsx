@@ -132,6 +132,13 @@ const GAMES = [
     description: 'Roll the dice 10 times and test your luck',
     color: '#ff3b30',
   },
+  {
+    id: 'pongpong',
+    emoji: '🏓',
+    name: 'Pong Pong',
+    description: 'Beat the AI at classic Pong!',
+    color: '#ffcc00',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

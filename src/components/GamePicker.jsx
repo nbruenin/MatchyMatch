@@ -132,6 +132,13 @@ const GAMES = [
     description: 'Roll the dice 10 times and test your luck',
     color: '#ff3b30',
   },
+  {
+    id: 'nathanielninja',
+    emoji: '🥷',
+    name: 'Nathaniel\'s Number Ninja',
+    description: 'Identify patterns and find the next number',
+    color: '#5856d6',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

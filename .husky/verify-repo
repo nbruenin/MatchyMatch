@@ -1,0 +1,36 @@
+#!/bin/bash
+# Git configuration validation hook
+# This script ensures that only the correct repository (nbruenin/MatchyMatch) is used
+
+set -e
+
+EXPECTED_REPO="nbruenin/MatchyMatch"
+EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
+
+# Get the current remote URL
+CURRENT_URL=$(git config --get remote.origin.url)
+
+# Remove credentials from URL for comparison
+CLEAN_URL=$(echo "$CURRENT_URL" | sed 's|https://.*@github.com|https://github.com|' | sed 's|git@github.com:|https://github.com/|' | sed 's|\.git$|.git|')
+
+echo "🔍 Verifying repository configuration..."
+echo "Expected: $EXPECTED_URL"
+echo "Current:  $CLEAN_URL"
+
+if [[ "$CLEAN_URL" != "$EXPECTED_URL" ]]; then
+    echo ""
+    echo "❌ ERROR: Incorrect repository!"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "This repository is configured to push to: $CLEAN_URL"
+    echo "But it should only push to: $EXPECTED_URL"
+    echo ""
+    echo "This is a security measure to prevent accidental pushes to the wrong repository."
+    echo ""
+    echo "To fix this, run:"
+    echo "  git remote set-url origin $EXPECTED_URL"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+fi
+
+echo "✅ Repository verified: $EXPECTED_REPO"
+echo ""

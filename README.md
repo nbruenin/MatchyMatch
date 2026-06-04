@@ -10,6 +10,7 @@ A collection of puzzle and word games built with React and Vite.
 - ⚡ Fast and lightweight
 - 🧪 Comprehensive test suite
 - 🔒 Security-focused development
+- 🛡️ Repository access control
 
 ## Quick Start
 
@@ -137,6 +138,20 @@ We take security seriously. For security issues, please see [SECURITY.md](SECURI
 - ✅ Content Security Policy enabled
 - ✅ Input validation
 - ✅ Code review process
+- ✅ Repository access control (prevents pushes to wrong repo)
+- ✅ Pre-commit hooks for code quality
+- ✅ Automated dependency updates
+
+### Repository Access Control
+
+This repository is protected with **enterprise-grade access control** to ensure code can only be pushed to the correct repository: **nbruenin/MatchyMatch**.
+
+**How it works:**
+1. **Pre-push hook** - Validates remote URL before every push
+2. **GitHub Actions** - Verifies repository on every push/PR
+3. **Branch protection** - Requires reviews and CI to pass
+
+For details, see [.github/REPOSITORY_ACCESS_CONTROL.md](.github/REPOSITORY_ACCESS_CONTROL.md).
 
 ### Reporting Security Issues
 
@@ -191,6 +206,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - 🐛 [Report a bug](https://github.com/nbruenin/MatchyMatch/issues)
 - 💡 [Request a feature](https://github.com/nbruenin/MatchyMatch/discussions)
 - 🔒 [Report security issue](SECURITY.md)
+- 🛡️ [Repository access control](/.github/REPOSITORY_ACCESS_CONTROL.md)
 
 ## Acknowledgments
 

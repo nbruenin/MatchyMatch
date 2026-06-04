@@ -1,0 +1,34 @@
+#!/bin/bash
+# Pre-push hook to verify correct repository
+# This prevents accidental pushes to the wrong repository
+
+set -e
+
+EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
+
+# Get the remote URL being pushed to
+REMOTE_URL=$(git config --get remote.origin.url)
+
+# Normalize URLs for comparison (remove credentials, handle both https and ssh)
+CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|' | sed 's|git@github.com:|https://github.com/|' | sed 's|\.git$|.git|')
+
+echo "🔒 Pre-push verification..."
+echo "Repository: $CLEAN_URL"
+
+if [[ "$CLEAN_URL" != "$EXPECTED_URL" ]]; then
+    echo ""
+    echo "❌ PUSH BLOCKED: Incorrect repository!"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "You are attempting to push to: $CLEAN_URL"
+    echo "But this repository should only push to: $EXPECTED_URL"
+    echo ""
+    echo "This is a security measure to prevent code from being pushed to the wrong repository."
+    echo ""
+    echo "To fix this, run:"
+    echo "  git remote set-url origin $EXPECTED_URL"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+fi
+
+echo "✅ Repository verified: nbruenin/MatchyMatch"
+echo ""

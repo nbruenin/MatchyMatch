@@ -12,8 +12,9 @@ The following files are ready and can be pushed with the current token:
 2. ✅ `.husky/verify-repo` - Repository verification helper
 3. ✅ `.github/REPOSITORY_ACCESS_CONTROL.md` - Security documentation
 4. ✅ `.github/REPOSITORY_ACCESS_CONTROL_IMPLEMENTATION.md` - Implementation guide
-5. ✅ `scripts/setup-repo-access-control.sh` - Setup script
-6. ✅ `README.md` - Updated with security information
+5. ✅ `.github/verify-remote.workflow.yml` - Workflow file content (reference)
+6. ✅ `scripts/setup-repo-access-control.sh` - Setup script
+7. ✅ `README.md` - Updated with security information
 
 ## ⚠️ What Needs Manual Setup (Requires `workflow` Scope)
 
@@ -41,7 +42,7 @@ The following file needs to be added manually:
    git push
    ```
 
-### Option 2: Add Workflow File via GitHub Web Interface
+### Option 2: Add Workflow File via GitHub Web Interface (Easiest)
 
 1. **Go to GitHub repository:**
    - https://github.com/nbruenin/MatchyMatch
@@ -49,10 +50,11 @@ The following file needs to be added manually:
 2. **Create the workflow file:**
    - Click "Add file" → "Create new file"
    - Path: `.github/workflows/verify-remote.yml`
-   - Copy content from below
 
-3. **Paste the workflow content:**
-   - See "Workflow File Content" section below
+3. **Copy the workflow content:**
+   - Open `.github/verify-remote.workflow.yml` in this repository
+   - Copy all the content
+   - Paste into the GitHub web interface
 
 4. **Commit the file:**
    - Click "Commit new file"
@@ -66,71 +68,29 @@ If you don't have access to create tokens or use the web interface, ask the repo
 
 ## 📄 Workflow File Content
 
-Copy this content and create `.github/workflows/verify-remote.yml`:
+The workflow file content is available in: `.github/verify-remote.workflow.yml`
 
-```yaml
-name: Verify Remote Repository
+**To use it:**
 
-on:
-  push:
-    branches: ['**']
-  pull_request:
-    branches: ['**']
+1. **Copy the content:**
+   ```bash
+   cat .github/verify-remote.workflow.yml
+   ```
 
-jobs:
-  verify-remote:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+2. **Create the workflow file:**
+   ```bash
+   mkdir -p .github/workflows
+   cp .github/verify-remote.workflow.yml .github/workflows/verify-remote.yml
+   ```
 
-      - name: Verify remote URL
-        run: |
-          REMOTE_URL=$(git config --get remote.origin.url)
-          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
-          
-          # Remove credentials from URL for comparison
-          CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|')
-          
-          echo "Remote URL: $CLEAN_URL"
-          echo "Expected URL: $EXPECTED_URL"
-          
-          if [[ "$CLEAN_URL" != "$EXPECTED_URL" ]]; then
-            echo "❌ ERROR: Remote repository is not the correct one!"
-            echo "Expected: $EXPECTED_URL"
-            echo "Got: $CLEAN_URL"
-            exit 1
-          fi
-          
-          echo "✅ Remote repository verified: nbruenin/MatchyMatch"
+3. **Commit and push:**
+   ```bash
+   git add .github/workflows/verify-remote.yml
+   git commit -m "feat: Add GitHub Actions workflow to verify repository"
+   git push
+   ```
 
-      - name: Verify no fork pushes
-        run: |
-          # Check if this is a fork
-          if [ "${{ github.event.repository.fork }}" = "true" ]; then
-            echo "❌ ERROR: This repository appears to be a fork!"
-            echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
-            exit 1
-          fi
-          
-          echo "✅ Repository is not a fork"
-
-      - name: Verify repository owner
-        run: |
-          OWNER="${{ github.repository_owner }}"
-          EXPECTED_OWNER="nbruenin"
-          
-          if [[ "$OWNER" != "$EXPECTED_OWNER" ]]; then
-            echo "❌ ERROR: Repository owner is incorrect!"
-            echo "Expected owner: $EXPECTED_OWNER"
-            echo "Got owner: $OWNER"
-            exit 1
-          fi
-          
-          echo "✅ Repository owner verified: $OWNER"
-```
+**Note:** This requires a token with `workflow` scope. If you don't have one, use Option 2 (GitHub web interface).
 
 ---
 
@@ -167,8 +127,17 @@ bash scripts/setup-repo-access-control.sh
 **Files:**
 - `.github/REPOSITORY_ACCESS_CONTROL.md` - Complete security guide
 - `.github/REPOSITORY_ACCESS_CONTROL_IMPLEMENTATION.md` - Implementation details
+- `.github/REPOSITORY_ACCESS_CONTROL_SUMMARY.md` - Implementation summary
 
 **Status:** ✅ Ready to reference
+
+### Workflow File Reference
+
+**File:** `.github/verify-remote.workflow.yml`
+
+This file contains the complete GitHub Actions workflow that needs to be added to `.github/workflows/verify-remote.yml`.
+
+**Status:** ✅ Ready to be copied
 
 ---
 
@@ -179,15 +148,16 @@ bash scripts/setup-repo-access-control.sh
 | Pre-push hook | ✅ Ready | Installed via husky |
 | Setup script | ✅ Ready | Can be run by developers |
 | Documentation | ✅ Ready | Complete and comprehensive |
-| GitHub Actions workflow | ⚠️ Manual | Requires `workflow` scope or web UI |
+| Workflow file (reference) | ✅ Ready | Available in `.github/verify-remote.workflow.yml` |
+| GitHub Actions workflow | ⚠️ Manual | Needs to be added to `.github/workflows/verify-remote.yml` |
 | Branch protection | ⚠️ Manual | Requires GitHub UI setup |
 
 ---
 
 ## 🎯 Next Steps
 
-1. **Push the local files** (Option 1 or ask owner)
-2. **Add the workflow file** (Option 2 or ask owner)
+1. **Push the local files** (already ready)
+2. **Add the workflow file** (Option 1, 2, or 3)
 3. **Setup branch protection** (GitHub UI)
 4. **Test the security measures**
 5. **Communicate to team**
@@ -231,10 +201,9 @@ If you encounter issues:
 
 To complete the setup:
 
-1. Generate token with `workflow` scope
-2. Push the workflow file
-3. Setup branch protection rules
-4. Communicate to team
+1. Add the workflow file (Option 1, 2, or 3)
+2. Setup branch protection rules
+3. Communicate to team
 
 ---
 
@@ -243,7 +212,8 @@ To complete the setup:
 **Current Status:**
 - ✅ Pre-push hook: Ready and working
 - ✅ Local validation: Active
-- ⚠️ GitHub Actions: Needs manual setup
+- ✅ Workflow file reference: Available
+- ⚠️ GitHub Actions: Needs to be added
 - ⚠️ Branch protection: Needs manual setup
 
 **Next:** Add the GitHub Actions workflow file and setup branch protection rules to complete the enterprise-grade access control.
@@ -253,3 +223,5 @@ To complete the setup:
 **For detailed information, see:**
 - `.github/REPOSITORY_ACCESS_CONTROL.md` - Complete security guide
 - `.github/REPOSITORY_ACCESS_CONTROL_IMPLEMENTATION.md` - Implementation details
+- `.github/REPOSITORY_ACCESS_CONTROL_SUMMARY.md` - Implementation summary
+- `.github/verify-remote.workflow.yml` - Workflow file content

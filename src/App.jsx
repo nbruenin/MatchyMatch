@@ -21,6 +21,7 @@ import HangmanBoard from './components/hangman/HangmanBoard'
 import SnakeBoard from './components/snake/SnakeBoard'
 import SpellingBeeBoard from './components/spellingbee/SpellingBeeBoard'
 import Game2048Board from './components/game2048/Game2048Board'
+import DiceRollerBoard from './components/diceroller/DiceRollerBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -98,6 +99,8 @@ function App() {
           <SpellingBeeBoard key={`spellingbee-${gameKey}`} />
         ) : activeGame === '2048' ? (
           <Game2048Board key={`2048-${gameKey}`} />
+        ) : activeGame === 'diceroller' ? (
+          <DiceRollerBoard key={`diceroller-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

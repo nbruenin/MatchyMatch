@@ -1,36 +1,39 @@
 # CODEOWNERS
-
-# This file defines code ownership and review requirements for the repository
+#
+# This file defines code ownership and review requirements for the repository.
 # See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default owners for everything in the repo
 * @nbruenin
 
-# Game components - require review
+# Game components
 /src/components/ @nbruenin
 
-# Game logic and utilities - require review
+# Game logic and utilities
 /src/utils/ @nbruenin
 /src/hooks/ @nbruenin
 
-# Data files - require review
+# Data files
 /src/data/ @nbruenin
 
-# Configuration files - require review
+# Configuration files
 *.config.js @nbruenin
 .eslintrc* @nbruenin
 .prettierrc* @nbruenin
 
-# Security and CI/CD - require review
+# Security, CI/CD and GitHub settings — require owner review
 /.github/ @nbruenin
+/.github/workflows/ @nbruenin
+/.github/settings.yml @nbruenin
 SECURITY.md @nbruenin
 .env.example @nbruenin
+netlify.toml @nbruenin
 
-# Tests - require review
+# Tests
 /src/test/ @nbruenin
 *.test.js @nbruenin
 *.spec.js @nbruenin
 
-# Package management - require review
+# Package management
 package.json @nbruenin
 package-lock.json @nbruenin

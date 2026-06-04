@@ -132,6 +132,13 @@ const GAMES = [
     description: 'Roll the dice 10 times and test your luck',
     color: '#ff3b30',
   },
+  {
+    id: 'flappybird',
+    emoji: '🐦',
+    name: 'Flappy Bird',
+    description: 'Navigate the bird through the pipes',
+    color: '#FFD700',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

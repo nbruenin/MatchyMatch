@@ -70,6 +70,13 @@ const GAMES = [
     color: '#0a84ff',
   },
   {
+    id: 'flipflop',
+    emoji: '🎯',
+    name: 'Flip Flop',
+    description: 'Match fruit pairs with perfect accuracy',
+    color: '#ff6b6b',
+  },
+  {
     id: 'typerace',
     emoji: '⌨️',
     name: 'Type Race',

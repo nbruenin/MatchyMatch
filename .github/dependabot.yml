@@ -1,0 +1,59 @@
+version: 2
+updates:
+  # Enable version updates for npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "nbruenin"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+    # Group updates
+    groups:
+      development-dependencies:
+        dependency-type: "dev"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      major-updates:
+        update-types:
+          - "major"
+    # Allow updates
+    allow:
+      - dependency-type: "all"
+    # Ignore certain packages if needed
+    ignore: []
+    # Require status checks to pass
+    pull-request-branch-name:
+      separator: "/"
+    rebase-strategy: "auto"
+    # Auto-merge minor and patch updates for dev dependencies
+    auto-merge: true
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    reviewers:
+      - "nbruenin"
+    labels:
+      - "ci"
+      - "github-actions"
+    commit-message:
+      prefix: "ci(actions):"

@@ -1,0 +1,36 @@
+# CODEOWNERS
+
+# This file defines code ownership and review requirements for the repository
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @nbruenin
+
+# Game components - require review
+/src/components/ @nbruenin
+
+# Game logic and utilities - require review
+/src/utils/ @nbruenin
+/src/hooks/ @nbruenin
+
+# Data files - require review
+/src/data/ @nbruenin
+
+# Configuration files - require review
+*.config.js @nbruenin
+.eslintrc* @nbruenin
+.prettierrc* @nbruenin
+
+# Security and CI/CD - require review
+/.github/ @nbruenin
+SECURITY.md @nbruenin
+.env.example @nbruenin
+
+# Tests - require review
+/src/test/ @nbruenin
+*.test.js @nbruenin
+*.spec.js @nbruenin
+
+# Package management - require review
+package.json @nbruenin
+package-lock.json @nbruenin

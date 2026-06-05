@@ -167,6 +167,13 @@ const GAMES = [
     description: 'Classic arcade game — beat the AI',
     color: '#00D9FF',
   },
+  {
+    id: 'simonsays',
+    emoji: '🎮',
+    name: 'Simon Says',
+    description: 'Repeat the color sequence and test your memory',
+    color: '#5AC8FA',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

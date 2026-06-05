@@ -181,6 +181,13 @@ const GAMES = [
     description: 'Find the target number before time runs out',
     color: '#FF6B6B',
   },
+  {
+    id: 'uno',
+    emoji: '🎴',
+    name: 'Uno',
+    description: 'Play the classic card game against AI',
+    color: '#FF6B35',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

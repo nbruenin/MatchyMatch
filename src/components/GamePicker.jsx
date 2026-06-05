@@ -139,6 +139,13 @@ const GAMES = [
     description: 'Navigate the bird through the pipes',
     color: '#FFD700',
   },
+  {
+    id: 'quizmaster',
+    emoji: '🎓',
+    name: 'Quiz Master',
+    description: 'Answer trivia questions and test your knowledge',
+    color: '#5ac8fa',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

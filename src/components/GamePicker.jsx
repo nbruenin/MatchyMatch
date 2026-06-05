@@ -146,6 +146,13 @@ const GAMES = [
     description: 'Answer trivia questions and test your knowledge',
     color: '#5ac8fa',
   },
+  {
+    id: 'tictactoe',
+    emoji: '⭕',
+    name: 'Tic Tac Toe',
+    description: 'Get three in a row to win',
+    color: '#ff3b30',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

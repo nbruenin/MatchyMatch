@@ -160,6 +160,13 @@ const GAMES = [
     description: 'Spin the wheel and test your luck',
     color: '#FF1493',
   },
+  {
+    id: 'pong',
+    emoji: '🏓',
+    name: 'Pong',
+    description: 'Classic arcade game — beat the AI',
+    color: '#00D9FF',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

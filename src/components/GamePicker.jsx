@@ -153,6 +153,13 @@ const GAMES = [
     description: 'Get three in a row to win',
     color: '#ff3b30',
   },
+  {
+    id: 'pong',
+    emoji: '🏓',
+    name: 'Pong',
+    description: 'Classic arcade game — beat the AI',
+    color: '#0a84ff',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

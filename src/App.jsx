@@ -25,6 +25,7 @@ import DiceRollerBoard from './components/diceroller/DiceRollerBoard'
 import FlappyBirdBoard from './components/flappybird/FlappyBirdBoard'
 import QuizMasterBoard from './components/quizmaster/QuizMasterBoard'
 import TicTacToeBoard from './components/tictactoe/TicTacToeBoard'
+import PongBoard from './components/pong/PongBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -110,6 +111,8 @@ function App() {
           <QuizMasterBoard key={`quizmaster-${gameKey}`} />
         ) : activeGame === 'tictactoe' ? (
           <TicTacToeBoard key={`tictactoe-${gameKey}`} onGoHome={handleGoHome} />
+        ) : activeGame === 'pong' ? (
+          <PongBoard key={`pong-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

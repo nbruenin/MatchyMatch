@@ -188,6 +188,13 @@ const GAMES = [
     description: 'Play the classic card game against AI',
     color: '#FF6B35',
   },
+  {
+    id: 'mastermind',
+    emoji: '🧩',
+    name: 'Mastermind',
+    description: 'Crack the secret code in 10 attempts',
+    color: '#A855F7',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

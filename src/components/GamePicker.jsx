@@ -153,6 +153,13 @@ const GAMES = [
     description: 'Get three in a row to win',
     color: '#ff3b30',
   },
+  {
+    id: 'roulette',
+    emoji: '🎡',
+    name: 'Roulette',
+    description: 'Spin the wheel and test your luck',
+    color: '#FF1493',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

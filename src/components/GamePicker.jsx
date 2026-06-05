@@ -49,6 +49,13 @@ const GAMES = [
     color: '#bf5af2',
   },
   {
+    id: 'breakout',
+    emoji: '🧱',
+    name: 'Breakout',
+    description: 'Destroy bricks with your paddle and ball',
+    color: '#FF6B6B',
+  },
+  {
     id: 'sudoku',
     emoji: '🔲',
     name: 'Sudoku',

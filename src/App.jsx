@@ -10,6 +10,7 @@ import CrosswordBoard from './components/crossword/CrosswordBoard'
 import WordChainBoard from './components/wordchain/WordChainBoard'
 import ScrambleBoard from './components/scramble/ScrambleBoard'
 import AnagramBoard from './components/anagram/AnagramBoard'
+import BreakoutBoard from './components/breakout/BreakoutBoard'
 import SudokuBoard from './components/sudoku/SudokuBoard'
 import TriviaBoard from './components/trivia/TriviaBoard'
 import MemoryBoard from './components/memory/MemoryBoard'
@@ -87,6 +88,8 @@ function App() {
           <ScrambleBoard key={`scramble-${gameKey}`} />
         ) : activeGame === 'anagram' ? (
           <AnagramBoard key={`anagram-${gameKey}`} />
+        ) : activeGame === 'breakout' ? (
+          <BreakoutBoard key={`breakout-${gameKey}`} />
         ) : activeGame === 'trivia' ? (
           <TriviaBoard key={`trivia-${gameKey}`} />
         ) : activeGame === 'memory' ? (

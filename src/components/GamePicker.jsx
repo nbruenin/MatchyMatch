@@ -174,6 +174,13 @@ const GAMES = [
     description: 'Repeat the color sequence and test your memory',
     color: '#5AC8FA',
   },
+  {
+    id: 'numberninja',
+    emoji: '🥷',
+    name: 'Number Ninja',
+    description: 'Find the target number before time runs out',
+    color: '#FF6B6B',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

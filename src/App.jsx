@@ -28,6 +28,7 @@ import TicTacToeBoard from './components/tictactoe/TicTacToeBoard'
 import RouletteBoard from './components/roulette/RouletteBoard'
 import PongBoard from './components/pong/PongBoard'
 import SimonSaysBoard from './components/simonsays/SimonSaysBoard'
+import NumberNinjaBoard from './components/numberninja/NumberNinjaBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -119,6 +120,8 @@ function App() {
           <PongBoard key={`pong-${gameKey}`} />
         ) : activeGame === 'simonsays' ? (
           <SimonSaysBoard key={`simonsays-${gameKey}`} />
+        ) : activeGame === 'numberninja' ? (
+          <NumberNinjaBoard key={`numberninja-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

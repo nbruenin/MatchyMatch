@@ -32,6 +32,7 @@ import NumberNinjaBoard from './components/numberninja/NumberNinjaBoard'
 import UnoBoard from './components/uno/UnoBoard'
 import MastermindBoard from './components/mastermind/MastermindBoard'
 import RockPaperScissorsBoard from './components/rockpaperscissors/RockPaperScissorsBoard'
+import ColorMatchBoard from './components/colormatch/ColorMatchBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -131,6 +132,8 @@ function App() {
           <MastermindBoard key={`mastermind-${gameKey}`} />
         ) : activeGame === 'rockpaperscissors' ? (
           <RockPaperScissorsBoard key={`rockpaperscissors-${gameKey}`} />
+        ) : activeGame === 'colormatch' ? (
+          <ColorMatchBoard key={`colormatch-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

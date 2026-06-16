@@ -31,6 +31,7 @@ import SimonSaysBoard from './components/simonsays/SimonSaysBoard'
 import NumberNinjaBoard from './components/numberninja/NumberNinjaBoard'
 import UnoBoard from './components/uno/UnoBoard'
 import MastermindBoard from './components/mastermind/MastermindBoard'
+import RockPaperScissorsBoard from './components/rockpaperscissors/RockPaperScissorsBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -128,6 +129,8 @@ function App() {
           <UnoBoard key={`uno-${gameKey}`} />
         ) : activeGame === 'mastermind' ? (
           <MastermindBoard key={`mastermind-${gameKey}`} />
+        ) : activeGame === 'rockpaperscissors' ? (
+          <RockPaperScissorsBoard key={`rockpaperscissors-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

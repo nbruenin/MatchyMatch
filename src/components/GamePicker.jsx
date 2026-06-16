@@ -195,6 +195,13 @@ const GAMES = [
     description: 'Crack the secret code in 10 attempts',
     color: '#A855F7',
   },
+  {
+    id: 'rockpaperscissors',
+    emoji: '✊',
+    name: 'Rock Paper Scissors',
+    description: 'Beat the AI in this classic hand game',
+    color: '#FF6B9D',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

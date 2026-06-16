@@ -202,6 +202,13 @@ const GAMES = [
     description: 'Beat the AI in this classic hand game',
     color: '#FF6B9D',
   },
+  {
+    id: 'colormatch',
+    emoji: '🎨',
+    name: 'Color Match',
+    description: 'Find matching colors and test your memory',
+    color: '#FF6B6B',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

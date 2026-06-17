@@ -216,6 +216,13 @@ const GAMES = [
     description: 'Guess the secret number with hints',
     color: '#FF6B35',
   },
+  {
+    id: 'minesweeper',
+    emoji: '💣',
+    name: 'Minesweeper',
+    description: 'Clear the minefield without triggering a bomb',
+    color: '#636366',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -209,6 +209,13 @@ const GAMES = [
     description: 'Find matching colors and test your memory',
     color: '#FF6B6B',
   },
+  {
+    id: 'guessthenumber',
+    emoji: '🎯',
+    name: 'Guess the Number',
+    description: 'Guess the secret number with hints',
+    color: '#FF6B35',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

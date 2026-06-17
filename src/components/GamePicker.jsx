@@ -230,6 +230,13 @@ const GAMES = [
     description: 'Clear the minefield without triggering a bomb',
     color: '#636366',
   },
+  {
+    id: 'blackjack',
+    emoji: '🃏',
+    name: 'Blackjack',
+    description: 'Beat the dealer to 21 without going over',
+    color: '#1a3a6b',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

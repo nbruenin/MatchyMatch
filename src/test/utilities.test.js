@@ -8,81 +8,94 @@ import { useDarkMode } from '../../hooks/useDarkMode'
 import * as gameLogic from '../../utils/gameLogic'
 
 // ── useDarkMode Hook Tests ────────────────────────────────────────────────────
+// Note: the hook returns { dark, toggle } and uses 'puzzlr-dark-mode' as the key
 
 describe('useDarkMode – Unit: hook functionality', () => {
   beforeEach(() => {
-    // Clear localStorage before each test
     localStorage.clear()
-    // Reset document class
     document.documentElement.className = ''
   })
 
-  it('initializes with dark mode off by default', () => {
+  afterEach(() => {
+    localStorage.clear()
+    document.documentElement.classList.remove('dark')
+  })
+
+  it('initializes with dark mode off by default (no localStorage)', () => {
     const { result } = renderHook(() => useDarkMode())
-    expect(result.current.isDarkMode).toBe(false)
+    expect(result.current.dark).toBe(false)
   })
 
   it('returns a toggle function', () => {
     const { result } = renderHook(() => useDarkMode())
-    expect(typeof result.current.toggleDarkMode).toBe('function')
+    expect(typeof result.current.toggle).toBe('function')
   })
 
-  it('toggles dark mode when toggle is called', () => {
+  it('toggles dark mode on when toggle is called', () => {
     const { result } = renderHook(() => useDarkMode())
-
-    expect(result.current.isDarkMode).toBe(false)
-
-    act(() => {
-      result.current.toggleDarkMode()
-    })
-
-    expect(result.current.isDarkMode).toBe(true)
+    expect(result.current.dark).toBe(false)
 
     act(() => {
-      result.current.toggleDarkMode()
+      result.current.toggle()
     })
 
-    expect(result.current.isDarkMode).toBe(false)
+    expect(result.current.dark).toBe(true)
   })
 
-  it('persists dark mode state to localStorage', () => {
+  it('toggles dark mode off when called twice', () => {
+    const { result } = renderHook(() => useDarkMode())
+
+    act(() => { result.current.toggle() })
+    act(() => { result.current.toggle() })
+
+    expect(result.current.dark).toBe(false)
+  })
+
+  it('persists dark mode state to localStorage with key "puzzlr-dark-mode"', () => {
     const { result } = renderHook(() => useDarkMode())
 
     act(() => {
-      result.current.toggleDarkMode()
+      result.current.toggle()
     })
 
-    // Check localStorage was updated
-    const stored = localStorage.getItem('darkMode')
+    const stored = localStorage.getItem('puzzlr-dark-mode')
     expect(stored).toBe('true')
   })
 
   it('restores dark mode state from localStorage', () => {
-    localStorage.setItem('darkMode', 'true')
+    localStorage.setItem('puzzlr-dark-mode', 'true')
 
     const { result } = renderHook(() => useDarkMode())
 
-    expect(result.current.isDarkMode).toBe(true)
+    expect(result.current.dark).toBe(true)
   })
 
-  it('applies dark class to document element', () => {
+  it('restores light mode state from localStorage', () => {
+    localStorage.setItem('puzzlr-dark-mode', 'false')
+
+    const { result } = renderHook(() => useDarkMode())
+
+    expect(result.current.dark).toBe(false)
+  })
+
+  it('applies dark class to document element when toggled on', () => {
     const { result } = renderHook(() => useDarkMode())
 
     act(() => {
-      result.current.toggleDarkMode()
+      result.current.toggle()
     })
 
     expect(document.documentElement.classList.contains('dark')).toBe(true)
   })
 
   it('removes dark class when toggled off', () => {
-    localStorage.setItem('darkMode', 'true')
+    localStorage.setItem('puzzlr-dark-mode', 'true')
     document.documentElement.classList.add('dark')
 
     const { result } = renderHook(() => useDarkMode())
 
     act(() => {
-      result.current.toggleDarkMode()
+      result.current.toggle()
     })
 
     expect(document.documentElement.classList.contains('dark')).toBe(false)
@@ -91,14 +104,29 @@ describe('useDarkMode – Unit: hook functionality', () => {
 
 // ── gameLogic Utility Tests ───────────────────────────────────────────────────
 
-describe('gameLogic – Unit: utility functions', () => {
-  it('exports expected functions', () => {
+describe('gameLogic – Unit: module exports', () => {
+  it('exports an object', () => {
     expect(typeof gameLogic).toBe('object')
   })
 
-  it('has utility functions available', () => {
-    // Check that the module exports something
-    expect(Object.keys(gameLogic).length).toBeGreaterThanOrEqual(0)
+  it('exports isCorrectMatch function', () => {
+    expect(typeof gameLogic.isCorrectMatch).toBe('function')
+  })
+
+  it('exports countMatchingWords function', () => {
+    expect(typeof gameLogic.countMatchingWords).toBe('function')
+  })
+
+  it('exports isOneAway function', () => {
+    expect(typeof gameLogic.isOneAway).toBe('function')
+  })
+
+  it('exports shuffleArray function', () => {
+    expect(typeof gameLogic.shuffleArray).toBe('function')
+  })
+
+  it('exports getAllWords function', () => {
+    expect(typeof gameLogic.getAllWords).toBe('function')
   })
 })
 
@@ -123,10 +151,16 @@ describe('Data – Unit: word lists and puzzles', () => {
     expect(SCRAMBLE_WORDS.length).toBeGreaterThan(0)
   })
 
-  it('wordleWords exports an array', async () => {
-    const { WORDLE_WORDS } = await import('../../data/wordleWords')
-    expect(Array.isArray(WORDLE_WORDS)).toBe(true)
-    expect(WORDLE_WORDS.length).toBeGreaterThan(0)
+  it('wordleWords exports WORDLE_ANSWERS array', async () => {
+    const { WORDLE_ANSWERS } = await import('../../data/wordleWords')
+    expect(Array.isArray(WORDLE_ANSWERS)).toBe(true)
+    expect(WORDLE_ANSWERS.length).toBeGreaterThan(0)
+  })
+
+  it('wordleWords exports ALL_VALID_WORDS array', async () => {
+    const { ALL_VALID_WORDS } = await import('../../data/wordleWords')
+    expect(Array.isArray(ALL_VALID_WORDS)).toBe(true)
+    expect(ALL_VALID_WORDS.length).toBeGreaterThan(0)
   })
 
   it('triviaQuestions exports an array', async () => {
@@ -153,16 +187,16 @@ describe('Data – Unit: word lists and puzzles', () => {
     expect(WORD_CHAIN_PUZZLES.length).toBeGreaterThan(0)
   })
 
-  it('wordSearchPuzzles exports an array', async () => {
-    const { WORD_SEARCH_PUZZLES } = await import('../../data/wordSearchPuzzles')
-    expect(Array.isArray(WORD_SEARCH_PUZZLES)).toBe(true)
-    expect(WORD_SEARCH_PUZZLES.length).toBeGreaterThan(0)
+  it('wordSearchPuzzles exports PUZZLES array', async () => {
+    const { PUZZLES } = await import('../../data/wordSearchPuzzles')
+    expect(Array.isArray(PUZZLES)).toBe(true)
+    expect(PUZZLES.length).toBeGreaterThan(0)
   })
 
-  it('spellingBeeData exports an array', async () => {
-    const { SPELLING_BEE_WORDS } = await import('../../data/spellingBeeData')
-    expect(Array.isArray(SPELLING_BEE_WORDS)).toBe(true)
-    expect(SPELLING_BEE_WORDS.length).toBeGreaterThan(0)
+  it('spellingBeeData exports SPELLING_BEE_PUZZLES array', async () => {
+    const { SPELLING_BEE_PUZZLES } = await import('../../data/spellingBeeData')
+    expect(Array.isArray(SPELLING_BEE_PUZZLES)).toBe(true)
+    expect(SPELLING_BEE_PUZZLES.length).toBeGreaterThan(0)
   })
 
   it('memoryCards exports an array', async () => {
@@ -185,7 +219,7 @@ describe('Data – Unit: word lists and puzzles', () => {
 // ── Data Content Validation ───────────────────────────────────────────────────
 
 describe('Data – Content validation', () => {
-  it('anagramWords contains valid word objects', async () => {
+  it('anagramWords contains valid word strings', async () => {
     const { ANAGRAM_WORDS } = await import('../../data/anagramWords')
     ANAGRAM_WORDS.slice(0, 5).forEach((word) => {
       expect(typeof word).toBe('string')
@@ -193,7 +227,7 @@ describe('Data – Content validation', () => {
     })
   })
 
-  it('hangmanWords contains valid word objects', async () => {
+  it('hangmanWords contains valid word strings', async () => {
     const { HANGMAN_WORDS } = await import('../../data/hangmanWords')
     HANGMAN_WORDS.slice(0, 5).forEach((word) => {
       expect(typeof word).toBe('string')
@@ -205,9 +239,9 @@ describe('Data – Content validation', () => {
     const { TRIVIA_QUESTIONS } = await import('../../data/triviaQuestions')
     TRIVIA_QUESTIONS.slice(0, 5).forEach((question) => {
       expect(question).toHaveProperty('question')
-      expect(question).toHaveProperty('options')
-      expect(question).toHaveProperty('correct')
-      expect(Array.isArray(question.options)).toBe(true)
+      expect(question).toHaveProperty('choices')
+      expect(question).toHaveProperty('answer')
+      expect(Array.isArray(question.choices)).toBe(true)
     })
   })
 

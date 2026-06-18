@@ -244,6 +244,13 @@ const GAMES = [
     description: 'Decode dots and dashes into letters and words',
     color: '#6B7280',
   },
+  {
+    id: 'lightsout',
+    emoji: '💡',
+    name: 'Lights Out',
+    description: 'Toggle cells to turn all the lights off',
+    color: '#ff9f0a',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

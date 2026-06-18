@@ -237,6 +237,13 @@ const GAMES = [
     description: 'Beat the dealer to 21 without going over',
     color: '#1a3a6b',
   },
+  {
+    id: 'morsecode',
+    emoji: '📡',
+    name: 'Morse Code',
+    description: 'Decode dots and dashes into letters and words',
+    color: '#6B7280',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

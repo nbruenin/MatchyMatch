@@ -41,6 +41,7 @@ import MorseCodeBoard from './components/morsecode/MorseCodeBoard'
 import LightsOutBoard from './components/lightsout/LightsOutBoard'
 import ReactionTimeBoard from './components/reactiontime/ReactionTimeBoard'
 import ConnectFourBoard from './components/connectfour/ConnectFourBoard'
+import ColorFloodBoard from './components/colorflood/ColorFloodBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -158,6 +159,8 @@ function App() {
           <ReactionTimeBoard key={`reactiontime-${gameKey}`} />
         ) : activeGame === 'connectfour' ? (
           <ConnectFourBoard key={`connectfour-${gameKey}`} />
+        ) : activeGame === 'colorflood' ? (
+          <ColorFloodBoard key={`colorflood-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

@@ -265,6 +265,13 @@ const GAMES = [
     description: 'Drop discs and get four in a row to beat the AI',
     color: '#1565c0',
   },
+  {
+    id: 'colorflood',
+    emoji: '🌊',
+    name: 'Color Flood',
+    description: 'Flood the entire board with one color in 25 moves',
+    color: '#4D96FF',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

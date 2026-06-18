@@ -37,6 +37,7 @@ import ColorMatchBoard from './components/colormatch/ColorMatchBoard'
 import GuessTheNumberBoard from './components/guessthenumber/GuessTheNumberBoard'
 import MinesweeperBoard from './components/minesweeper/MinesweeperBoard'
 import BlackjackBoard from './components/blackjack/BlackjackBoard'
+import MorseCodeBoard from './components/morsecode/MorseCodeBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -146,6 +147,8 @@ function App() {
           <MinesweeperBoard key={`minesweeper-${gameKey}`} />
         ) : activeGame === 'blackjack' ? (
           <BlackjackBoard key={`blackjack-${gameKey}`} />
+        ) : activeGame === 'morsecode' ? (
+          <MorseCodeBoard key={`morsecode-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

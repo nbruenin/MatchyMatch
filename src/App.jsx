@@ -40,6 +40,7 @@ import BlackjackBoard from './components/blackjack/BlackjackBoard'
 import MorseCodeBoard from './components/morsecode/MorseCodeBoard'
 import LightsOutBoard from './components/lightsout/LightsOutBoard'
 import ReactionTimeBoard from './components/reactiontime/ReactionTimeBoard'
+import ConnectFourBoard from './components/connectfour/ConnectFourBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -155,6 +156,8 @@ function App() {
           <LightsOutBoard key={`lightsout-${gameKey}`} />
         ) : activeGame === 'reactiontime' ? (
           <ReactionTimeBoard key={`reactiontime-${gameKey}`} />
+        ) : activeGame === 'connectfour' ? (
+          <ConnectFourBoard key={`connectfour-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

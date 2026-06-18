@@ -258,6 +258,13 @@ const GAMES = [
     description: 'Click the target the instant it turns green',
     color: '#34c759',
   },
+  {
+    id: 'connectfour',
+    emoji: '🔴',
+    name: 'Connect Four',
+    description: 'Drop discs and get four in a row to beat the AI',
+    color: '#1565c0',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

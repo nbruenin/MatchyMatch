@@ -251,6 +251,13 @@ const GAMES = [
     description: 'Toggle cells to turn all the lights off',
     color: '#ff9f0a',
   },
+  {
+    id: 'reactiontime',
+    emoji: '⚡',
+    name: 'Reaction Time',
+    description: 'Click the target the instant it turns green',
+    color: '#34c759',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -39,6 +39,7 @@ import MinesweeperBoard from './components/minesweeper/MinesweeperBoard'
 import BlackjackBoard from './components/blackjack/BlackjackBoard'
 import MorseCodeBoard from './components/morsecode/MorseCodeBoard'
 import LightsOutBoard from './components/lightsout/LightsOutBoard'
+import ReactionTimeBoard from './components/reactiontime/ReactionTimeBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -152,6 +153,8 @@ function App() {
           <MorseCodeBoard key={`morsecode-${gameKey}`} />
         ) : activeGame === 'lightsout' ? (
           <LightsOutBoard key={`lightsout-${gameKey}`} />
+        ) : activeGame === 'reactiontime' ? (
+          <ReactionTimeBoard key={`reactiontime-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

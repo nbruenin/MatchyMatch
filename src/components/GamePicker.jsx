@@ -272,6 +272,13 @@ const GAMES = [
     description: 'Flood the entire board with one color in 25 moves',
     color: '#4D96FF',
   },
+  {
+    id: 'typingspeed',
+    emoji: '🖊️',
+    name: 'Typing Speed',
+    description: 'Type the prompt fast & accurately — scored in WPM',
+    color: '#5e5ce6',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

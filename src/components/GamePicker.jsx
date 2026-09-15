@@ -279,6 +279,13 @@ const GAMES = [
     description: 'Type the prompt fast & accurately — scored in WPM',
     color: '#5e5ce6',
   },
+  {
+    id: 'coinflip',
+    emoji: '🪙',
+    name: 'Coin Flip',
+    description: 'Predict the coin flip and test your luck',
+    color: '#FFD700',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

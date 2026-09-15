@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub branch protection and security policies
 - Pre-commit hooks for code quality
 - Comprehensive documentation and security reports
+- **Coin Flip game** - A simple luck-based game where players predict coin flip outcomes
+  - Win/loss tracking with statistics
+  - Win rate percentage calculation
+  - Animated coin flip with visual feedback
+  - Reset stats functionality
 
 ### Changed
 - Refactored project structure for better maintainability

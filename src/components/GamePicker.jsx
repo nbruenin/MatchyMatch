@@ -286,6 +286,13 @@ const GAMES = [
     description: 'Predict the coin flip and test your luck',
     color: '#FFD700',
   },
+  {
+    id: 'bubblepop',
+    emoji: '🫧',
+    name: 'Bubble Pop',
+    description: 'Pop bubbles before time runs out and level up',
+    color: '#FF6B6B',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

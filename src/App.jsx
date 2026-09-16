@@ -44,6 +44,7 @@ import ConnectFourBoard from './components/connectfour/ConnectFourBoard'
 import ColorFloodBoard from './components/colorflood/ColorFloodBoard'
 import TypingSpeedBoard from './components/typingspeed/TypingSpeedBoard'
 import CoinFlipBoard from './components/coinflip/CoinFlipBoard'
+import BubblePopBoard from './components/bubblepop/BubblePopBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -130,7 +131,10 @@ function App() {
         ) : activeGame === 'quizmaster' ? (
           <QuizMasterBoard key={`quizmaster-${gameKey}`} />
         ) : activeGame === 'tictactoe' ? (
-          <TicTacToeBoard key={`tictactoe-${gameKey}`} onGoHome={handleGoHome} />
+          <TicTacToeBoard
+            key={`tictactoe-${gameKey}`}
+            onGoHome={handleGoHome}
+          />
         ) : activeGame === 'roulette' ? (
           <RouletteBoard key={`roulette-${gameKey}`} />
         ) : activeGame === 'pong' ? (
@@ -167,6 +171,8 @@ function App() {
           <TypingSpeedBoard key={`typingspeed-${gameKey}`} />
         ) : activeGame === 'coinflip' ? (
           <CoinFlipBoard key={`coinflip-${gameKey}`} />
+        ) : activeGame === 'bubblepop' ? (
+          <BubblePopBoard key={`bubblepop-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

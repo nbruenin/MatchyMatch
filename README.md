@@ -22,22 +22,26 @@ A collection of puzzle and word games built with React and Vite.
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/nbruenin/MatchyMatch.git
    cd MatchyMatch
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Create environment file**
+
    ```bash
    cp .env.example .env.local
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -47,17 +51,20 @@ A collection of puzzle and word games built with React and Vite.
 ## Available Scripts
 
 ### Development
+
 ```bash
 npm run dev          # Start development server with HMR
 npm run preview      # Preview production build locally
 ```
 
 ### Building
+
 ```bash
 npm run build        # Build for production
 ```
 
 ### Testing
+
 ```bash
 npm test             # Run tests in watch mode
 npm run test -- --run  # Run tests once
@@ -65,6 +72,7 @@ npm run test:ui      # Run tests with UI
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint         # Run ESLint
 ```
@@ -93,6 +101,7 @@ src/
 - **Memory** - Match pairs of cards
 - **Trivia** - Answer trivia questions
 - **Word Search** - Find hidden words
+- **Whack-a-Mole** - Click the moles before they disappear!
 - **And more!**
 
 ## Development
@@ -107,12 +116,14 @@ src/
 ### Testing
 
 We use Vitest for testing. Tests are located in `src/test/` and should:
+
 - Cover critical functionality
 - Test both happy path and edge cases
 - Use descriptive test names
 - Aim for 80%+ coverage
 
 Run tests with:
+
 ```bash
 npm test
 ```
@@ -120,6 +131,7 @@ npm test
 ### Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
 - Development setup
 - Code style guidelines
 - Testing requirements
@@ -147,6 +159,7 @@ We take security seriously. For security issues, please see [SECURITY.md](SECURI
 This repository is protected with **enterprise-grade access control** to ensure code can only be pushed to the correct repository: **nbruenin/MatchyMatch**.
 
 **How it works:**
+
 1. **Pre-push hook** - Validates remote URL before every push
 2. **GitHub Actions** - Verifies repository on every push/PR
 3. **Branch protection** - Requires reviews and CI to pass
@@ -170,6 +183,7 @@ npm run build
 ```
 
 Configuration is in `netlify.toml` with:
+
 - Security headers
 - Cache policies
 - Build environment

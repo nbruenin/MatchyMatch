@@ -293,6 +293,13 @@ const GAMES = [
     description: 'Pop bubbles before time runs out and level up',
     color: '#FF6B6B',
   },
+  {
+    id: 'whackamole',
+    emoji: '🔨',
+    name: 'Whack-a-Mole',
+    description: 'Click the moles before they disappear!',
+    color: '#8B4513',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

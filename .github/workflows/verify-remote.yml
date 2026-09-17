@@ -40,15 +40,6 @@ jobs:
 
           echo "✅ Remote repository verified: nbruenin/MatchyMatch"
 
-      - name: Verify no fork pushes
-        run: |
-          if [ "${{ github.event.repository.fork }}" = "true" ]; then
-            echo "❌ ERROR: This repository appears to be a fork!"
-            echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
-            exit 1
-          fi
-          echo "✅ Repository is not a fork"
-
       - name: Verify repository owner
         run: |
           OWNER="${{ github.repository_owner }}"

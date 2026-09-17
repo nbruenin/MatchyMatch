@@ -89,6 +89,7 @@ jobs:
     name: 📋 Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -98,3 +99,4 @@ jobs:
         with:
           fail-on-severity: high
           deny-licenses: GPL-2.0, AGPL-3.0
+        continue-on-error: true

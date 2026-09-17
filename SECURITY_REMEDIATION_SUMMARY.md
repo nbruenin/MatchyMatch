@@ -55,24 +55,45 @@ npm audit
 - ✅ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - ✅ Content-Security-Policy: (comprehensive policy)
 
-### 3. ✅ CI/CD Security Workflows (ACTIVATED)
+### 3. ⚠️ CI/CD Security Workflows (READY TO ACTIVATE)
 
-**Status:** Security automation enabled
+**Status:** Templates available, requires manual activation
 
-#### Activated Workflows:
+#### Available Workflow Templates:
 
-**Security Workflow** (`.github/workflows/security.yml`):
-- ✅ npm audit (production dependencies)
-- ✅ CodeQL analysis for code security
-- ✅ Secret scanning with TruffleHog
-- ✅ Dependency review for PRs
-- ✅ Runs on push, PR, and weekly schedule
+**Security Workflow** (`.github/workflow-templates/security.yml`):
+- npm audit (production dependencies)
+- CodeQL analysis for code security
+- Secret scanning with TruffleHog
+- Dependency review for PRs
+- Runs on push, PR, and weekly schedule
 
-**CI Workflow** (`.github/workflows/ci.yml`):
-- ✅ ESLint checks
-- ✅ Test suite execution
-- ✅ Build verification
-- ✅ Runs on all pushes and PRs
+**CI Workflow** (`.github/workflow-templates/ci.yml`):
+- ESLint checks
+- Test suite execution
+- Build verification
+- Runs on all pushes and PRs
+
+#### Manual Activation Required:
+
+Due to GitHub token permissions, workflows must be activated manually:
+
+```bash
+# Option 1: Via GitHub UI
+# 1. Go to repository Settings → Actions → General
+# 2. Enable "Allow all actions and reusable workflows"
+# 3. Copy workflow templates to .github/workflows/
+
+# Option 2: Via command line (requires workflow scope token)
+mkdir -p .github/workflows
+cp .github/workflow-templates/security.yml .github/workflows/security.yml
+cp .github/workflow-templates/ci.yml .github/workflows/ci.yml
+git add .github/workflows/
+git commit -m "ci: activate security and CI workflows"
+git push
+```
+
+**Note:** This PR includes all security fixes except workflow activation. Workflows can be activated in a follow-up PR by a user with appropriate permissions.
 
 ### 4. ✅ Input Validation (IMPLEMENTED)
 
@@ -125,9 +146,8 @@ npm audit
 ### After Remediation
 - ✅ 0 vulnerabilities
 - ✅ Comprehensive security headers
-- ✅ Automated security scanning
+- ⚠️ Automated security scanning (templates ready, manual activation needed)
 - ✅ Input validation utilities with tests
-- ✅ Active CI/CD security checks
 - **Risk Level: LOW**
 
 ## OWASP Top 10 Compliance
@@ -138,11 +158,11 @@ npm audit
 | A02: Cryptographic Failures    | ✅ Pass    | No sensitive data stored                 |
 | A03: Injection                 | ✅ Pass    | React auto-escaping, no SQL              |
 | A04: Insecure Design           | ✅ Pass    | Client-side game, minimal attack surface |
-| A05: Security Misconfiguration | ✅ Pass    | Workflows activated, headers configured  |
+| A05: Security Misconfiguration | ✅ Pass    | Headers configured, workflows ready      |
 | A06: Vulnerable Components     | ✅ Pass    | All dependencies updated                 |
 | A07: Authentication Failures   | ✅ N/A     | No authentication                        |
 | A08: Software/Data Integrity   | ✅ Pass    | CSP configured, no SRI needed            |
-| A09: Logging/Monitoring        | ✅ Pass    | GitHub Actions monitoring enabled        |
+| A09: Logging/Monitoring        | ⚠️ Partial | Workflows ready, manual activation needed|
 | A10: SSRF                      | ✅ N/A     | No server-side requests                  |
 
 ## Verification Commands
@@ -187,7 +207,7 @@ npm run build
 
 **Monthly:**
 - ✅ Run manual security audit: `npm audit`
-- ✅ Review security workflow results
+- ⚠️ Review security workflow results (after activation)
 - ✅ Update dependencies: `npm update`
 
 **Quarterly:**
@@ -211,8 +231,8 @@ npm run build
 ### Dependency Security
 - ✅ All dependencies up to date
 - ✅ Dependabot configured for automated updates
-- ✅ npm audit runs in CI/CD
-- ✅ Dependency review for PRs
+- ⚠️ npm audit runs in CI/CD (after workflow activation)
+- ⚠️ Dependency review for PRs (after workflow activation)
 
 ### Configuration Security
 - ✅ Comprehensive security headers
@@ -221,10 +241,10 @@ npm run build
 - ✅ Secrets properly gitignored
 
 ### CI/CD Security
-- ✅ Automated security scanning
-- ✅ CodeQL analysis
-- ✅ Secret scanning
-- ✅ Test suite execution
+- ⚠️ Automated security scanning (templates ready)
+- ⚠️ CodeQL analysis (templates ready)
+- ⚠️ Secret scanning (templates ready)
+- ✅ Test suite execution (can run locally)
 
 ## Documentation
 
@@ -245,22 +265,27 @@ All critical security vulnerabilities identified in the Security Analysis 2024 h
 
 1. ✅ **Zero vulnerabilities** in dependencies
 2. ✅ **Comprehensive security headers** including HSTS
-3. ✅ **Automated security scanning** via GitHub Actions
+3. ⚠️ **Automated security scanning** (templates ready, manual activation needed)
 4. ✅ **Input validation utilities** with full test coverage
 5. ✅ **Secure coding practices** verified and documented
 
-The security posture has improved from **HIGH RISK** to **LOW RISK**, with multiple layers of defense in place and automated monitoring to catch future issues early.
+The security posture has improved from **HIGH RISK** to **LOW RISK**, with multiple layers of defense in place.
 
 ## Next Steps
 
+### Immediate (Requires Manual Action)
+1. ⚠️ **Activate GitHub Actions workflows** (requires workflow scope token)
+   - Copy templates from `.github/workflow-templates/` to `.github/workflows/`
+   - Or enable via GitHub UI with appropriate permissions
+
 ### Recommended (Optional Enhancements)
-1. Enable GitHub branch protection rules (manual, via GitHub UI)
-2. Consider adding Snyk or similar for additional dependency scanning
-3. Set up security monitoring dashboard
-4. Implement pre-commit hooks for security checks (husky already configured)
+2. Enable GitHub branch protection rules (manual, via GitHub UI)
+3. Consider adding Snyk or similar for additional dependency scanning
+4. Set up security monitoring dashboard
+5. Implement pre-commit hooks for security checks (husky already configured)
 
 ### Ongoing
-1. Monitor security workflow results
+1. Monitor security workflow results (after activation)
 2. Review and merge Dependabot PRs promptly
 3. Keep security documentation up to date
 4. Conduct regular security reviews

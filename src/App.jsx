@@ -47,6 +47,7 @@ import TypingSpeedBoard from './components/typingspeed/TypingSpeedBoard'
 import CoinFlipBoard from './components/coinflip/CoinFlipBoard'
 import BubblePopBoard from './components/bubblepop/BubblePopBoard'
 import WhackAMoleBoard from './components/whackamole/WhackAMoleBoard'
+import PatternMatchBoard from './components/patternmatch/PatternMatchBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -179,6 +180,8 @@ function App() {
           <BubblePopBoard key={`bubblepop-${gameKey}`} />
         ) : activeGame === 'whackamole' ? (
           <WhackAMoleBoard key={`whackamole-${gameKey}`} />
+        ) : activeGame === 'patternmatch' ? (
+          <PatternMatchBoard key={`patternmatch-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

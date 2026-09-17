@@ -307,6 +307,13 @@ const GAMES = [
     description: 'Click the moles before they disappear!',
     color: '#8B4513',
   },
+  {
+    id: 'patternmatch',
+    emoji: '🔷',
+    name: 'Pattern Match',
+    description: 'Match geometric patterns and symbols',
+    color: '#FF6B6B',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

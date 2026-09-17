@@ -11,6 +11,7 @@ A collection of puzzle and word games built with React and Vite.
 - 🧪 Comprehensive test suite
 - 🔒 Security-focused development
 - 🛡️ Repository access control
+- ✅ Continuous Integration (CI) ready
 
 ## Quick Start
 
@@ -128,6 +129,18 @@ Run tests with:
 npm test
 ```
 
+### Continuous Integration
+
+This repository has GitHub Actions CI configured to automatically:
+
+- 🔍 **Lint** - Check code quality with ESLint
+- 🧪 **Test** - Run the full test suite
+- 🏗️ **Build** - Create production build
+
+The CI workflow is ready to be activated. See [CI_SETUP_INSTRUCTIONS.md](CI_SETUP_INSTRUCTIONS.md) for activation steps.
+
+**CI Status**: The workflow template is prepared in `.github/workflow-templates/ci.yml` and needs to be activated (requires workflow scope token).
+
 ### Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
@@ -153,6 +166,7 @@ We take security seriously. For security issues, please see [SECURITY.md](SECURI
 - ✅ Repository access control (prevents pushes to wrong repo)
 - ✅ Pre-commit hooks for code quality
 - ✅ Automated dependency updates
+- ✅ CI/CD pipeline ready
 
 ### Repository Access Control
 
@@ -221,6 +235,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - 💡 [Request a feature](https://github.com/nbruenin/MatchyMatch/discussions)
 - 🔒 [Report security issue](SECURITY.md)
 - 🛡️ [Repository access control](/.github/REPOSITORY_ACCESS_CONTROL.md)
+- ✅ [CI Setup Instructions](CI_SETUP_INSTRUCTIONS.md)
 
 ## Acknowledgments
 

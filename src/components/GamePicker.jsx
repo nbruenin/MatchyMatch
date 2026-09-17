@@ -314,6 +314,13 @@ const GAMES = [
     description: 'Match geometric patterns and symbols',
     color: '#FF6B6B',
   },
+  {
+    id: 'picturematch',
+    emoji: '🖼️',
+    name: 'Picture Match',
+    description: 'Match picture cards with various themes',
+    color: '#FF6B35',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -48,6 +48,7 @@ import CoinFlipBoard from './components/coinflip/CoinFlipBoard'
 import BubblePopBoard from './components/bubblepop/BubblePopBoard'
 import WhackAMoleBoard from './components/whackamole/WhackAMoleBoard'
 import PatternMatchBoard from './components/patternmatch/PatternMatchBoard'
+import PictureMatchBoard from './components/picturematch/PictureMatchBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -182,6 +183,8 @@ function App() {
           <WhackAMoleBoard key={`whackamole-${gameKey}`} />
         ) : activeGame === 'patternmatch' ? (
           <PatternMatchBoard key={`patternmatch-${gameKey}`} />
+        ) : activeGame === 'picturematch' ? (
+          <PictureMatchBoard key={`picturematch-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

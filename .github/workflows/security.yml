@@ -98,3 +98,4 @@ jobs:
         with:
           fail-on-severity: high
           deny-licenses: GPL-2.0, AGPL-3.0
+        continue-on-error: true

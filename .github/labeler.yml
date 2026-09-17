@@ -1,0 +1,64 @@
+# Auto-labeling configuration for PRs
+# Labels are applied based on which files are modified
+
+# Documentation changes
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.md', 'docs/**/*']
+
+# Test changes
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ['src/test/**/*', '**/*.test.js', '**/*.test.jsx']
+
+# Component changes
+components:
+  - changed-files:
+      - any-glob-to-any-file: ['src/components/**/*']
+
+# Game-specific changes
+games:
+  - changed-files:
+      - any-glob-to-any-file: ['src/components/*/']
+
+# Data changes
+data:
+  - changed-files:
+      - any-glob-to-any-file: ['src/data/**/*']
+
+# CI/CD changes
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**/*', '*.yml', '*.yaml']
+
+# Dependencies
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ['package.json', 'package-lock.json']
+
+# Configuration
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            '*.config.js',
+            '*.config.json',
+            '.env*',
+            '.editorconfig',
+            '.prettierrc',
+          ]
+
+# Security
+security:
+  - changed-files:
+      - any-glob-to-any-file: ['SECURITY.md', '.github/workflows/security.yml']
+
+# Styles
+styles:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.css', 'src/**/*.css']
+
+# Hooks
+hooks:
+  - changed-files:
+      - any-glob-to-any-file: ['src/hooks/**/*']

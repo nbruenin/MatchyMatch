@@ -9,4 +9,4 @@ const index = Math.floor(Math.random() * PUZZLE_COUNT);
 const envPath = join(__dirname, '..', '.env.production');
 
 writeFileSync(envPath, `VITE_PUZZLE_INDEX=${index}\n`);
-console.log(`[pick-puzzle] Selected puzzle index: ${index}`);
+console.warn(`[pick-puzzle] Selected puzzle index: ${index}`);

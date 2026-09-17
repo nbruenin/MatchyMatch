@@ -24,6 +24,12 @@
     # Restrict browser features
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
     
+    # Enforce HTTPS (HSTS)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Prevent Flash/PDF cross-domain policies
+    X-Permitted-Cross-Domain-Policies = "none"
+    
     # Content Security Policy - strict but allows necessary resources
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'"
 

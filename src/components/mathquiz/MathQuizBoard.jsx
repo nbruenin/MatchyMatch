@@ -130,7 +130,7 @@ function SummaryRow({ problem, userAnswer, timeTaken, index }) {
       </span>
       <div className="flex flex-col gap-0.5 min-w-0 flex-1">
         <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--label-primary)", letterSpacing: "-0.01em" }}>
-          {index + 1}. {problem.question} = ?
+          {index + 1}. {problem.problem} = ?
         </p>
         {!correct && (
           <p style={{ fontSize: "0.75rem", color: "var(--label-tertiary)" }}>
@@ -184,7 +184,7 @@ function Game({ problems, onNewGame }) {
   const [records, setRecords] = useState([]);
 
   const inputRef  = useRef(null);
-  const startTime = useRef(Date.now());
+  const startTime = useRef(null);
 
   const problem = problems[qIndex];
 
@@ -195,6 +195,10 @@ function Game({ problems, onNewGame }) {
     setTimeout(() => setShaking(false), 450);
   };
 
+  // Initialize start time on mount and question change
+  useEffect(() => {
+    startTime.current = Date.now();
+  }, [qIndex]);
   // Focus input on mount and question change
   useEffect(() => {
     if (gameState === "playing" && !answered) {
@@ -202,6 +206,16 @@ function Game({ problems, onNewGame }) {
     }
   }, [qIndex, gameState, answered]);
 
+  const handleTimeout = useCallback(() => {
+    const elapsed = (Date.now() - startTime.current) / 1000;
+    setAnswered(true);
+    setIsCorrect(false);
+    setRecords((prev) => [...prev, { userAnswer: null, timeTaken: null }]);
+    setTotalTime((t) => t + elapsed);
+    triggerShake();
+    showToast("Time's up! ⏰");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showToast]);
   // Countdown timer
   useEffect(() => {
     if (answered || gameState !== "playing") return;
@@ -215,18 +229,7 @@ function Game({ problems, onNewGame }) {
     const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearTimeout(id);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, answered, gameState]);
-
-  const handleTimeout = useCallback(() => {
-    const elapsed = (Date.now() - startTime.current) / 1000;
-    setAnswered(true);
-    setIsCorrect(false);
-    setRecords((prev) => [...prev, { userAnswer: null, timeTaken: null }]);
-    setTotalTime((t) => t + elapsed);
-    triggerShake();
-    showToast("Time's up! ⏰");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showToast]);
+  }, [timeLeft, answered, gameState, handleTimeout]);
 
   const handleSubmit = () => {
     if (answered || input.trim() === "") return;
@@ -459,7 +462,7 @@ function Game({ problems, onNewGame }) {
               textAlign: "center",
             }}
           >
-            {problem.question} = ?
+            {problem.problem} = ?
           </p>
         </div>
 

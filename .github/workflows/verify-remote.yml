@@ -1,0 +1,59 @@
+name: Verify Remote Repository
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  verify-remote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify remote URL
+        run: |
+          REMOTE_URL=$(git config --get remote.origin.url)
+          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
+
+          # Remove credentials from URL for comparison
+          CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|')
+
+          echo "Remote URL: $CLEAN_URL"
+          echo "Expected URL: $EXPECTED_URL"
+
+          if [[ "$CLEAN_URL" != "$EXPECTED_URL" ]]; then
+            echo "❌ ERROR: Remote repository is not the correct one!"
+            echo "Expected: $EXPECTED_URL"
+            echo "Got: $CLEAN_URL"
+            exit 1
+          fi
+
+          echo "✅ Remote repository verified: nbruenin/MatchyMatch"
+
+      - name: Verify no fork pushes
+        run: |
+          if [ "${{ github.event.repository.fork }}" = "true" ]; then
+            echo "❌ ERROR: This repository appears to be a fork!"
+            echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
+            exit 1
+          fi
+          echo "✅ Repository is not a fork"
+
+      - name: Verify repository owner
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          EXPECTED_OWNER="nbruenin"
+
+          if [[ "$OWNER" != "$EXPECTED_OWNER" ]]; then
+            echo "❌ ERROR: Repository owner is incorrect!"
+            echo "Expected owner: $EXPECTED_OWNER"
+            echo "Got owner: $OWNER"
+            exit 1
+          fi
+
+          echo "✅ Repository owner verified: $OWNER"

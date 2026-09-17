@@ -16,9 +16,9 @@ repository:
   has_downloads: true
   default_branch: main
   allow_squash_merge: true
-  allow_merge_commit: false      # enforce linear history
+  allow_merge_commit: false # enforce linear history
   allow_rebase_merge: true
-  allow_auto_merge: false
+  allow_auto_merge: true # enable auto-merge for Dependabot
   delete_branch_on_merge: true
   enable_automated_security_fixes: true
   enable_vulnerability_alerts: true
@@ -38,12 +38,12 @@ branches:
           users: []
           teams: []
       required_status_checks:
-        strict: true          # branch must be up-to-date before merging
+        strict: true # branch must be up-to-date before merging
         contexts:
           - '🔍 Lint'
           - '🧪 Test'
           - '🏗️ Build'
-          - 'verify-remote'
+          - '🔍 Verify Repository'
       enforce_admins: true
       required_linear_history: true
       allow_force_pushes: false
@@ -93,3 +93,42 @@ labels:
   - name: 'wontfix'
     color: 'ffffff'
     description: This will not be worked on
+  - name: 'stale'
+    color: 'eeeeee'
+    description: This issue or PR has been inactive
+  - name: 'tests'
+    color: '1d76db'
+    description: Related to testing
+  - name: 'components'
+    color: 'fbca04'
+    description: Related to React components
+  - name: 'games'
+    color: 'c5def5'
+    description: Related to game implementations
+  - name: 'data'
+    color: 'bfdadc'
+    description: Related to game data
+  - name: 'config'
+    color: 'ededed'
+    description: Configuration changes
+  - name: 'styles'
+    color: 'fef2c0'
+    description: CSS/styling changes
+  - name: 'hooks'
+    color: 'd4c5f9'
+    description: React hooks
+  - name: 'size/xs'
+    color: '00ff00'
+    description: Extra small PR (< 10 lines)
+  - name: 'size/s'
+    color: '77ff00'
+    description: Small PR (< 100 lines)
+  - name: 'size/m'
+    color: 'ffff00'
+    description: Medium PR (< 500 lines)
+  - name: 'size/l'
+    color: 'ff7700'
+    description: Large PR (< 1000 lines)
+  - name: 'size/xl'
+    color: 'ff0000'
+    description: Extra large PR (> 1000 lines)

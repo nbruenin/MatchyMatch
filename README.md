@@ -1,5 +1,10 @@
 # MatchyMatch 🎮
 
+[![CI](https://github.com/nbruenin/MatchyMatch/actions/workflows/ci.yml/badge.svg)](https://github.com/nbruenin/MatchyMatch/actions/workflows/ci.yml)
+[![Security](https://github.com/nbruenin/MatchyMatch/actions/workflows/security.yml/badge.svg)](https://github.com/nbruenin/MatchyMatch/actions/workflows/security.yml)
+[![codecov](https://codecov.io/gh/nbruenin/MatchyMatch/branch/main/graph/badge.svg)](https://codecov.io/gh/nbruenin/MatchyMatch)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A collection of puzzle and word games built with React and Vite.
 
 ## Features
@@ -11,7 +16,7 @@ A collection of puzzle and word games built with React and Vite.
 - 🧪 Comprehensive test suite
 - 🔒 Security-focused development
 - 🛡️ Repository access control
-- ✅ Continuous Integration (CI) ready
+- ✅ Full CI/CD pipeline with GitHub Actions
 
 ## Quick Start
 
@@ -129,17 +134,88 @@ Run tests with:
 npm test
 ```
 
-### Continuous Integration
+## Continuous Integration & Deployment
 
-This repository has GitHub Actions CI configured to automatically:
+This repository has a comprehensive CI/CD pipeline with GitHub Actions:
 
-- 🔍 **Lint** - Check code quality with ESLint
-- 🧪 **Test** - Run the full test suite
-- 🏗️ **Build** - Create production build
+### 🔄 CI Workflows
 
-The CI workflow is ready to be activated. See [CI_SETUP_INSTRUCTIONS.md](CI_SETUP_INSTRUCTIONS.md) for activation steps.
+#### Main CI Pipeline (`ci.yml`)
 
-**CI Status**: The workflow template is prepared in `.github/workflow-templates/ci.yml` and needs to be activated (requires workflow scope token).
+Runs on every push and pull request:
+
+- **🔍 Lint** - ESLint code quality checks
+- **🧪 Test** - Full test suite with Vitest
+- **🏗️ Build** - Production build verification
+
+#### Security Scanning (`security.yml`)
+
+Runs on main branch, PRs, and weekly schedule:
+
+- **📦 npm Audit** - Dependency vulnerability scanning
+- **🔬 CodeQL** - Static code analysis for security issues
+- **🔑 Secret Scan** - TruffleHog secret detection
+- **📋 Dependency Review** - PR dependency change analysis
+
+#### Repository Verification (`verify-remote.yml`)
+
+Runs on every push and PR:
+
+- **🔍 Verify Repository** - Ensures code is pushed to correct repo
+- Prevents accidental pushes to forks
+
+### 🤖 Automation Workflows
+
+#### Auto-merge (`auto-merge.yml`)
+
+Automatically merges Dependabot PRs:
+
+- Auto-approves and merges minor/patch updates
+- Comments on major updates for manual review
+- Requires all CI checks to pass
+
+#### Code Coverage (`coverage.yml`)
+
+Generates and uploads coverage reports:
+
+- Runs tests with coverage
+- Uploads to Codecov
+- Stores coverage artifacts
+
+#### PR Validation (`pr-validation.yml`)
+
+Validates and labels pull requests:
+
+- Validates PR title format (conventional commits)
+- Auto-labels based on changed files
+- Adds size labels (xs/s/m/l/xl)
+
+#### Stale Management (`stale.yml`)
+
+Manages inactive issues and PRs:
+
+- Marks issues stale after 60 days
+- Marks PRs stale after 30 days
+- Auto-closes after warning period
+
+#### Release Automation (`release.yml`)
+
+Automates releases from version tags:
+
+- Generates changelog from PRs
+- Creates GitHub release
+- Uploads build artifacts
+
+### 📊 CI Status
+
+All workflows are active and running. Check the [Actions tab](https://github.com/nbruenin/MatchyMatch/actions) for current status.
+
+### 🔧 Required Secrets
+
+For full functionality, configure these secrets in repository settings:
+
+- `CODECOV_TOKEN` - For code coverage reporting (optional)
+- `GITHUB_TOKEN` - Automatically provided by GitHub
 
 ### Contributing
 
@@ -159,14 +235,16 @@ We take security seriously. For security issues, please see [SECURITY.md](SECURI
 
 - ✅ No dangerous functions (eval, dangerouslySetInnerHTML)
 - ✅ Security headers configured
-- ✅ Regular dependency audits
+- ✅ Regular dependency audits (automated)
 - ✅ Content Security Policy enabled
 - ✅ Input validation
 - ✅ Code review process
 - ✅ Repository access control (prevents pushes to wrong repo)
 - ✅ Pre-commit hooks for code quality
-- ✅ Automated dependency updates
-- ✅ CI/CD pipeline ready
+- ✅ Automated dependency updates (Dependabot)
+- ✅ CodeQL security scanning
+- ✅ Secret scanning with TruffleHog
+- ✅ Dependency review on PRs
 
 ### Repository Access Control
 
@@ -235,7 +313,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - 💡 [Request a feature](https://github.com/nbruenin/MatchyMatch/discussions)
 - 🔒 [Report security issue](SECURITY.md)
 - 🛡️ [Repository access control](/.github/REPOSITORY_ACCESS_CONTROL.md)
-- ✅ [CI Setup Instructions](CI_SETUP_INSTRUCTIONS.md)
+- 🔄 [CI/CD Workflows](https://github.com/nbruenin/MatchyMatch/actions)
 
 ## Acknowledgments
 
@@ -243,6 +321,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - Powered by [Vite](https://vitejs.dev)
 - Styled with [Tailwind CSS](https://tailwindcss.com)
 - Icons from [Lucide React](https://lucide.dev)
+- CI/CD with [GitHub Actions](https://github.com/features/actions)
 
 ---
 

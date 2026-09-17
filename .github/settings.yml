@@ -16,9 +16,9 @@ repository:
   has_downloads: true
   default_branch: main
   allow_squash_merge: true
-  allow_merge_commit: false      # enforce linear history
+  allow_merge_commit: false # enforce linear history
   allow_rebase_merge: true
-  allow_auto_merge: false
+  allow_auto_merge: true # enable auto-merge for PRs
   delete_branch_on_merge: true
   enable_automated_security_fixes: true
   enable_vulnerability_alerts: true
@@ -38,7 +38,7 @@ branches:
           users: []
           teams: []
       required_status_checks:
-        strict: true          # branch must be up-to-date before merging
+        strict: true # branch must be up-to-date before merging
         contexts:
           - '🔍 Lint'
           - '🧪 Test'
@@ -93,3 +93,36 @@ labels:
   - name: 'wontfix'
     color: 'ffffff'
     description: This will not be worked on
+  - name: 'stale'
+    color: 'eeeeee'
+    description: This issue or PR has been inactive
+  - name: 'size/xs'
+    color: '00ff00'
+    description: Extra small PR (< 10 lines)
+  - name: 'size/s'
+    color: '77ff00'
+    description: Small PR (< 100 lines)
+  - name: 'size/m'
+    color: 'ffff00'
+    description: Medium PR (< 500 lines)
+  - name: 'size/l'
+    color: 'ff7700'
+    description: Large PR (< 1000 lines)
+  - name: 'size/xl'
+    color: 'ff0000'
+    description: Extra large PR (> 1000 lines)
+  - name: 'component'
+    color: '1d76db'
+    description: Related to React components
+  - name: 'data'
+    color: 'fbca04'
+    description: Related to game data
+  - name: 'test'
+    color: '0e8a16'
+    description: Related to tests
+  - name: 'build'
+    color: '5319e7'
+    description: Related to build process
+  - name: 'config'
+    color: 'c5def5'
+    description: Configuration changes

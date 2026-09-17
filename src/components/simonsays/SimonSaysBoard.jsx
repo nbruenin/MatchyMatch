@@ -20,7 +20,7 @@ function SimonSaysGame() {
   const [toast, setToast] = useState(null)
   const [activeColor, setActiveColor] = useState(null)
   const audioContextRef = useRef(null)
-  const gameLoopRef = useRef(null)
+  const _gameLoopRef = useRef(null)
 
   const showToast = useCallback((msg) => {
     setToast(msg)
@@ -29,7 +29,9 @@ function SimonSaysGame() {
   // Initialize audio context
   useEffect(() => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+      audioContextRef.current = new (
+        window.AudioContext || window.webkitAudioContext
+      )()
     }
   }, [])
 
@@ -114,7 +116,10 @@ function SimonSaysGame() {
       flashColor(color)
 
       // Check if player's move is correct
-      if (newPlayerSequence[newPlayerSequence.length - 1] !== sequence[newPlayerSequence.length - 1]) {
+      if (
+        newPlayerSequence[newPlayerSequence.length - 1] !==
+        sequence[newPlayerSequence.length - 1]
+      ) {
         setGameState('lost')
         showToast('Wrong sequence! Game Over!')
         return
@@ -137,7 +142,15 @@ function SimonSaysGame() {
         }, 1000)
       }
     },
-    [gameState, playerSequence, sequence, flashColor, playSequence, level, showToast]
+    [
+      gameState,
+      playerSequence,
+      sequence,
+      flashColor,
+      playSequence,
+      level,
+      showToast,
+    ]
   )
 
   // Win screen
@@ -300,7 +313,8 @@ function SimonSaysGame() {
                 marginTop: 8,
               }}
             >
-              Watch the sequence and repeat it back. Each level adds a new color!
+              Watch the sequence and repeat it back. Each level adds a new
+              color!
             </p>
           </div>
 

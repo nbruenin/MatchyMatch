@@ -22,7 +22,7 @@ jobs:
 
           # Remove credentials from URL for comparison
           CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|')
-          
+
           # Normalize URLs by removing trailing .git if present
           CLEAN_URL=$(echo "$CLEAN_URL" | sed 's|\.git$||')
           EXPECTED_URL_NORMALIZED=$(echo "$EXPECTED_URL" | sed 's|\.git$||')
@@ -38,15 +38,6 @@ jobs:
           fi
 
           echo "✅ Remote repository verified: nbruenin/MatchyMatch"
-
-      - name: Verify no fork pushes
-        run: |
-          if [ "${{ github.event.repository.fork }}" = "true" ]; then
-            echo "❌ ERROR: This repository appears to be a fork!"
-            echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
-            exit 1
-          fi
-          echo "✅ Repository is not a fork"
 
       - name: Verify repository owner
         run: |

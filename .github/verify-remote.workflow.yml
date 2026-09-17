@@ -18,21 +18,25 @@ jobs:
       - name: Verify remote URL
         run: |
           REMOTE_URL=$(git config --get remote.origin.url)
-          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
-          
+          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch"
+
           # Remove credentials from URL for comparison
           CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|')
-          
+
+          # Remove .git suffix if present for comparison
+          CLEAN_URL=$(echo "$CLEAN_URL" | sed 's|\.git$||')
+          EXPECTED_URL=$(echo "$EXPECTED_URL" | sed 's|\.git$||')
+
           echo "Remote URL: $CLEAN_URL"
           echo "Expected URL: $EXPECTED_URL"
-          
+
           if [[ "$CLEAN_URL" != "$EXPECTED_URL" ]]; then
             echo "❌ ERROR: Remote repository is not the correct one!"
             echo "Expected: $EXPECTED_URL"
             echo "Got: $CLEAN_URL"
             exit 1
           fi
-          
+
           echo "✅ Remote repository verified: nbruenin/MatchyMatch"
 
       - name: Verify no fork pushes
@@ -43,19 +47,19 @@ jobs:
             echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
             exit 1
           fi
-          
+
           echo "✅ Repository is not a fork"
 
       - name: Verify repository owner
         run: |
           OWNER="${{ github.repository_owner }}"
           EXPECTED_OWNER="nbruenin"
-          
+
           if [[ "$OWNER" != "$EXPECTED_OWNER" ]]; then
             echo "❌ ERROR: Repository owner is incorrect!"
             echo "Expected owner: $EXPECTED_OWNER"
             echo "Got owner: $OWNER"
             exit 1
           fi
-          
+
           echo "✅ Repository owner verified: $OWNER"

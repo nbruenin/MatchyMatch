@@ -77,6 +77,13 @@ const GAMES = [
     color: '#0a84ff',
   },
   {
+    id: 'cardmatch',
+    emoji: '🎴',
+    name: 'Card Match',
+    description: 'Match themed cards with multiple themes',
+    color: '#bf5af2',
+  },
+  {
     id: 'flipflop',
     emoji: '🎯',
     name: 'Flip Flop',

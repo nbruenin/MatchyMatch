@@ -14,6 +14,7 @@ import BreakoutBoard from './components/breakout/BreakoutBoard'
 import SudokuBoard from './components/sudoku/SudokuBoard'
 import TriviaBoard from './components/trivia/TriviaBoard'
 import MemoryBoard from './components/memory/MemoryBoard'
+import CardMatchBoard from './components/cardmatch/CardMatchBoard'
 import FlipFlopBoard from './components/flipflop/FlipFlopBoard'
 import TypeRaceBoard from './components/typerace/TypeRaceBoard'
 import WordSearchBoard from './components/wordsearch/WordSearchBoard'
@@ -109,6 +110,8 @@ function App() {
           <TriviaBoard key={`trivia-${gameKey}`} />
         ) : activeGame === 'memory' ? (
           <MemoryBoard key={`memory-${gameKey}`} />
+        ) : activeGame === 'cardmatch' ? (
+          <CardMatchBoard key={`cardmatch-${gameKey}`} />
         ) : activeGame === 'flipflop' ? (
           <FlipFlopBoard key={`flipflop-${gameKey}`} />
         ) : activeGame === 'typerace' ? (

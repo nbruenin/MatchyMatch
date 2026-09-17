@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import SimonSaysBoard from '../../components/simonsays/SimonSaysBoard'
 
 // Mock AudioContext
@@ -39,8 +39,14 @@ const mockAudioContext = {
 
 beforeEach(() => {
   vi.useFakeTimers()
-  vi.stubGlobal('AudioContext', vi.fn(() => mockAudioContext))
-  vi.stubGlobal('webkitAudioContext', vi.fn(() => mockAudioContext))
+  vi.stubGlobal(
+    'AudioContext',
+    vi.fn(() => mockAudioContext)
+  )
+  vi.stubGlobal(
+    'webkitAudioContext',
+    vi.fn(() => mockAudioContext)
+  )
 })
 
 afterEach(() => {
@@ -62,7 +68,9 @@ describe('SimonSays – Unit: initial render (ready state)', () => {
 
   it('shows Start Game button', () => {
     render(<SimonSaysBoard />)
-    expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Start Game/i })
+    ).toBeInTheDocument()
   })
 
   it('shows description text on ready screen', () => {
@@ -116,17 +124,24 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
     // Advance timers to complete Simon's turn
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // Find color buttons (they're plain divs/buttons without text in playing state)
-      const allBtns = screen.queryAllByRole('button')
-      // If we're in player-turn, click a wrong sequence
-      if (allBtns.length > 0) {
-        // Click all 4 color buttons rapidly to force a wrong sequence
-        allBtns.forEach((btn) => {
-          try { fireEvent.click(btn) } catch {}
-        })
-      }
-    }, { timeout: 200 })
+    await waitFor(
+      () => {
+        // Find color buttons (they're plain divs/buttons without text in playing state)
+        const allBtns = screen.queryAllByRole('button')
+        // If we're in player-turn, click a wrong sequence
+        if (allBtns.length > 0) {
+          // Click all 4 color buttons rapidly to force a wrong sequence
+          allBtns.forEach((btn) => {
+            try {
+              fireEvent.click(btn)
+            } catch (error) {
+              // Ignore errors from clicking buttons that may not be clickable
+            }
+          })
+        }
+      },
+      { timeout: 200 }
+    )
 
     vi.runAllTimers()
 
@@ -144,12 +159,15 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
     fireEvent.click(startBtn)
     vi.runAllTimers()
 
-    await waitFor(() => {
-      const tryAgain = screen.queryByRole('button', { name: /Try Again/i })
-      if (tryAgain) {
-        fireEvent.click(tryAgain)
-      }
-    }, { timeout: 200 })
+    await waitFor(
+      () => {
+        const tryAgain = screen.queryByRole('button', { name: /Try Again/i })
+        if (tryAgain) {
+          fireEvent.click(tryAgain)
+        }
+      },
+      { timeout: 200 }
+    )
 
     vi.runAllTimers()
 

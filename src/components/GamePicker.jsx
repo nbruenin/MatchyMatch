@@ -321,6 +321,13 @@ const GAMES = [
     description: 'Match picture cards with various themes',
     color: '#FF6B35',
   },
+  {
+    id: 'colormixer',
+    emoji: '🎨',
+    name: 'Color Mixer',
+    description: 'Match RGB values to create the target color',
+    color: '#bf5af2',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

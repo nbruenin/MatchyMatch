@@ -136,7 +136,10 @@ function GameScreen({
       <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 sm:px-6 pt-6 pb-12">
         <div
           className="spring-pop flex flex-col items-center gap-6 p-8 rounded-3xl w-full max-w-sm mx-auto"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-xl)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-xl)',
+          }}
         >
           {/* Icon */}
           <div
@@ -217,7 +220,10 @@ function GameScreen({
       <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 sm:px-6 pt-6 pb-12">
         <div
           className="spring-pop flex flex-col items-center gap-6 p-8 rounded-3xl w-full max-w-sm mx-auto"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-xl)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-xl)',
+          }}
         >
           {/* Icon */}
           <div
@@ -400,7 +406,8 @@ function GameScreen({
             className="btn-primary px-6"
             style={{
               opacity: !input || attempts >= maxAttempts ? 0.6 : 1,
-              cursor: !input || attempts >= maxAttempts ? 'not-allowed' : 'pointer',
+              cursor:
+                !input || attempts >= maxAttempts ? 'not-allowed' : 'pointer',
             }}
           >
             Guess
@@ -501,7 +508,7 @@ export default function GuessTheNumberBoard() {
   const [gameState, setGameState] = useState('selecting') // 'selecting' | 'playing' | 'won' | 'lost'
   const [toast, setToast] = useState(null)
 
-  const showToast = useCallback((msg) => setToast(msg), [])
+  const _showToast = useCallback((msg) => setToast(msg), [])
 
   const handleSelectDifficulty = (selectedDifficulty) => {
     let max, maxAtts

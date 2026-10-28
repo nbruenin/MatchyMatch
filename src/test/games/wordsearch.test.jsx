@@ -16,7 +16,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import WordSearchBoard from '../../components/wordsearch/WordSearchBoard'
 
 beforeEach(() => {
@@ -51,14 +51,20 @@ describe('WordSearch – Unit: initial render', () => {
 
   it('shows New Game button', () => {
     render(<WordSearchBoard />)
-    expect(screen.getByRole('button', { name: /New Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /New Game/i })
+    ).toBeInTheDocument()
   })
 
   it('renders grid cells (at least one)', () => {
-    render(<WordSearchBoard />)
-    // Grid cells are divs with single uppercase letters
-    const cells = document.querySelectorAll('[onpointerdown]')
-    expect(cells.length).toBeGreaterThan(0)
+    const { container } = render(<WordSearchBoard />)
+    // Grid cells are divs with letters - look for divs with single letter content
+    const allDivs = container.querySelectorAll('div')
+    const letterDivs = Array.from(allDivs).filter((div) => {
+      const text = div.textContent?.trim()
+      return text && text.length === 1 && /^[A-Z]$/.test(text)
+    })
+    expect(letterDivs.length).toBeGreaterThan(0)
   })
 
   it('shows instruction text about dragging', () => {
@@ -69,16 +75,24 @@ describe('WordSearch – Unit: initial render', () => {
   it('shows theme picker buttons', () => {
     render(<WordSearchBoard />)
     // Theme picker has multiple buttons
-    const themeBtns = screen.getAllByRole('button').filter(
-      (b) => b.textContent && b.textContent.length > 2 && !b.textContent.includes('Hint') && !b.textContent.includes('Game')
-    )
+    const themeBtns = screen
+      .getAllByRole('button')
+      .filter(
+        (b) =>
+          b.textContent &&
+          b.textContent.length > 2 &&
+          !b.textContent.includes('Hint') &&
+          !b.textContent.includes('Game')
+      )
     expect(themeBtns.length).toBeGreaterThan(0)
   })
 
   it('shows word list with words to find', () => {
     render(<WordSearchBoard />)
     // Word list shows words as spans
-    const wordSpans = document.querySelectorAll('span[style*="line-through"], span[style*="border-radius: 999"]')
+    const wordSpans = document.querySelectorAll(
+      'span[style*="line-through"], span[style*="border-radius: 999"]'
+    )
     expect(wordSpans.length).toBeGreaterThanOrEqual(0)
     // At minimum the board renders
     expect(document.body).toBeInTheDocument()
@@ -86,52 +100,48 @@ describe('WordSearch – Unit: initial render', () => {
 })
 
 describe('WordSearch – E2E: theme selection', () => {
-  it('clicking a different theme resets the game', async () => {
+  it('clicking a different theme resets the game', () => {
     render(<WordSearchBoard />)
 
     // Find theme buttons (not Hint or New Game)
     const allBtns = screen.getAllByRole('button')
     const themeBtns = allBtns.filter(
-      (b) => !b.textContent?.includes('Hint') && !b.textContent?.includes('Game')
+      (b) =>
+        !b.textContent?.includes('Hint') && !b.textContent?.includes('Game')
     )
 
     if (themeBtns.length > 1) {
       fireEvent.click(themeBtns[1]) // Click second theme
       vi.runAllTimers()
 
-      await waitFor(() => {
-        expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
-      })
+      expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
     }
   })
 })
 
 describe('WordSearch – E2E: hint', () => {
-  it('clicking Hint button shows a toast', async () => {
+  it('clicking Hint button shows a toast', () => {
     render(<WordSearchBoard />)
     const hintBtn = screen.getByRole('button', { name: /Hint/i })
 
     fireEvent.click(hintBtn)
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // Toast should appear with hint text
-      const hintText = screen.queryByText(/Hint:/i) || screen.queryByText(/look for/i)
-      expect(hintText !== null || document.body).toBeTruthy()
-    })
+    // Toast should appear with hint text
+    const hintText =
+      screen.queryByText(/Hint:/i) || screen.queryByText(/look for/i)
+    expect(hintText !== null || document.body).toBeTruthy()
   })
 })
 
 describe('WordSearch – E2E: new game', () => {
-  it('clicking New Game resets progress to 0', async () => {
+  it('clicking New Game resets progress to 0', () => {
     render(<WordSearchBoard />)
     const newGameBtn = screen.getByRole('button', { name: /New Game/i })
 
     fireEvent.click(newGameBtn)
     vi.runAllTimers()
 
-    await waitFor(() => {
-      expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
-    })
+    expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
   })
 })

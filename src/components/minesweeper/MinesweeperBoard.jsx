@@ -9,7 +9,17 @@ const DIFFICULTIES = {
   hard: { rows: 16, cols: 30, mines: 99, label: 'Hard', emoji: '🔴' },
 }
 
-const CELL_COLORS = ['', '#0a84ff', '#34c759', '#ff3b30', '#5e5ce6', '#ff453a', '#30d158', '#000', '#636366']
+const CELL_COLORS = [
+  '',
+  '#0a84ff',
+  '#34c759',
+  '#ff3b30',
+  '#5e5ce6',
+  '#ff453a',
+  '#30d158',
+  '#000',
+  '#636366',
+]
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -46,7 +56,13 @@ function placeMines(grid, rows, cols, mines, safeRow, safeCol) {
         for (let dc = -1; dc <= 1; dc++) {
           const nr = r + dr
           const nc = c + dc
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && newGrid[nr][nc].mine) {
+          if (
+            nr >= 0 &&
+            nr < rows &&
+            nc >= 0 &&
+            nc < cols &&
+            newGrid[nr][nc].mine
+          ) {
             count++
           }
         }
@@ -77,7 +93,13 @@ function floodReveal(grid, rows, cols, startRow, startCol) {
         for (let dc = -1; dc <= 1; dc++) {
           const nr = r + dr
           const nc = c + dc
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited.has(`${nr},${nc}`)) {
+          if (
+            nr >= 0 &&
+            nr < rows &&
+            nc >= 0 &&
+            nc < cols &&
+            !visited.has(`${nr},${nc}`)
+          ) {
             queue.push([nr, nc])
           }
         }
@@ -135,7 +157,13 @@ function DifficultySelector({ onSelect }) {
               <div className="flex items-center gap-3">
                 <span style={{ fontSize: '1.5rem' }}>{diff.emoji}</span>
                 <div>
-                  <p style={{ fontWeight: 700, color: 'var(--label-primary)', fontSize: '1rem' }}>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      color: 'var(--label-primary)',
+                      fontSize: '1rem',
+                    }}
+                  >
                     {diff.label}
                   </p>
                   <p
@@ -172,7 +200,10 @@ function ResultScreen({ won, elapsed, difficulty, onPlayAgain }) {
       {won && <Confetti />}
       <div
         className="spring-pop flex flex-col items-center gap-6 p-8 rounded-3xl w-full max-w-sm mx-auto"
-        style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-xl)' }}
+        style={{
+          background: 'var(--bg-surface)',
+          boxShadow: 'var(--shadow-xl)',
+        }}
       >
         <div
           style={{
@@ -251,7 +282,17 @@ function ResultScreen({ won, elapsed, difficulty, onPlayAgain }) {
 
 // ── Game Grid ──────────────────────────────────────────────────────
 
-function GameGrid({ grid, rows, cols, mines, gameState, elapsed, onReveal, onFlag, onChord }) {
+function GameGrid({
+  grid,
+  rows: _rows,
+  cols,
+  mines,
+  gameState,
+  elapsed,
+  onReveal,
+  onFlag,
+  onChord,
+}) {
   const flagged = countFlagged(grid)
   const remaining = mines - flagged
 
@@ -368,11 +409,13 @@ function GameGrid({ grid, rows, cols, mines, gameState, elapsed, onReveal, onFla
                 background: bg,
                 border: 'none',
                 borderRadius: 4,
-                cursor: isRevealed || gameState !== 'playing' ? 'default' : 'pointer',
+                cursor:
+                  isRevealed || gameState !== 'playing' ? 'default' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: isMine || isFlagged ? cellSize * 0.55 : cellSize * 0.5,
+                fontSize:
+                  isMine || isFlagged ? cellSize * 0.55 : cellSize * 0.5,
                 fontWeight: 800,
                 color: textColor,
                 transition: 'background 0.1s',
@@ -434,7 +477,11 @@ export default function MinesweeperBoard() {
 
         if (current[row][col].mine) {
           const exploded = current.map((r) =>
-            r.map((c) => (c.row === row && c.col === col ? { ...c, revealed: true } : { ...c }))
+            r.map((c) =>
+              c.row === row && c.col === col
+                ? { ...c, revealed: true }
+                : { ...c }
+            )
           )
           setGameState('lost')
           return exploded
@@ -459,7 +506,9 @@ export default function MinesweeperBoard() {
         if (cell.revealed) return prev
         return prev.map((r) =>
           r.map((c) =>
-            c.row === row && c.col === col ? { ...c, flagged: !c.flagged } : { ...c }
+            c.row === row && c.col === col
+              ? { ...c, flagged: !c.flagged }
+              : { ...c }
           )
         )
       })
@@ -500,7 +549,9 @@ export default function MinesweeperBoard() {
                   hitMine = true
                   current = current.map((r) =>
                     r.map((c) =>
-                      c.row === nr && c.col === nc ? { ...c, revealed: true } : { ...c }
+                      c.row === nr && c.col === nc
+                        ? { ...c, revealed: true }
+                        : { ...c }
                     )
                   )
                 } else {

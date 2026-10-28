@@ -328,6 +328,13 @@ const GAMES = [
     description: 'Match RGB values to create the target color',
     color: '#bf5af2',
   },
+  {
+    id: 'hanoi',
+    emoji: '🗼',
+    name: 'Tower of Hanoi',
+    description: 'Move the disk stack to the last peg',
+    color: '#0a84ff',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

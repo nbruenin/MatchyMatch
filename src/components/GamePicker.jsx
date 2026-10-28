@@ -328,6 +328,13 @@ const GAMES = [
     description: 'Match RGB values to create the target color',
     color: '#bf5af2',
   },
+  {
+    id: 'slidepuzzle',
+    emoji: '🧮',
+    name: 'Slide Puzzle',
+    description: 'Slide the tiles into numerical order',
+    color: '#5e5ce6',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -50,6 +50,7 @@ import WhackAMoleBoard from './components/whackamole/WhackAMoleBoard'
 import PatternMatchBoard from './components/patternmatch/PatternMatchBoard'
 import PictureMatchBoard from './components/picturematch/PictureMatchBoard'
 import ColorMixerBoard from './components/colormixer/ColorMixerBoard'
+import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -188,6 +189,8 @@ function App() {
           <PictureMatchBoard key={`picturematch-${gameKey}`} />
         ) : activeGame === 'colormixer' ? (
           <ColorMixerBoard key={`colormixer-${gameKey}`} />
+        ) : activeGame === 'slidepuzzle' ? (
+          <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

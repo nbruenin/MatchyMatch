@@ -342,3 +342,5 @@ By contributing, you agree that your contributions will be licensed under the sa
 **Thank you for contributing to MatchyMatch! 🎮**
 
 When updating documentation, verify that example commands match package.json.
+
+Keep documentation updates focused on the change being made.

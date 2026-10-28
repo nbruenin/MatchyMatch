@@ -1,0 +1,72 @@
+# .github/labeler.yml
+# Automatically label PRs based on changed files
+
+# Documentation
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.md', 'docs/**/*']
+
+# CI/CD
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/workflows/**', '.github/actions/**']
+
+# Dependencies
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          ['package.json', 'package-lock.json', 'npm-shrinkwrap.json']
+
+# Tests
+test:
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            'src/test/**',
+            '**/*.test.js',
+            '**/*.test.jsx',
+            '**/*.spec.js',
+            '**/*.spec.jsx',
+          ]
+
+# Components
+component:
+  - changed-files:
+      - any-glob-to-any-file: ['src/components/**']
+
+# Data
+data:
+  - changed-files:
+      - any-glob-to-any-file: ['src/data/**']
+
+# Styles
+style:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.css', 'src/index.css', 'src/App.css']
+
+# Configuration
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            '*.config.js',
+            '*.config.ts',
+            '.prettierrc',
+            '.editorconfig',
+            'netlify.toml',
+          ]
+
+# Security
+security:
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            'SECURITY.md',
+            '.github/dependabot.yml',
+            '.github/workflows/security.yml',
+          ]
+
+# Build
+build:
+  - changed-files:
+      - any-glob-to-any-file: ['vite.config.js', 'vite.config.ts', 'index.html']

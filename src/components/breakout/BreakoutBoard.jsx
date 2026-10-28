@@ -76,13 +76,16 @@ function BreakoutGame() {
 
     const gameLoop = () => {
       setGameData((prevData) => {
-        let newData = { ...prevData }
+        const newData = { ...prevData }
 
         // Move paddle
         if (keysPressed.current['ArrowLeft'] && newData.paddleX > 0) {
           newData.paddleX -= PADDLE_SPEED
         }
-        if (keysPressed.current['ArrowRight'] && newData.paddleX < CANVAS_WIDTH - PADDLE_WIDTH) {
+        if (
+          keysPressed.current['ArrowRight'] &&
+          newData.paddleX < CANVAS_WIDTH - PADDLE_WIDTH
+        ) {
           newData.paddleX += PADDLE_SPEED
         }
 
@@ -93,7 +96,10 @@ function BreakoutGame() {
         // Ball collision with left/right walls
         if (newData.ballX <= 0 || newData.ballX >= CANVAS_WIDTH - BALL_SIZE) {
           newData.ballVelX = -newData.ballVelX
-          newData.ballX = Math.max(0, Math.min(CANVAS_WIDTH - BALL_SIZE, newData.ballX))
+          newData.ballX = Math.max(
+            0,
+            Math.min(CANVAS_WIDTH - BALL_SIZE, newData.ballX)
+          )
         }
 
         // Ball collision with top
@@ -137,7 +143,12 @@ function BreakoutGame() {
             const overlapTop = newData.ballY + BALL_SIZE - brick.y
             const overlapBottom = brick.y + BRICK_HEIGHT - newData.ballY
 
-            const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom)
+            const minOverlap = Math.min(
+              overlapLeft,
+              overlapRight,
+              overlapTop,
+              overlapBottom
+            )
 
             if (minOverlap === overlapLeft || minOverlap === overlapRight) {
               newData.ballVelX = -newData.ballVelX
@@ -192,8 +203,12 @@ function BreakoutGame() {
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
-    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim()
-    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--label-primary').trim()
+    const bgColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--bg-primary')
+      .trim()
+    const textColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--label-primary')
+      .trim()
 
     // Clear canvas
     ctx.fillStyle = bgColor
@@ -212,15 +227,31 @@ function BreakoutGame() {
 
     // Draw paddle
     ctx.fillStyle = '#5AC8FA'
-    ctx.fillRect(gameData.paddleX, CANVAS_HEIGHT - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
+    ctx.fillRect(
+      gameData.paddleX,
+      CANVAS_HEIGHT - PADDLE_HEIGHT,
+      PADDLE_WIDTH,
+      PADDLE_HEIGHT
+    )
     ctx.strokeStyle = '#0a84ff'
     ctx.lineWidth = 2
-    ctx.strokeRect(gameData.paddleX, CANVAS_HEIGHT - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT)
+    ctx.strokeRect(
+      gameData.paddleX,
+      CANVAS_HEIGHT - PADDLE_HEIGHT,
+      PADDLE_WIDTH,
+      PADDLE_HEIGHT
+    )
 
     // Draw ball
     ctx.fillStyle = '#FFD700'
     ctx.beginPath()
-    ctx.arc(gameData.ballX + BALL_SIZE / 2, gameData.ballY + BALL_SIZE / 2, BALL_SIZE / 2, 0, Math.PI * 2)
+    ctx.arc(
+      gameData.ballX + BALL_SIZE / 2,
+      gameData.ballY + BALL_SIZE / 2,
+      BALL_SIZE / 2,
+      0,
+      Math.PI * 2
+    )
     ctx.fill()
     ctx.strokeStyle = '#FFA500'
     ctx.lineWidth = 1
@@ -403,7 +434,9 @@ function BreakoutGame() {
           maxWidth: 300,
         }}
       >
-        <p>Use <strong>← →</strong> arrow keys to move the paddle</p>
+        <p>
+          Use <strong>← →</strong> arrow keys to move the paddle
+        </p>
         <p>Destroy all bricks to win! You have 3 lives.</p>
       </div>
     </div>

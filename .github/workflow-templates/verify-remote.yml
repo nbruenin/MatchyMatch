@@ -18,10 +18,13 @@ jobs:
       - name: Verify remote URL
         run: |
           REMOTE_URL=$(git config --get remote.origin.url)
-          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch.git"
+          EXPECTED_URL="https://github.com/nbruenin/MatchyMatch"
 
           # Remove credentials from URL for comparison
           CLEAN_URL=$(echo "$REMOTE_URL" | sed 's|https://.*@github.com|https://github.com|')
+
+          # Remove .git suffix if present for comparison
+          CLEAN_URL=$(echo "$CLEAN_URL" | sed 's|\.git$||')
 
           echo "Remote URL: $CLEAN_URL"
           echo "Expected URL: $EXPECTED_URL"
@@ -34,15 +37,6 @@ jobs:
           fi
 
           echo "✅ Remote repository verified: nbruenin/MatchyMatch"
-
-      - name: Verify no fork pushes
-        run: |
-          if [ "${{ github.event.repository.fork }}" = "true" ]; then
-            echo "❌ ERROR: This repository appears to be a fork!"
-            echo "Code should only be pushed to the main repository: nbruenin/MatchyMatch"
-            exit 1
-          fi
-          echo "✅ Repository is not a fork"
 
       - name: Verify repository owner
         run: |
@@ -57,3 +51,17 @@ jobs:
           fi
 
           echo "✅ Repository owner verified: $OWNER"
+
+      - name: Verify repository name
+        run: |
+          REPO="${{ github.event.repository.name }}"
+          EXPECTED_REPO="MatchyMatch"
+
+          if [[ "$REPO" != "$EXPECTED_REPO" ]]; then
+            echo "❌ ERROR: Repository name is incorrect!"
+            echo "Expected repository: $EXPECTED_REPO"
+            echo "Got repository: $REPO"
+            exit 1
+          fi
+
+          echo "✅ Repository name verified: $REPO"

@@ -321,6 +321,13 @@ const GAMES = [
     description: 'Match picture cards with various themes',
     color: '#FF6B35',
   },
+  {
+    id: 'hanoi',
+    emoji: '🗼',
+    name: 'Tower of Hanoi',
+    description: 'Move the disk stack to the far peg in fewest moves',
+    color: '#64D2FF',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

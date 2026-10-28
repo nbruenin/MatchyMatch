@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial project setup with core matching functionality
 - GitHub branch protection and security policies
 - Pre-commit hooks for code quality
@@ -17,16 +18,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Win rate percentage calculation
   - Animated coin flip with visual feedback
   - Reset stats functionality
+- **Tower of Hanoi game** - Move a stack of 3–6 disks to the right peg, following the rules
+  - Move counter with the optimal (2^n − 1) move count shown for comparison
+  - Illegal move feedback and win screen
 
 ### Changed
+
 - Refactored project structure for better maintainability
 
 ### Fixed
+
 - Security vulnerabilities addressed in FINAL_SECURITY_REPORT.md
 
 ## [1.0.0] - 2024-06-04
 
 ### Added
+
 - Initial release of MatchyMatch
 - Core matching algorithm implementation
 - Web-based user interface

@@ -328,6 +328,13 @@ const GAMES = [
     description: 'Slide the tiles into order from 1 to 15',
     color: '#34C759',
   },
+  {
+    id: 'hanoi',
+    emoji: '🗼',
+    name: 'Tower of Hanoi',
+    description: 'Move the disk stack to the last peg in fewest moves',
+    color: '#FF9F0A',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

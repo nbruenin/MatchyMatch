@@ -321,6 +321,13 @@ const GAMES = [
     description: 'Match picture cards with various themes',
     color: '#FF6B35',
   },
+  {
+    id: 'slidingpuzzle',
+    emoji: '🧩',
+    name: 'Sliding Puzzle',
+    description: 'Slide the tiles into order from 1 to 15',
+    color: '#34C759',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

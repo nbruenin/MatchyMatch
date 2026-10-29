@@ -349,6 +349,13 @@ const GAMES = [
     description: 'Find and sink all enemy ships on the grid',
     color: '#0a84ff',
   },
+  {
+    id: 'higherlower',
+    emoji: '↕️',
+    name: 'Higher or Lower',
+    description: 'Guess if the next card is higher or lower',
+    color: '#ff453a',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

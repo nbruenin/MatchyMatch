@@ -1,5 +1,10 @@
 # MatchyMatch 🎮
 
+[![CI](https://github.com/nbruenin/MatchyMatch/actions/workflows/ci.yml/badge.svg)](https://github.com/nbruenin/MatchyMatch/actions/workflows/ci.yml)
+[![Security](https://github.com/nbruenin/MatchyMatch/actions/workflows/security.yml/badge.svg)](https://github.com/nbruenin/MatchyMatch/actions/workflows/security.yml)
+[![codecov](https://codecov.io/gh/nbruenin/MatchyMatch/branch/main/graph/badge.svg)](https://codecov.io/gh/nbruenin/MatchyMatch)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A collection of puzzle and word games built with React and Vite.
 
 ## Features
@@ -11,7 +16,7 @@ A collection of puzzle and word games built with React and Vite.
 - 🧪 Comprehensive test suite
 - 🔒 Security-focused development
 - 🛡️ Repository access control
-- ✅ Continuous Integration (CI) ready
+- ✅ Continuous Integration & Deployment
 
 ## Quick Start
 
@@ -131,15 +136,47 @@ npm test
 
 ### Continuous Integration
 
-This repository has GitHub Actions CI configured to automatically:
+This repository uses GitHub Actions for automated CI/CD:
 
-- 🔍 **Lint** - Check code quality with ESLint
-- 🧪 **Test** - Run the full test suite
-- 🏗️ **Build** - Create production build
+#### 🔄 Main CI Pipeline
 
-The CI workflow is ready to be activated. See [CI_SETUP_INSTRUCTIONS.md](CI_SETUP_INSTRUCTIONS.md) for activation steps.
+Runs on every push and pull request:
 
-**CI Status**: The workflow template is prepared in `.github/workflow-templates/ci.yml` and needs to be activated (requires workflow scope token).
+- **🔍 Lint** - ESLint code quality checks
+- **🧪 Test** - Full Vitest test suite
+- **🏗️ Build** - Production build verification
+- **📊 Coverage** - Code coverage reporting
+
+#### 🔒 Security Scanning
+
+Runs on push to main, PRs, and weekly:
+
+- **📦 npm audit** - Dependency vulnerability scanning
+- **🔬 CodeQL** - Static code analysis
+- **🔑 Secret scanning** - Leaked credentials detection
+- **📋 Dependency review** - License and security checks
+
+#### 🤖 Automation
+
+- **Auto-merge** - Automatic merging of minor/patch Dependabot updates
+- **PR validation** - Semantic PR title enforcement
+- **Auto-labeling** - Automatic PR labeling based on changed files
+- **Stale management** - Automatic cleanup of inactive issues/PRs
+
+#### 🚀 Release Management
+
+- **Automated releases** - Tag-based release creation
+- **Changelog generation** - Automatic release notes
+- **Build artifacts** - Downloadable distribution packages
+
+### CI Status Checks
+
+All pull requests must pass these checks before merging:
+
+- ✅ Lint
+- ✅ Test
+- ✅ Build
+- ✅ Repository verification
 
 ### Contributing
 
@@ -159,14 +196,15 @@ We take security seriously. For security issues, please see [SECURITY.md](SECURI
 
 - ✅ No dangerous functions (eval, dangerouslySetInnerHTML)
 - ✅ Security headers configured
-- ✅ Regular dependency audits
+- ✅ Regular dependency audits (automated weekly)
 - ✅ Content Security Policy enabled
 - ✅ Input validation
 - ✅ Code review process
 - ✅ Repository access control (prevents pushes to wrong repo)
 - ✅ Pre-commit hooks for code quality
-- ✅ Automated dependency updates
-- ✅ CI/CD pipeline ready
+- ✅ Automated dependency updates via Dependabot
+- ✅ CodeQL security scanning
+- ✅ Secret scanning with push protection
 
 ### Repository Access Control
 
@@ -235,7 +273,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 - 💡 [Request a feature](https://github.com/nbruenin/MatchyMatch/discussions)
 - 🔒 [Report security issue](SECURITY.md)
 - 🛡️ [Repository access control](/.github/REPOSITORY_ACCESS_CONTROL.md)
-- ✅ [CI Setup Instructions](CI_SETUP_INSTRUCTIONS.md)
 
 ## Acknowledgments
 

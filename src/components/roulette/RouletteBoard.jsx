@@ -11,8 +11,9 @@ function RouletteWheel({ segments, isSpinning, rotation, onSpinComplete }) {
       // Determine which segment is at the top (pointer position)
       const normalizedRotation = ((rotation % 360) + 360) % 360
       const segmentAngle = 360 / segments.length
-      const pointerAngle = 0 // Top of wheel
-      const selectedIndex = Math.round((360 - normalizedRotation) / segmentAngle) % segments.length
+      const _pointerAngle = 0 // Top of wheel
+      const selectedIndex =
+        Math.round((360 - normalizedRotation) / segmentAngle) % segments.length
 
       if (onSpinComplete) {
         onSpinComplete(selectedIndex)
@@ -47,7 +48,10 @@ function RouletteWheel({ segments, isSpinning, rotation, onSpinComplete }) {
           height: 280,
           borderRadius: '50%',
           background: `conic-gradient(${segments
-            .map((seg, i) => `${seg.color} ${(i / segments.length) * 360}deg ${((i + 1) / segments.length) * 360}deg`)
+            .map(
+              (seg, i) =>
+                `${seg.color} ${(i / segments.length) * 360}deg ${((i + 1) / segments.length) * 360}deg`
+            )
             .join(', ')})`,
           boxShadow: 'var(--shadow-xl), inset 0 0 20px rgba(0,0,0,0.1)',
           transform: `rotate(${rotation}deg)`,
@@ -65,7 +69,8 @@ function RouletteWheel({ segments, isSpinning, rotation, onSpinComplete }) {
             height: 60,
             borderRadius: '50%',
             background: 'var(--bg-surface)',
-            boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.2)',
+            boxShadow:
+              'inset 0 2px 8px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -79,7 +84,7 @@ function RouletteWheel({ segments, isSpinning, rotation, onSpinComplete }) {
 
         {/* Labels around wheel */}
         {segments.map((seg, i) => {
-          const angle = (i / segments.length) * 360 + (360 / segments.length) / 2
+          const angle = (i / segments.length) * 360 + 360 / segments.length / 2
           const radius = 110
           const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius
           const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius
@@ -177,12 +182,42 @@ function ResultCard({ segment, onPlayAgain }) {
 // ── Main board ────────────────────────────────────────────────────
 
 const WHEEL_SEGMENTS = [
-  { label: 'Win!', emoji: '🏆', color: '#FFD700', description: 'You won the jackpot!' },
-  { label: 'Try Again', emoji: '🔄', color: '#FF6B6B', description: 'Better luck next time!' },
-  { label: 'Bonus', emoji: '⭐', color: '#5AC8FA', description: 'You got a bonus!' },
-  { label: 'Free Spin', emoji: '🎡', color: '#30D158', description: 'Spin one more time!' },
-  { label: 'Mystery', emoji: '❓', color: '#BF5AF2', description: 'Something special awaits!' },
-  { label: 'Lose', emoji: '😅', color: '#FF9F0A', description: 'Oops! Better luck next time!' },
+  {
+    label: 'Win!',
+    emoji: '🏆',
+    color: '#FFD700',
+    description: 'You won the jackpot!',
+  },
+  {
+    label: 'Try Again',
+    emoji: '🔄',
+    color: '#FF6B6B',
+    description: 'Better luck next time!',
+  },
+  {
+    label: 'Bonus',
+    emoji: '⭐',
+    color: '#5AC8FA',
+    description: 'You got a bonus!',
+  },
+  {
+    label: 'Free Spin',
+    emoji: '🎡',
+    color: '#30D158',
+    description: 'Spin one more time!',
+  },
+  {
+    label: 'Mystery',
+    emoji: '❓',
+    color: '#BF5AF2',
+    description: 'Something special awaits!',
+  },
+  {
+    label: 'Lose',
+    emoji: '😅',
+    color: '#FF9F0A',
+    description: 'Oops! Better luck next time!',
+  },
 ]
 
 export default function RouletteBoard() {

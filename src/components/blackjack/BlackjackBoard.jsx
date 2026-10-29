@@ -165,11 +165,7 @@ function HandDisplay({ label, hand, hideSecond = false, total }) {
       </div>
       <div className="flex gap-2 flex-wrap justify-center">
         {hand.map((card, i) => (
-          <PlayingCard
-            key={i}
-            card={card}
-            faceDown={hideSecond && i === 1}
-          />
+          <PlayingCard key={i} card={card} faceDown={hideSecond && i === 1} />
         ))}
       </div>
     </div>
@@ -222,8 +218,7 @@ function ChipSelector({ balance, currentBet, onAddChip, onClearBet }) {
               cursor: 'pointer',
               boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
               transition: 'transform 0.12s ease, opacity 0.15s',
-              opacity:
-                balance < val || currentBet + val > balance ? 0.35 : 1,
+              opacity: balance < val || currentBet + val > balance ? 0.35 : 1,
             }}
           >
             ${val}
@@ -356,7 +351,7 @@ export default function BlackjackBoard() {
       return
     }
 
-    let d = deck.length < 15 ? shuffle(buildDeck()) : [...deck]
+    const d = deck.length < 15 ? shuffle(buildDeck()) : [...deck]
 
     const p = [d.pop(), d.pop()]
     const dealer = [d.pop(), d.pop()]
@@ -385,7 +380,7 @@ export default function BlackjackBoard() {
 
   // ── Hit ───────────────────────────────────────────────────────────
   const handleHit = useCallback(() => {
-    let d = [...deck]
+    const d = [...deck]
     const newCard = d.pop()
     const newHand = [...playerHand, newCard]
     setDeck(d)
@@ -401,8 +396,8 @@ export default function BlackjackBoard() {
 
   // ── Stand (dealer plays) ──────────────────────────────────────────
   const handleStand = useCallback(() => {
-    let d = [...deck]
-    let dHand = [...dealerHand]
+    const d = [...deck]
+    const dHand = [...dealerHand]
 
     while (handTotal(dHand) < 17) {
       dHand.push(d.pop())
@@ -440,13 +435,13 @@ export default function BlackjackBoard() {
   // ── Double Down ───────────────────────────────────────────────────
   const handleDouble = useCallback(() => {
     if (balance < bet) {
-      showToast("Not enough chips to double!")
+      showToast('Not enough chips to double!')
       return
     }
     const doubleBet = bet * 2
     setBet(doubleBet)
 
-    let d = [...deck]
+    const d = [...deck]
     const newCard = d.pop()
     const newHand = [...playerHand, newCard]
     setDeck(d)
@@ -460,7 +455,7 @@ export default function BlackjackBoard() {
       return
     }
 
-    let dHand = [...dealerHand]
+    const dHand = [...dealerHand]
     while (handTotal(dHand) < 17) {
       dHand.push(d.pop())
     }
@@ -526,7 +521,10 @@ export default function BlackjackBoard() {
       <div className="flex flex-col items-center gap-6 w-full max-w-sm mx-auto px-4 pt-6 pb-12">
         <div
           className="spring-pop flex flex-col items-center gap-6 p-8 rounded-3xl w-full"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-xl)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-xl)',
+          }}
         >
           <div
             style={{
@@ -576,7 +574,10 @@ export default function BlackjackBoard() {
       {/* Balance bar */}
       <div
         className="w-full flex items-center justify-between px-5 py-3 rounded-2xl"
-        style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-sm)' }}
+        style={{
+          background: 'var(--bg-surface)',
+          boxShadow: 'var(--shadow-sm)',
+        }}
       >
         <div className="flex flex-col">
           <span
@@ -630,13 +631,18 @@ export default function BlackjackBoard() {
       {dealerHand.length > 0 && (
         <div
           className="w-full flex flex-col items-center gap-3 rounded-3xl py-5 px-4"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-md)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-md)',
+          }}
         >
           <HandDisplay
             label="Dealer"
             hand={dealerHand}
             hideSecond={phase === 'playing'}
-            total={phase === 'playing' ? cardValue(dealerHand[0].rank) : dealerTotal}
+            total={
+              phase === 'playing' ? cardValue(dealerHand[0].rank) : dealerTotal
+            }
           />
         </div>
       )}
@@ -655,7 +661,10 @@ export default function BlackjackBoard() {
       {playerHand.length > 0 && (
         <div
           className="w-full flex flex-col items-center gap-3 rounded-3xl py-5 px-4"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-md)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-md)',
+          }}
         >
           <HandDisplay
             label="You"
@@ -670,7 +679,10 @@ export default function BlackjackBoard() {
       {phase === 'betting' && (
         <div
           className="w-full flex flex-col items-center gap-4 rounded-3xl py-5 px-4"
-          style={{ background: 'var(--bg-surface)', boxShadow: 'var(--shadow-md)' }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-md)',
+          }}
         >
           <p
             style={{
@@ -746,7 +758,8 @@ export default function BlackjackBoard() {
             maxWidth: 280,
           }}
         >
-          Get closer to 21 than the dealer without going over. Blackjack pays 3:2.
+          Get closer to 21 than the dealer without going over. Blackjack pays
+          3:2.
         </p>
       )}
     </div>

@@ -14,7 +14,7 @@
  *  - gameLogic: edge cases
  */
 
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 // ── spellingBeeData ───────────────────────────────────────────────────────────
 
@@ -38,8 +38,16 @@ describe('spellingBeeData – validateWord', () => {
 
   it('returns "bad_letters" when word contains letters not in the puzzle', async () => {
     const { validateWord } = await import('../data/spellingBeeData')
-    expect(validateWord('PLAN', { ...puzzle, center: 'A', outer: ['P', 'L', 'N', 'T', 'E', 'R'] })).toBe('valid')
-    expect(validateWord('PLANS', { ...puzzle, words: ['PLANS'] })).toBe('bad_letters') // S not in puzzle
+    expect(
+      validateWord('PLAN', {
+        ...puzzle,
+        center: 'A',
+        outer: ['P', 'L', 'N', 'T', 'E', 'R'],
+      })
+    ).toBe('valid')
+    expect(validateWord('PLANS', { ...puzzle, words: ['PLANS'] })).toBe(
+      'bad_letters'
+    ) // S not in puzzle
   })
 
   it('returns "not_a_word" for valid letters but not in word list', async () => {
@@ -253,7 +261,8 @@ describe('typeRacePhrases – pickPhrase', () => {
   })
 
   it('excludes the given id when excludeId is provided', async () => {
-    const { pickPhrase, TYPE_RACE_PHRASES } = await import('../data/typeRacePhrases')
+    const { pickPhrase, TYPE_RACE_PHRASES } =
+      await import('../data/typeRacePhrases')
     // Run many times to check exclusion
     const excludeId = TYPE_RACE_PHRASES[0].id
     for (let i = 0; i < 20; i++) {
@@ -325,7 +334,18 @@ describe('wordChainPuzzles – VALID_WORDS', () => {
   it('contains common English words', async () => {
     const { VALID_WORDS } = await import('../data/wordChainPuzzles')
     // Common 4-letter words that should be in any word list
-    const commonWords = ['WORD', 'GAME', 'PLAY', 'LOVE', 'LIFE', 'TIME', 'WORK', 'HAND', 'FIRE', 'COLD']
+    const commonWords = [
+      'WORD',
+      'GAME',
+      'PLAY',
+      'LOVE',
+      'LIFE',
+      'TIME',
+      'WORK',
+      'HAND',
+      'FIRE',
+      'COLD',
+    ]
     const found = commonWords.filter((w) => VALID_WORDS.has(w))
     expect(found.length).toBeGreaterThan(0)
   })
@@ -451,7 +471,8 @@ describe('wordleWords – ALL_VALID_WORDS', () => {
   })
 
   it('ALL_VALID_WORDS contains all WORDLE_ANSWERS', async () => {
-    const { ALL_VALID_WORDS, WORDLE_ANSWERS } = await import('../data/wordleWords')
+    const { ALL_VALID_WORDS, WORDLE_ANSWERS } =
+      await import('../data/wordleWords')
     const validSet = new Set(ALL_VALID_WORDS)
     WORDLE_ANSWERS.forEach((word) => {
       expect(validSet.has(word)).toBe(true)

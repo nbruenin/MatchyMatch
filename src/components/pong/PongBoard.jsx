@@ -55,20 +55,26 @@ function PongGame() {
 
     const gameLoop = () => {
       setGameData((prevData) => {
-        let newData = { ...prevData }
+        const newData = { ...prevData }
 
         // Move player paddle
         if (keysPressed.current['ArrowUp'] && newData.paddleY > 0) {
           newData.paddleY -= PADDLE_SPEED
         }
-        if (keysPressed.current['ArrowDown'] && newData.paddleY < CANVAS_HEIGHT - PADDLE_HEIGHT) {
+        if (
+          keysPressed.current['ArrowDown'] &&
+          newData.paddleY < CANVAS_HEIGHT - PADDLE_HEIGHT
+        ) {
           newData.paddleY += PADDLE_SPEED
         }
 
         // AI paddle movement (simple AI)
         const aiCenter = newData.aiPaddleY + PADDLE_HEIGHT / 2
         const ballCenter = newData.ballY
-        if (aiCenter < ballCenter - 10 && newData.aiPaddleY < CANVAS_HEIGHT - PADDLE_HEIGHT) {
+        if (
+          aiCenter < ballCenter - 10 &&
+          newData.aiPaddleY < CANVAS_HEIGHT - PADDLE_HEIGHT
+        ) {
           newData.aiPaddleY += PADDLE_SPEED * 0.8
         } else if (aiCenter > ballCenter + 10 && newData.aiPaddleY > 0) {
           newData.aiPaddleY -= PADDLE_SPEED * 0.8
@@ -81,7 +87,10 @@ function PongGame() {
         // Ball collision with top/bottom
         if (newData.ballY <= 0 || newData.ballY >= CANVAS_HEIGHT - BALL_SIZE) {
           newData.ballVelY = -newData.ballVelY
-          newData.ballY = Math.max(0, Math.min(CANVAS_HEIGHT - BALL_SIZE, newData.ballY))
+          newData.ballY = Math.max(
+            0,
+            Math.min(CANVAS_HEIGHT - BALL_SIZE, newData.ballY)
+          )
         }
 
         // Ball collision with paddles
@@ -106,7 +115,8 @@ function PongGame() {
         ) {
           newData.ballVelX = -newData.ballVelX
           newData.ballX = CANVAS_WIDTH - PADDLE_WIDTH - BALL_SIZE
-          const hitPos = (newData.ballY - newData.aiPaddleY) / PADDLE_HEIGHT - 0.5
+          const hitPos =
+            (newData.ballY - newData.aiPaddleY) / PADDLE_HEIGHT - 0.5
           newData.ballVelY += hitPos * 3
         }
 
@@ -157,8 +167,12 @@ function PongGame() {
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
-    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim()
-    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--label-primary').trim()
+    const bgColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--bg-primary')
+      .trim()
+    const textColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--label-primary')
+      .trim()
 
     // Clear canvas
     ctx.fillStyle = bgColor
@@ -178,12 +192,23 @@ function PongGame() {
     ctx.fillRect(0, gameData.paddleY, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     ctx.fillStyle = '#FF6B6B'
-    ctx.fillRect(CANVAS_WIDTH - PADDLE_WIDTH, gameData.aiPaddleY, PADDLE_WIDTH, PADDLE_HEIGHT)
+    ctx.fillRect(
+      CANVAS_WIDTH - PADDLE_WIDTH,
+      gameData.aiPaddleY,
+      PADDLE_WIDTH,
+      PADDLE_HEIGHT
+    )
 
     // Draw ball
     ctx.fillStyle = '#FFD700'
     ctx.beginPath()
-    ctx.arc(gameData.ballX + BALL_SIZE / 2, gameData.ballY + BALL_SIZE / 2, BALL_SIZE / 2, 0, Math.PI * 2)
+    ctx.arc(
+      gameData.ballX + BALL_SIZE / 2,
+      gameData.ballY + BALL_SIZE / 2,
+      BALL_SIZE / 2,
+      0,
+      Math.PI * 2
+    )
     ctx.fill()
   }, [gameData])
 
@@ -358,7 +383,9 @@ function PongGame() {
           maxWidth: 300,
         }}
       >
-        <p>Use <strong>↑ ↓</strong> arrow keys to move your paddle</p>
+        <p>
+          Use <strong>↑ ↓</strong> arrow keys to move your paddle
+        </p>
         <p>First to 5 points wins!</p>
       </div>
     </div>

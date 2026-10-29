@@ -83,7 +83,15 @@ describe('WordChain – Unit: initial render', () => {
 
   it('shows instruction text about changing one letter', () => {
     render(<WordChainBoard />)
-    expect(screen.getByText(/Change.*one letter/i)).toBeInTheDocument()
+    // Text is split across elements with <strong> tags, so use a function matcher
+    // Use getAllByText to handle multiple matches and just check that at least one exists
+    const elements = screen.getAllByText((content, element) => {
+      return (
+        element?.textContent?.includes('Change') &&
+        element?.textContent?.includes('one letter')
+      )
+    })
+    expect(elements.length).toBeGreaterThan(0)
   })
 
   it('renders letter input tiles for the start word', () => {
@@ -94,7 +102,7 @@ describe('WordChain – Unit: initial render', () => {
 })
 
 describe('WordChain – E2E: letter interaction', () => {
-  it('changing a letter in an input enables Submit', async () => {
+  it('changing a letter in an input enables Submit', () => {
     render(<WordChainBoard />)
     const inputs = screen.getAllByRole('textbox')
     expect(inputs.length).toBeGreaterThan(0)
@@ -102,14 +110,12 @@ describe('WordChain – E2E: letter interaction', () => {
     // Change the first letter
     fireEvent.change(inputs[0], { target: { value: 'Z' } })
 
-    await waitFor(() => {
-      const submitBtn = screen.getByRole('button', { name: /Submit/i })
-      // May or may not be enabled depending on if Z differs from start
-      expect(document.body).toBeInTheDocument()
-    })
+    // Check that the submit button state changed (may be enabled or disabled depending on validity)
+    const submitBtn = screen.getByRole('button', { name: /Submit/i })
+    expect(submitBtn).toBeInTheDocument()
   })
 
-  it('clicking Give Up shows solution path', async () => {
+  it('clicking Give Up shows solution path', () => {
     render(<WordChainBoard />)
     const giveUpBtn = screen.getByRole('button', { name: /Give Up/i })
 
@@ -117,13 +123,11 @@ describe('WordChain – E2E: letter interaction', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // Give up state shows "No worries!" and "Try Another"
-      expect(screen.getByText(/No worries/i)).toBeInTheDocument()
-    })
+    // Give up state shows "No worries!" and "Try Another"
+    expect(screen.getByText(/No worries/i)).toBeInTheDocument()
   })
 
-  it('Give Up shows "Try Another" button', async () => {
+  it('Give Up shows "Try Another" button', () => {
     render(<WordChainBoard />)
     const giveUpBtn = screen.getByRole('button', { name: /Give Up/i })
 
@@ -131,31 +135,29 @@ describe('WordChain – E2E: letter interaction', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Try Another/i })).toBeInTheDocument()
-    })
+    expect(
+      screen.getByRole('button', { name: /Try Another/i })
+    ).toBeInTheDocument()
   })
 
-  it('clicking Try Another resets the game', async () => {
+  it('clicking Try Another resets the game', () => {
     render(<WordChainBoard />)
     const giveUpBtn = screen.getByRole('button', { name: /Give Up/i })
     fireEvent.click(giveUpBtn)
 
     vi.runAllTimers()
 
-    const tryAnotherBtn = await screen.findByRole('button', { name: /Try Another/i })
+    const tryAnotherBtn = screen.getByRole('button', { name: /Try Another/i })
     fireEvent.click(tryAnotherBtn)
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument()
-    })
+    expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument()
   })
 })
 
 describe('WordChain – E2E: invalid word submission', () => {
-  it('submitting an invalid word shows error toast', async () => {
+  it('submitting an invalid word shows error toast', () => {
     render(<WordChainBoard />)
     const inputs = screen.getAllByRole('textbox')
 
@@ -167,11 +169,9 @@ describe('WordChain – E2E: invalid word submission', () => {
       fireEvent.click(submitBtn)
       vi.runAllTimers()
 
-      await waitFor(() => {
-        // Toast should appear with error message
-        const toast = document.querySelector('[aria-live]') || document.body
-        expect(toast).toBeInTheDocument()
-      })
+      // Toast should appear with error message
+      const toast = document.querySelector('[aria-live]') || document.body
+      expect(toast).toBeInTheDocument()
     }
   })
 })

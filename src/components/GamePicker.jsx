@@ -334,6 +334,8 @@ const GAMES = [
     name: 'Tower of Hanoi',
     description: 'Move the disk stack to the last peg',
     color: '#0a84ff',
+  },
+  {
     id: 'slidepuzzle',
     emoji: '🧮',
     name: 'Slide Puzzle',

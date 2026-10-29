@@ -356,6 +356,13 @@ const GAMES = [
     description: 'Guess if the next card is higher or lower',
     color: '#ff453a',
   },
+  {
+    id: 'tetris',
+    emoji: '🟦',
+    name: 'Tetris',
+    description: 'Stack blocks and clear lines in this classic game',
+    color: '#00f0f0',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

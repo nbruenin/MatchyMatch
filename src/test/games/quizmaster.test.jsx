@@ -47,7 +47,7 @@ describe('QuizMaster – Unit: initial render', () => {
   it('shows "Question 1 of 10" progress label', async () => {
     render(<QuizMasterBoard />)
     // Questions are shuffled in a useEffect — advance timers to let it run
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       expect(screen.getByText(/Question 1 of 10/i)).toBeInTheDocument()
     })
@@ -55,7 +55,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('shows "10%" progress percentage', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       expect(screen.getByText('10%')).toBeInTheDocument()
     })
@@ -63,7 +63,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('renders a category badge', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       // Category is one of: Geography, Science, Literature, History, Art, Math
       const badge = screen.queryByText(
@@ -75,7 +75,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('renders 4 answer option buttons', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       // Each option has a letter badge A, B, C, D
       expect(screen.getByText('A')).toBeInTheDocument()
@@ -87,7 +87,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('shows "Select an answer to continue" hint before answering', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       expect(
         screen.getByText(/Select an answer to continue/i)
@@ -97,7 +97,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('does not show "Next Question" button before answering', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       expect(
         screen.queryByRole('button', { name: /next question/i })
@@ -107,7 +107,7 @@ describe('QuizMaster – Unit: initial render', () => {
 
   it('renders a progress bar element', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       // The progress bar is a div with a gradient background
       const progressBar = document.querySelector(
@@ -126,7 +126,7 @@ describe('QuizMaster – E2E: answering questions', () => {
    * Returns the clicked button element.
    */
   async function clickOption(index) {
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
       expect(screen.getByText('A')).toBeInTheDocument()
     })
@@ -134,16 +134,15 @@ describe('QuizMaster – E2E: answering questions', () => {
     // Find all option buttons (they contain A/B/C/D letter badges)
     const optionBtns = screen
       .getAllByRole('button')
-      .filter((btn) => /^[ABCD]$/.test(btn.querySelector('div')?.textContent ?? ''))
+      .filter((btn) =>
+        /^[ABCD]$/.test(btn.querySelector('div')?.textContent ?? '')
+      )
 
     if (optionBtns.length === 0) {
       // Fallback: get all buttons that are not "Next Question" / "See Results"
       const allBtns = screen
         .getAllByRole('button')
-        .filter(
-          (btn) =>
-            !btn.textContent?.match(/next question|see results/i)
-        )
+        .filter((btn) => !btn.textContent?.match(/next question|see results/i))
       fireEvent.click(allBtns[index] ?? allBtns[0])
       return allBtns[index] ?? allBtns[0]
     }
@@ -156,7 +155,7 @@ describe('QuizMaster – E2E: answering questions', () => {
     render(<QuizMasterBoard />)
     await clickOption(0)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       const nextBtn =
@@ -170,16 +169,13 @@ describe('QuizMaster – E2E: answering questions', () => {
     render(<QuizMasterBoard />)
     await clickOption(0)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       // After answering, all option buttons should be disabled
       const optionBtns = screen
         .getAllByRole('button')
-        .filter(
-          (btn) =>
-            !btn.textContent?.match(/next question|see results/i)
-        )
+        .filter((btn) => !btn.textContent?.match(/next question|see results/i))
       // At least some buttons should be disabled
       const disabledBtns = optionBtns.filter((btn) => btn.disabled)
       expect(disabledBtns.length).toBeGreaterThan(0)
@@ -190,7 +186,7 @@ describe('QuizMaster – E2E: answering questions', () => {
     render(<QuizMasterBoard />)
     await clickOption(0)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(
@@ -203,14 +199,14 @@ describe('QuizMaster – E2E: answering questions', () => {
     render(<QuizMasterBoard />)
     await clickOption(0)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     const nextBtn = await screen.findByRole('button', {
       name: /next question/i,
     })
     fireEvent.click(nextBtn)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText(/Question 2 of 10/i)).toBeInTheDocument()
@@ -221,14 +217,14 @@ describe('QuizMaster – E2E: answering questions', () => {
     render(<QuizMasterBoard />)
     await clickOption(0)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     const nextBtn = await screen.findByRole('button', {
       name: /next question/i,
     })
     fireEvent.click(nextBtn)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText('20%')).toBeInTheDocument()
@@ -241,7 +237,7 @@ describe('QuizMaster – E2E: answering questions', () => {
 describe('QuizMaster – E2E: answer feedback', () => {
   it('answering correctly shows "Correct! ✅" toast', async () => {
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText('A')).toBeInTheDocument()
@@ -261,7 +257,7 @@ describe('QuizMaster – E2E: answer feedback', () => {
 
     fireEvent.click(optionBtns[0])
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       const correct = screen.queryByText(/Correct! ✅/i)
@@ -280,7 +276,7 @@ describe('QuizMaster – E2E: answer feedback', () => {
     // mapping to the known correct answer.
 
     render(<QuizMasterBoard />)
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText('A')).toBeInTheDocument()
@@ -332,7 +328,7 @@ describe('QuizMaster – E2E: answer feedback', () => {
     if (optionBtns[correctIndex]) {
       fireEvent.click(optionBtns[correctIndex])
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText(/Correct! ✅/i)).not.toBeNull()
@@ -348,7 +344,7 @@ describe('QuizMaster – E2E: full game flow', () => {
     render(<QuizMasterBoard />)
 
     for (let i = 0; i < 10; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       // Wait for option buttons to appear
       await waitFor(() => {
@@ -368,7 +364,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       // Click Next Question or See Results
       const nextBtn =
@@ -379,7 +375,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     await waitFor(() => {
@@ -393,7 +389,7 @@ describe('QuizMaster – E2E: full game flow', () => {
     render(<QuizMasterBoard />)
 
     for (let i = 0; i < 10; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -411,7 +407,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn =
         screen.queryByRole('button', { name: /next question/i }) ||
@@ -421,7 +417,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     await waitFor(() => {
@@ -435,7 +431,7 @@ describe('QuizMaster – E2E: full game flow', () => {
     render(<QuizMasterBoard />)
 
     for (let i = 0; i < 10; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -453,7 +449,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn =
         screen.queryByRole('button', { name: /next question/i }) ||
@@ -463,7 +459,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     await waitFor(() => {
@@ -477,7 +473,7 @@ describe('QuizMaster – E2E: full game flow', () => {
 
     // Complete all 10 questions
     for (let i = 0; i < 10; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -495,7 +491,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn =
         screen.queryByRole('button', { name: /next question/i }) ||
@@ -505,7 +501,7 @@ describe('QuizMaster – E2E: full game flow', () => {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     // Click Try Again
@@ -514,7 +510,7 @@ describe('QuizMaster – E2E: full game flow', () => {
     })
     fireEvent.click(tryAgainBtn)
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText(/Question 1 of 10/i)).toBeInTheDocument()
@@ -533,7 +529,7 @@ describe('QuizMaster – Unit: results screen rating labels', () => {
     render(<QuizMasterBoard />)
 
     for (let i = 0; i < 10; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -551,7 +547,7 @@ describe('QuizMaster – Unit: results screen rating labels', () => {
         fireEvent.click(optionBtns[optionIndex] ?? optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn =
         screen.queryByRole('button', { name: /next question/i }) ||
@@ -561,7 +557,7 @@ describe('QuizMaster – Unit: results screen rating labels', () => {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     await waitFor(() => {
@@ -602,7 +598,7 @@ describe('QuizMaster – Unit: last question hint', () => {
 
     // Advance through 9 questions
     for (let i = 0; i < 9; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -620,18 +616,18 @@ describe('QuizMaster – Unit: last question hint', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn = screen.queryByRole('button', { name: /next question/i })
       if (nextBtn) {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     // Now on question 10 — answer it
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText(/Question 10 of 10/i)).toBeInTheDocument()
@@ -649,7 +645,7 @@ describe('QuizMaster – Unit: last question hint', () => {
       fireEvent.click(optionBtns[0])
     }
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(
@@ -663,7 +659,7 @@ describe('QuizMaster – Unit: last question hint', () => {
 
     // Advance through 9 questions
     for (let i = 0; i < 9; i++) {
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       await waitFor(() => {
         expect(screen.queryByText('A')).not.toBeNull()
@@ -681,18 +677,18 @@ describe('QuizMaster – Unit: last question hint', () => {
         fireEvent.click(optionBtns[0])
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
 
       const nextBtn = screen.queryByRole('button', { name: /next question/i })
       if (nextBtn) {
         fireEvent.click(nextBtn)
       }
 
-      act(() => vi.runAllTimers())
+      act(() => vi.runOnlyPendingTimers())
     }
 
     // Answer question 10
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(screen.getByText(/Question 10 of 10/i)).toBeInTheDocument()
@@ -710,7 +706,7 @@ describe('QuizMaster – Unit: last question hint', () => {
       fireEvent.click(optionBtns[0])
     }
 
-    act(() => vi.runAllTimers())
+    act(() => vi.runOnlyPendingTimers())
 
     await waitFor(() => {
       expect(

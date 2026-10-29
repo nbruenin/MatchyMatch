@@ -41,11 +41,23 @@ beforeEach(() => {
   vi.useFakeTimers()
   vi.stubGlobal(
     'AudioContext',
-    vi.fn(() => mockAudioContext)
+    vi.fn(
+      class {
+        constructor() {
+          return mockAudioContext
+        }
+      }
+    )
   )
   vi.stubGlobal(
     'webkitAudioContext',
-    vi.fn(() => mockAudioContext)
+    vi.fn(
+      class {
+        constructor() {
+          return mockAudioContext
+        }
+      }
+    )
   )
 })
 
@@ -90,7 +102,7 @@ describe('SimonSays – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Either still showing Simon Says title in playing state, or game over
@@ -104,7 +116,7 @@ describe('SimonSays – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Playing screen shows level/score
@@ -122,7 +134,7 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
     fireEvent.click(startBtn)
 
     // Advance timers to complete Simon's turn
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(
       () => {
@@ -143,7 +155,7 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
       { timeout: 200 }
     )
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // After wrong input, game over or still playing
     await waitFor(() => {
@@ -157,7 +169,7 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
     // Force game-over by starting and triggering wrong answer
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(
       () => {
@@ -169,7 +181,7 @@ describe('SimonSays – E2E: wrong answer → game over', () => {
       { timeout: 200 }
     )
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()

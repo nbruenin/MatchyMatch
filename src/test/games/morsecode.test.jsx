@@ -128,7 +128,9 @@ describe('MorseCode – E2E: starting a game', () => {
     fireEvent.click(screen.getByText('Easy'))
 
     await waitFor(() => {
-      expect(screen.getByRole('textbox', { name: /your answer/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('textbox', { name: /your answer/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -137,7 +139,9 @@ describe('MorseCode – E2E: starting a game', () => {
     fireEvent.click(screen.getByText('Easy'))
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /submit/i })
+      ).toBeInTheDocument()
     })
   })
 })
@@ -149,7 +153,9 @@ describe('MorseCode – E2E: reference chart', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole('button', { name: /Toggle Morse code reference chart/i })
+        screen.getByRole('button', {
+          name: /Toggle Morse code reference chart/i,
+        })
       ).toBeInTheDocument()
     })
   })
@@ -160,7 +166,9 @@ describe('MorseCode – E2E: reference chart', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole('button', { name: /Toggle Morse code reference chart/i })
+        screen.getByRole('button', {
+          name: /Toggle Morse code reference chart/i,
+        })
       ).toBeInTheDocument()
     })
 
@@ -180,7 +188,9 @@ describe('MorseCode – E2E: reference chart', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole('button', { name: /Toggle Morse code reference chart/i })
+        screen.getByRole('button', {
+          name: /Toggle Morse code reference chart/i,
+        })
       ).toBeInTheDocument()
     })
 
@@ -202,7 +212,9 @@ describe('MorseCode – E2E: answering questions', () => {
     fireEvent.click(screen.getByText('Easy'))
 
     await waitFor(() => {
-      expect(screen.getByRole('textbox', { name: /your answer/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('textbox', { name: /your answer/i })
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByRole('textbox', { name: /your answer/i })
@@ -220,7 +232,9 @@ describe('MorseCode – E2E: answering questions', () => {
     fireEvent.click(screen.getByText('Easy'))
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /submit/i })
+      ).toBeInTheDocument()
     })
 
     expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
@@ -231,7 +245,9 @@ describe('MorseCode – E2E: answering questions', () => {
     fireEvent.click(screen.getByText('Easy'))
 
     await waitFor(() => {
-      expect(screen.getByRole('textbox', { name: /your answer/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('textbox', { name: /your answer/i })
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByRole('textbox', { name: /your answer/i })
@@ -252,7 +268,7 @@ describe('MorseCode – E2E: timer expiry', () => {
 
     // Advance all timers to force timeout
     act(() => {
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
     })
 
     // After timeout the game either advances or shows results — no crash
@@ -269,13 +285,13 @@ describe('MorseCode – E2E: results & play again', () => {
 
     // Fast-forward all timers to exhaust all rounds via timeout
     act(() => {
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
     })
 
     // Keep advancing until results screen appears
     for (let i = 0; i < 15; i++) {
       act(() => {
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
       })
     }
 

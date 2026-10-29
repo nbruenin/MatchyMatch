@@ -39,9 +39,9 @@ describe('NumberCrunch – Unit: initial render', () => {
 
   it('renders 6 number tiles', () => {
     render(<NumberCrunchBoard />)
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
     // Should have at least 6 initial number tiles
     expect(numberBtns.length).toBeGreaterThanOrEqual(6)
   })
@@ -114,22 +114,22 @@ describe('NumberCrunch – E2E: number operations', () => {
     render(<NumberCrunchBoard />)
 
     const addBtn = screen.getByRole('button', { name: '+' })
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
 
     if (numberBtns.length >= 2) {
       fireEvent.click(addBtn)
       fireEvent.click(numberBtns[0])
       fireEvent.click(numberBtns[1])
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // After operation, a new result tile should appear
       await waitFor(() => {
-        const allNumbers = screen.getAllByRole('button').filter(
-          (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-        )
+        const allNumbers = screen
+          .getAllByRole('button')
+          .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
         // Should have more tiles now (original 6 + result)
         expect(allNumbers.length).toBeGreaterThanOrEqual(7)
       })
@@ -140,9 +140,9 @@ describe('NumberCrunch – E2E: number operations', () => {
     render(<NumberCrunchBoard />)
 
     const divBtn = screen.getByRole('button', { name: '÷' })
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
 
     // Try to divide by a number that might be 0 or not divisible
     if (numberBtns.length >= 2) {
@@ -150,7 +150,7 @@ describe('NumberCrunch – E2E: number operations', () => {
       fireEvent.click(numberBtns[0])
       fireEvent.click(numberBtns[1])
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // If division fails, error toast should appear
       // (This may or may not happen depending on random numbers)
@@ -164,16 +164,16 @@ describe('NumberCrunch – E2E: undo and reset', () => {
     render(<NumberCrunchBoard />)
 
     const addBtn = screen.getByRole('button', { name: '+' })
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
 
     if (numberBtns.length >= 2) {
       fireEvent.click(addBtn)
       fireEvent.click(numberBtns[0])
       fireEvent.click(numberBtns[1])
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       const undoBtn = screen.getByRole('button', { name: /Undo/i })
       await waitFor(() => {
@@ -186,27 +186,27 @@ describe('NumberCrunch – E2E: undo and reset', () => {
     render(<NumberCrunchBoard />)
 
     const addBtn = screen.getByRole('button', { name: '+' })
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
 
     if (numberBtns.length >= 2) {
       fireEvent.click(addBtn)
       fireEvent.click(numberBtns[0])
       fireEvent.click(numberBtns[1])
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       const undoBtn = screen.getByRole('button', { name: /Undo/i })
       fireEvent.click(undoBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // After undo, should be back to 6 tiles
       await waitFor(() => {
-        const allNumbers = screen.getAllByRole('button').filter(
-          (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-        )
+        const allNumbers = screen
+          .getAllByRole('button')
+          .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
         expect(allNumbers.length).toBeLessThanOrEqual(6)
       })
     }
@@ -216,21 +216,21 @@ describe('NumberCrunch – E2E: undo and reset', () => {
     render(<NumberCrunchBoard />)
 
     const addBtn = screen.getByRole('button', { name: '+' })
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
 
     if (numberBtns.length >= 2) {
       fireEvent.click(addBtn)
       fireEvent.click(numberBtns[0])
       fireEvent.click(numberBtns[1])
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       const resetBtn = screen.getByRole('button', { name: /Reset/i })
       fireEvent.click(resetBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // After reset, should be back to initial state
       const undoBtn = screen.getByRole('button', { name: /Undo/i })
@@ -242,9 +242,9 @@ describe('NumberCrunch – E2E: undo and reset', () => {
 describe('NumberCrunch – Unit: puzzle generation', () => {
   it('generates numbers for the puzzle', () => {
     render(<NumberCrunchBoard />)
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-    )
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
     expect(numberBtns.length).toBeGreaterThan(0)
   })
 

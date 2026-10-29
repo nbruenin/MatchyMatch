@@ -96,7 +96,7 @@ describe('App – E2E: game selection', () => {
     const wordleCard = screen.getByText('Wordle').closest('button')
     if (wordleCard) {
       fireEvent.click(wordleCard)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         // Game picker should be gone
@@ -113,7 +113,7 @@ describe('App – E2E: game selection', () => {
     const wordleCard = screen.getByText('Wordle').closest('button')
     if (wordleCard) {
       fireEvent.click(wordleCard)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(
@@ -129,7 +129,7 @@ describe('App – E2E: game selection', () => {
     const wordleCard = screen.getByText('Wordle').closest('button')
     if (wordleCard) {
       fireEvent.click(wordleCard)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         const backBtn = screen.queryByRole('button', {
@@ -138,7 +138,7 @@ describe('App – E2E: game selection', () => {
         if (backBtn) fireEvent.click(backBtn)
       })
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/What are we playing/i)).toBeInTheDocument()

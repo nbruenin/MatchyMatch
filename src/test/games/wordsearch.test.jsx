@@ -112,7 +112,7 @@ describe('WordSearch – E2E: theme selection', () => {
 
     if (themeBtns.length > 1) {
       fireEvent.click(themeBtns[1]) // Click second theme
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
     }
@@ -125,7 +125,7 @@ describe('WordSearch – E2E: hint', () => {
     const hintBtn = screen.getByRole('button', { name: /Hint/i })
 
     fireEvent.click(hintBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // Toast should appear with hint text
     const hintText =
@@ -140,7 +140,7 @@ describe('WordSearch – E2E: new game', () => {
     const newGameBtn = screen.getByRole('button', { name: /New Game/i })
 
     fireEvent.click(newGameBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     expect(screen.getByText(/0 \/ \d+ words found/i)).toBeInTheDocument()
   })

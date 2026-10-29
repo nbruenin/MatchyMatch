@@ -121,7 +121,7 @@ describe('WordChain – E2E: letter interaction', () => {
 
     fireEvent.click(giveUpBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // Give up state shows "No worries!" and "Try Another"
     expect(screen.getByText(/No worries/i)).toBeInTheDocument()
@@ -133,7 +133,7 @@ describe('WordChain – E2E: letter interaction', () => {
 
     fireEvent.click(giveUpBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     expect(
       screen.getByRole('button', { name: /Try Another/i })
@@ -145,12 +145,12 @@ describe('WordChain – E2E: letter interaction', () => {
     const giveUpBtn = screen.getByRole('button', { name: /Give Up/i })
     fireEvent.click(giveUpBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     const tryAnotherBtn = screen.getByRole('button', { name: /Try Another/i })
     fireEvent.click(tryAnotherBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument()
   })
@@ -167,7 +167,7 @@ describe('WordChain – E2E: invalid word submission', () => {
     const submitBtn = screen.getByRole('button', { name: /Submit/i })
     if (!submitBtn.disabled) {
       fireEvent.click(submitBtn)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // Toast should appear with error message
       const toast = document.querySelector('[aria-live]') || document.body

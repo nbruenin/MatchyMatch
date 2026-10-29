@@ -94,7 +94,9 @@ describe('Snake – Unit: initial render', () => {
 
   it('shows Start Game button in idle overlay', () => {
     render(<SnakeBoard />)
-    expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Start Game/i })
+    ).toBeInTheDocument()
   })
 
   it('shows snake emoji in idle overlay', () => {
@@ -114,11 +116,13 @@ describe('Snake – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Idle overlay should be gone
-      expect(screen.queryByText(/Eat apples, grow longer/i)).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(/Eat apples, grow longer/i)
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -127,7 +131,7 @@ describe('Snake – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /Pause/i })).toBeInTheDocument()
@@ -139,10 +143,12 @@ describe('Snake – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Restart/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Restart/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -151,7 +157,7 @@ describe('Snake – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const chillBtn = screen.getByRole('button', { name: /Chill/i })
@@ -164,7 +170,7 @@ describe('Snake – E2E: game start', () => {
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
 
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: '▲' })).toBeInTheDocument()
@@ -180,14 +186,14 @@ describe('Snake – E2E: pause/resume', () => {
     render(<SnakeBoard />)
     const startBtn = screen.getByRole('button', { name: /Start Game/i })
     fireEvent.click(startBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const pauseBtn = screen.queryByRole('button', { name: /Pause/i })
       if (pauseBtn) fireEvent.click(pauseBtn)
     })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const resumeBtn = screen.queryByRole('button', { name: /Resume/i })

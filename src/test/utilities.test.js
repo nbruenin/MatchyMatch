@@ -4,8 +4,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import { useDarkMode } from '../../hooks/useDarkMode'
-import * as gameLogic from '../../utils/gameLogic'
+import { useDarkMode } from '../hooks/useDarkMode'
+import * as gameLogic from '../utils/gameLogic'
 
 // ── useDarkMode Hook Tests ────────────────────────────────────────────────────
 // Note: the hook returns { dark, toggle } and uses 'puzzlr-dark-mode' as the key
@@ -45,8 +45,12 @@ describe('useDarkMode – Unit: hook functionality', () => {
   it('toggles dark mode off when called twice', () => {
     const { result } = renderHook(() => useDarkMode())
 
-    act(() => { result.current.toggle() })
-    act(() => { result.current.toggle() })
+    act(() => {
+      result.current.toggle()
+    })
+    act(() => {
+      result.current.toggle()
+    })
 
     expect(result.current.dark).toBe(false)
   })
@@ -134,84 +138,84 @@ describe('gameLogic – Unit: module exports', () => {
 
 describe('Data – Unit: word lists and puzzles', () => {
   it('anagramWords exports an array', async () => {
-    const { ANAGRAM_WORDS } = await import('../../data/anagramWords')
+    const { ANAGRAM_WORDS } = await import('../data/anagramWords')
     expect(Array.isArray(ANAGRAM_WORDS)).toBe(true)
     expect(ANAGRAM_WORDS.length).toBeGreaterThan(0)
   })
 
   it('hangmanWords exports an array', async () => {
-    const { HANGMAN_WORDS } = await import('../../data/hangmanWords')
+    const { HANGMAN_WORDS } = await import('../data/hangmanWords')
     expect(Array.isArray(HANGMAN_WORDS)).toBe(true)
     expect(HANGMAN_WORDS.length).toBeGreaterThan(0)
   })
 
   it('scrambleWords exports an array', async () => {
-    const { SCRAMBLE_WORDS } = await import('../../data/scrambleWords')
+    const { SCRAMBLE_WORDS } = await import('../data/scrambleWords')
     expect(Array.isArray(SCRAMBLE_WORDS)).toBe(true)
     expect(SCRAMBLE_WORDS.length).toBeGreaterThan(0)
   })
 
   it('wordleWords exports WORDLE_ANSWERS array', async () => {
-    const { WORDLE_ANSWERS } = await import('../../data/wordleWords')
+    const { WORDLE_ANSWERS } = await import('../data/wordleWords')
     expect(Array.isArray(WORDLE_ANSWERS)).toBe(true)
     expect(WORDLE_ANSWERS.length).toBeGreaterThan(0)
   })
 
   it('wordleWords exports ALL_VALID_WORDS array', async () => {
-    const { ALL_VALID_WORDS } = await import('../../data/wordleWords')
+    const { ALL_VALID_WORDS } = await import('../data/wordleWords')
     expect(Array.isArray(ALL_VALID_WORDS)).toBe(true)
     expect(ALL_VALID_WORDS.length).toBeGreaterThan(0)
   })
 
   it('triviaQuestions exports an array', async () => {
-    const { TRIVIA_QUESTIONS } = await import('../../data/triviaQuestions')
+    const { TRIVIA_QUESTIONS } = await import('../data/triviaQuestions')
     expect(Array.isArray(TRIVIA_QUESTIONS)).toBe(true)
     expect(TRIVIA_QUESTIONS.length).toBeGreaterThan(0)
   })
 
   it('mathQuizProblems exports an array', async () => {
-    const { MATH_QUIZ_PROBLEMS } = await import('../../data/mathQuizProblems')
+    const { MATH_QUIZ_PROBLEMS } = await import('../data/mathQuizProblems')
     expect(Array.isArray(MATH_QUIZ_PROBLEMS)).toBe(true)
     expect(MATH_QUIZ_PROBLEMS.length).toBeGreaterThan(0)
   })
 
   it('typeRacePhrases exports an array', async () => {
-    const { TYPE_RACE_PHRASES } = await import('../../data/typeRacePhrases')
+    const { TYPE_RACE_PHRASES } = await import('../data/typeRacePhrases')
     expect(Array.isArray(TYPE_RACE_PHRASES)).toBe(true)
     expect(TYPE_RACE_PHRASES.length).toBeGreaterThan(0)
   })
 
   it('wordChainPuzzles exports an array', async () => {
-    const { WORD_CHAIN_PUZZLES } = await import('../../data/wordChainPuzzles')
+    const { WORD_CHAIN_PUZZLES } = await import('../data/wordChainPuzzles')
     expect(Array.isArray(WORD_CHAIN_PUZZLES)).toBe(true)
     expect(WORD_CHAIN_PUZZLES.length).toBeGreaterThan(0)
   })
 
   it('wordSearchPuzzles exports PUZZLES array', async () => {
-    const { PUZZLES } = await import('../../data/wordSearchPuzzles')
+    const { PUZZLES } = await import('../data/wordSearchPuzzles')
     expect(Array.isArray(PUZZLES)).toBe(true)
     expect(PUZZLES.length).toBeGreaterThan(0)
   })
 
   it('spellingBeeData exports SPELLING_BEE_PUZZLES array', async () => {
-    const { SPELLING_BEE_PUZZLES } = await import('../../data/spellingBeeData')
+    const { SPELLING_BEE_PUZZLES } = await import('../data/spellingBeeData')
     expect(Array.isArray(SPELLING_BEE_PUZZLES)).toBe(true)
     expect(SPELLING_BEE_PUZZLES.length).toBeGreaterThan(0)
   })
 
   it('memoryCards exports an array', async () => {
-    const { MEMORY_CARDS } = await import('../../data/memoryCards')
+    const { MEMORY_CARDS } = await import('../data/memoryCards')
     expect(Array.isArray(MEMORY_CARDS)).toBe(true)
     expect(MEMORY_CARDS.length).toBeGreaterThan(0)
   })
 
   it('game2048Data exports data', async () => {
-    const data = await import('../../data/game2048Data')
+    const data = await import('../data/game2048Data')
     expect(data).toBeDefined()
   })
 
   it('puzzles exports data', async () => {
-    const data = await import('../../data/puzzles')
+    const data = await import('../data/puzzles')
     expect(data).toBeDefined()
   })
 })
@@ -220,7 +224,7 @@ describe('Data – Unit: word lists and puzzles', () => {
 
 describe('Data – Content validation', () => {
   it('anagramWords contains valid word strings', async () => {
-    const { ANAGRAM_WORDS } = await import('../../data/anagramWords')
+    const { ANAGRAM_WORDS } = await import('../data/anagramWords')
     ANAGRAM_WORDS.slice(0, 5).forEach((word) => {
       expect(typeof word).toBe('string')
       expect(word.length).toBeGreaterThan(0)
@@ -228,7 +232,7 @@ describe('Data – Content validation', () => {
   })
 
   it('hangmanWords contains valid word strings', async () => {
-    const { HANGMAN_WORDS } = await import('../../data/hangmanWords')
+    const { HANGMAN_WORDS } = await import('../data/hangmanWords')
     HANGMAN_WORDS.slice(0, 5).forEach((word) => {
       expect(typeof word).toBe('string')
       expect(word.length).toBeGreaterThan(0)
@@ -236,7 +240,7 @@ describe('Data – Content validation', () => {
   })
 
   it('triviaQuestions contains valid question objects', async () => {
-    const { TRIVIA_QUESTIONS } = await import('../../data/triviaQuestions')
+    const { TRIVIA_QUESTIONS } = await import('../data/triviaQuestions')
     TRIVIA_QUESTIONS.slice(0, 5).forEach((question) => {
       expect(question).toHaveProperty('question')
       expect(question).toHaveProperty('choices')
@@ -246,7 +250,7 @@ describe('Data – Content validation', () => {
   })
 
   it('mathQuizProblems contains valid problem objects', async () => {
-    const { MATH_QUIZ_PROBLEMS } = await import('../../data/mathQuizProblems')
+    const { MATH_QUIZ_PROBLEMS } = await import('../data/mathQuizProblems')
     MATH_QUIZ_PROBLEMS.slice(0, 5).forEach((problem) => {
       expect(problem).toHaveProperty('problem')
       expect(problem).toHaveProperty('answer')

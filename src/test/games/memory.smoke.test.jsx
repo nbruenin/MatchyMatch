@@ -57,27 +57,33 @@ describe('Memory Game - E2E Tests', () => {
     it('should handle tile flipping', async () => {
       render(<MemoryBoard />)
       const buttons = screen.getAllByRole('button')
-      
+
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
-        
-        await waitFor(() => {
-          expect(buttons[0]).toBeInTheDocument()
-        }, { timeout: 500 })
+
+        await waitFor(
+          () => {
+            expect(buttons[0]).toBeInTheDocument()
+          },
+          { timeout: 500 }
+        )
       }
     })
 
     it('should process matches', async () => {
       render(<MemoryBoard />)
       const buttons = screen.getAllByRole('button')
-      
+
       if (buttons.length >= 2) {
         fireEvent.click(buttons[0])
         fireEvent.click(buttons[1])
-        
-        await waitFor(() => {
-          expect(buttons[0]).toBeInTheDocument()
-        }, { timeout: 1000 })
+
+        await waitFor(
+          () => {
+            expect(buttons[0]).toBeInTheDocument()
+          },
+          { timeout: 1000 }
+        )
       }
     })
   })

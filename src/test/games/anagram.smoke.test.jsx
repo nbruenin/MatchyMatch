@@ -104,6 +104,7 @@ describe('Anagram Game - E2E Tests', () => {
 
     it(
       'should display game over screen after 5 rounds',
+      { timeout: 15000 },
       async () => {
         render(<AnagramBoard />)
 
@@ -119,8 +120,7 @@ describe('Anagram Game - E2E Tests', () => {
             { timeout: 1000 }
           )
         }
-      },
-      { timeout: 15000 }
+      }
     )
   })
 

@@ -67,32 +67,41 @@ describe('Dice Roller Game - E2E Tests', () => {
     it('should allow rolling dice', async () => {
       render(<DiceRollerBoard />)
       const rollButton = screen.getByText(/Roll Dice/i)
-      
+
       fireEvent.click(rollButton)
-      
+
       // Button should be disabled during roll
-      await waitFor(() => {
-        expect(rollButton).toBeDisabled()
-      }, { timeout: 1000 })
+      await waitFor(
+        () => {
+          expect(rollButton).toBeDisabled()
+        },
+        { timeout: 1000 }
+      )
     })
 
-    it('should complete game after 10 rolls', async () => {
+    it('should complete game after 10 rolls', { timeout: 20000 }, async () => {
       render(<DiceRollerBoard />)
       const rollButton = screen.getByText(/Roll Dice/i)
-      
+
       // Roll 10 times
       for (let i = 0; i < 10; i++) {
         fireEvent.click(rollButton)
-        await waitFor(() => {
-          expect(rollButton).toBeEnabled()
-        }, { timeout: 1000 })
+        await waitFor(
+          () => {
+            expect(rollButton).toBeEnabled()
+          },
+          { timeout: 1000 }
+        )
       }
-      
+
       // Game should show win screen
-      await waitFor(() => {
-        expect(screen.queryByText(/Roll Again/i)).toBeInTheDocument()
-      }, { timeout: 2000 })
-    }, { timeout: 20000 })
+      await waitFor(
+        () => {
+          expect(screen.queryByText(/Roll Again/i)).toBeInTheDocument()
+        },
+        { timeout: 2000 }
+      )
+    })
   })
 
   describe('User Interactions', () => {
@@ -100,7 +109,7 @@ describe('Dice Roller Game - E2E Tests', () => {
       render(<DiceRollerBoard />)
       const newGameButton = screen.getByText(/New Game/i)
       fireEvent.click(newGameButton)
-      
+
       // Game should reset
       expect(screen.getByText(/Roll Dice/i)).toBeInTheDocument()
     })
@@ -108,33 +117,42 @@ describe('Dice Roller Game - E2E Tests', () => {
     it('should update stats after roll', async () => {
       render(<DiceRollerBoard />)
       const rollButton = screen.getByText(/Roll Dice/i)
-      
+
       fireEvent.click(rollButton)
-      
-      await waitFor(() => {
-        // Stats should update
-        expect(screen.getByText('Rolls')).toBeInTheDocument()
-      }, { timeout: 1000 })
+
+      await waitFor(
+        () => {
+          // Stats should update
+          expect(screen.getByText('Rolls')).toBeInTheDocument()
+        },
+        { timeout: 1000 }
+      )
     })
   })
 
   describe('Win Condition', () => {
-    it('should show win screen with stats', async () => {
+    it('should show win screen with stats', { timeout: 20000 }, async () => {
       render(<DiceRollerBoard />)
       const rollButton = screen.getByText(/Roll Dice/i)
-      
+
       // Roll 10 times
       for (let i = 0; i < 10; i++) {
         fireEvent.click(rollButton)
-        await waitFor(() => {
-          expect(rollButton).toBeEnabled()
-        }, { timeout: 1000 })
+        await waitFor(
+          () => {
+            expect(rollButton).toBeEnabled()
+          },
+          { timeout: 1000 }
+        )
       }
-      
+
       // Check for win screen elements
-      await waitFor(() => {
-        expect(screen.queryByText(/Roll Again/i)).toBeInTheDocument()
-      }, { timeout: 2000 })
-    }, { timeout: 20000 })
+      await waitFor(
+        () => {
+          expect(screen.queryByText(/Roll Again/i)).toBeInTheDocument()
+        },
+        { timeout: 2000 }
+      )
+    })
   })
 })

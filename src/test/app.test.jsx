@@ -4,7 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import App from '../../App'
+import App from '../App'
 
 // Mock canvas for Confetti and Snake
 beforeEach(() => {
@@ -100,7 +100,9 @@ describe('App – E2E: game selection', () => {
 
       await waitFor(() => {
         // Game picker should be gone
-        expect(screen.queryByText(/What are we playing/i)).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(/What are we playing/i)
+        ).not.toBeInTheDocument()
       })
     }
   })
@@ -114,7 +116,9 @@ describe('App – E2E: game selection', () => {
       vi.runAllTimers()
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Back to game picker/i })).toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /Back to game picker/i })
+        ).toBeInTheDocument()
       })
     }
   })
@@ -128,7 +132,9 @@ describe('App – E2E: game selection', () => {
       vi.runAllTimers()
 
       await waitFor(() => {
-        const backBtn = screen.queryByRole('button', { name: /Back to game picker/i })
+        const backBtn = screen.queryByRole('button', {
+          name: /Back to game picker/i,
+        })
         if (backBtn) fireEvent.click(backBtn)
       })
 
@@ -144,25 +150,37 @@ describe('App – E2E: game selection', () => {
 describe('App – E2E: dark mode', () => {
   it('has dark mode toggle button', () => {
     render(<App />)
-    const darkModeBtn = screen.getByRole('button', { name: /Switch to (dark|light) mode/i })
+    const darkModeBtn = screen.getByRole('button', {
+      name: /Switch to (dark|light) mode/i,
+    })
     expect(darkModeBtn).toBeInTheDocument()
   })
 
   it('can toggle dark mode', () => {
     render(<App />)
-    const darkModeBtn = screen.getByRole('button', { name: /Switch to dark mode/i })
+    const darkModeBtn = screen.getByRole('button', {
+      name: /Switch to dark mode/i,
+    })
     fireEvent.click(darkModeBtn)
     // After toggle, button should now say "Switch to light mode"
-    expect(screen.getByRole('button', { name: /Switch to light mode/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to light mode/i })
+    ).toBeInTheDocument()
   })
 
   it('toggling dark mode twice returns to light mode', () => {
     render(<App />)
-    const darkModeBtn = screen.getByRole('button', { name: /Switch to dark mode/i })
+    const darkModeBtn = screen.getByRole('button', {
+      name: /Switch to dark mode/i,
+    })
     fireEvent.click(darkModeBtn)
-    const lightModeBtn = screen.getByRole('button', { name: /Switch to light mode/i })
+    const lightModeBtn = screen.getByRole('button', {
+      name: /Switch to light mode/i,
+    })
     fireEvent.click(lightModeBtn)
-    expect(screen.getByRole('button', { name: /Switch to dark mode/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to dark mode/i })
+    ).toBeInTheDocument()
   })
 })
 

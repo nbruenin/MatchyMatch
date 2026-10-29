@@ -4,17 +4,17 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import GameBoard from '../../components/GameBoard'
-import GamePicker from '../../components/GamePicker'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
-import Confetti from '../../components/Confetti'
-import DarkModeToggle from '../../components/DarkModeToggle'
-import ModeToggle from '../../components/ModeToggle'
-import Toast from '../../components/Toast'
-import Tile from '../../components/Tile'
-import LivesDisplay from '../../components/LivesDisplay'
-import RevealedCategory from '../../components/RevealedCategory'
+import GameBoard from '../components/GameBoard'
+import GamePicker from '../components/GamePicker'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import Confetti from '../components/Confetti'
+import DarkModeToggle from '../components/DarkModeToggle'
+import ModeToggle from '../components/ModeToggle'
+import Toast from '../components/Toast'
+import Tile from '../components/Tile'
+import LivesDisplay from '../components/LivesDisplay'
+import RevealedCategory from '../components/RevealedCategory'
 
 // Mock canvas for Confetti
 beforeEach(() => {
@@ -45,11 +45,36 @@ afterEach(() => {
 const mockPuzzle = {
   id: 'test',
   categories: [
-    { id: 'yellow', color: 'yellow', title: 'Things that fly', words: ['BIRD', 'PLANE', 'KITE', 'BEE'] },
-    { id: 'green', color: 'green', title: 'Things that swim', words: ['FISH', 'DUCK', 'SEAL', 'FROG'] },
-    { id: 'blue', color: 'blue', title: 'Things that run', words: ['DOG', 'CAT', 'HORSE', 'DEER'] },
-    { id: 'purple', color: 'purple', title: 'Things that crawl', words: ['WORM', 'SNAIL', 'ANT', 'SLUG'] },
-    { id: 'pink', color: 'pink', title: 'Things that hop', words: ['JUMP', 'RABBIT', 'KANGAROO', 'CRICKET'] },
+    {
+      id: 'yellow',
+      color: 'yellow',
+      title: 'Things that fly',
+      words: ['BIRD', 'PLANE', 'KITE', 'BEE'],
+    },
+    {
+      id: 'green',
+      color: 'green',
+      title: 'Things that swim',
+      words: ['FISH', 'DUCK', 'SEAL', 'FROG'],
+    },
+    {
+      id: 'blue',
+      color: 'blue',
+      title: 'Things that run',
+      words: ['DOG', 'CAT', 'HORSE', 'DEER'],
+    },
+    {
+      id: 'purple',
+      color: 'purple',
+      title: 'Things that crawl',
+      words: ['WORM', 'SNAIL', 'ANT', 'SLUG'],
+    },
+    {
+      id: 'pink',
+      color: 'pink',
+      title: 'Things that hop',
+      words: ['JUMP', 'RABBIT', 'KANGAROO', 'CRICKET'],
+    },
   ],
 }
 
@@ -76,7 +101,9 @@ describe('GameBoard – Unit: initial render', () => {
 
   it('renders Deselect button', () => {
     render(<GameBoard puzzle={mockPuzzle} onNewGame={() => {}} />)
-    expect(screen.getByRole('button', { name: /Deselect/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Deselect/i })
+    ).toBeInTheDocument()
   })
 
   it('Submit button is disabled initially (no tiles selected)', () => {
@@ -228,18 +255,24 @@ describe('Header – Unit: initial render', () => {
 
   it('shows back button when activeGame is set', () => {
     render(<Header activeGame="wordle" onGoHome={() => {}} />)
-    expect(screen.getByRole('button', { name: /Back to game picker/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Back to game picker/i })
+    ).toBeInTheDocument()
   })
 
   it('does not show back button when no activeGame', () => {
     render(<Header />)
-    expect(screen.queryByRole('button', { name: /Back to game picker/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /Back to game picker/i })
+    ).not.toBeInTheDocument()
   })
 
   it('clicking wordmark calls onGoHome', () => {
     const mockGoHome = vi.fn()
     render(<Header onGoHome={mockGoHome} />)
-    const wordmarkBtn = screen.getByRole('button', { name: /Go to game picker/i })
+    const wordmarkBtn = screen.getByRole('button', {
+      name: /Go to game picker/i,
+    })
     fireEvent.click(wordmarkBtn)
     expect(mockGoHome).toHaveBeenCalled()
   })
@@ -296,12 +329,16 @@ describe('DarkModeToggle – Unit: initial render', () => {
 
   it('shows "Switch to dark mode" aria-label when dark=false', () => {
     render(<DarkModeToggle dark={false} />)
-    expect(screen.getByRole('button', { name: /Switch to dark mode/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to dark mode/i })
+    ).toBeInTheDocument()
   })
 
   it('shows "Switch to light mode" aria-label when dark=true', () => {
     render(<DarkModeToggle dark={true} />)
-    expect(screen.getByRole('button', { name: /Switch to light mode/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Switch to light mode/i })
+    ).toBeInTheDocument()
   })
 })
 
@@ -354,7 +391,9 @@ describe('ModeToggle – Unit: initial render', () => {
 
   it('shows Locked badge when disabled', () => {
     render(<ModeToggle disabled={true} />)
-    expect(screen.getByRole('button', { name: /Difficulty locked/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Difficulty locked/i })
+    ).toBeInTheDocument()
   })
 })
 

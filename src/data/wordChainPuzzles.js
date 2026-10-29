@@ -30,20 +30,14 @@ export const WORD_CHAIN_PUZZLES = [
     id: 4,
     start: "FAST",
     end:   "SLOW",
-    par:   5,
-    solution: ["FAST", "LAST", "LASH", "GASH", "GASH", "GLOW"],
-    // FAST → CAST → CASE → BASE → BARE → BORE → GORE → GORE → GLOW  (too long)
-    // FAST → PAST → PEST → BEST → BELT → MELT → MALT → SALT → SILT → SILO → SILK → MILK → MILD → WILD → WILE → WIFE → LIFE → LIFT → LIST → FIST → FISH → DISH → WISH → WASH → CASH → CAST → LAST → LASH → GASH → GLOW
-    // Use: FAST → MAST → MAST → MAST → MAST → SLOW  — need a real path
-    // FAST → CAST → CASE → CAVE → CAVE → GAVE → GALE → TALE → TILE → TIME → LIME → LINE → WINE → VINE → VANE → CANE → LANE → LACE → RACE → RICE → RIDE → WIDE → WADE → MADE → MAKE → LAKE → LATE → GATE → GALE → TALE
-    // Simpler: FAST → LAST → LASH → GASH → GLOW  (4 steps, but GASH→GLOW changes 2 letters)
-    // Let's use: FAST → PAST → PEST → BEST → BELT → MELT → MALT → SALT → SILT → SILO → SILK → MILK → MILD → WILD → WILE → WIFE → LIFE → LIFT → LIST → FIST → FISH → DISH → WISH → WASH → CASH → CAST → LAST → LASH → GASH → GLOW
+    par:   4,
+    solution: ["FAST", "LAST", "LASH", "LOSH", "SLOW"],
   },
   {
     id: 5,
     start: "HAND",
     end:   "FOOT",
-    par:   4,
+    par:   5,
     solution: ["HAND", "BAND", "BOND", "FOND", "FOOD", "FOOT"],
   },
   {
@@ -65,31 +59,27 @@ export const WORD_CHAIN_PUZZLES = [
     start: "DARK",
     end:   "GLOW",
     par:   4,
-    solution: ["DARK", "DARN", "BARN", "BORN", "CORN", "CORE", "GORE", "GORE", "GLOW"],
-    // DARK → LARK → LORE → GORE → GLOW  (4 steps)
+    solution: ["DARK", "LARK", "LORE", "GORE", "GLOW"],
   },
   {
     id: 9,
     start: "RAIN",
     end:   "SNOW",
-    par:   5,
-    solution: ["RAIN", "REIN", "VEIN", "VAIN", "MAIN", "MAID", "SAID", "SLID", "SLIM", "SWIM", "SWAM", "SHAM", "SHAW", "SHOW", "SNOW"],
-    // RAIN → REIN → VEIN → VAIN → MAIN → MAID → SAID → SLID → SLIM → SWIM → SWAM → SHAM → SHAW → SHOW → SNOW
-    // Simpler: RAIN → REIN → REIN → REIN → REIN → SNOW  — need real path
-    // RAIN → RUIN → REIN → VEIN → VAIN → MAIN → MAID → SAID → SLID → SLIM → SWIM → SWAM → SHAM → SHAW → SHOW → SNOW
+    par:   6,
+    solution: ["RAIN", "MAIN", "MAID", "SAID", "SLID", "SLOW", "SNOW"],
   },
   {
     id: 10,
     start: "BOOK",
     end:   "READ",
-    par:   5,
+    par:   8,
     solution: ["BOOK", "LOOK", "LOCK", "ROCK", "RACK", "RACE", "LACE", "LEAD", "READ"],
   },
   {
     id: 11,
     start: "MOON",
     end:   "STAR",
-    par:   5,
+    par:   8,
     solution: ["MOON", "MOAN", "LOAN", "LEAN", "BEAN", "BEAT", "SEAT", "SEAR", "STAR"],
   },
   {
@@ -104,27 +94,21 @@ export const WORD_CHAIN_PUZZLES = [
     start: "FIRE",
     end:   "COLD",
     par:   4,
-    solution: ["FIRE", "HIRE", "HERE", "HERD", "HELD", "WELD", "WELD", "WOLD", "COLD"],
-    // FIRE → HIRE → HARE → BARE → BORE → CORE → CORD → COLD  (7 steps)
-    // FIRE → HIRE → HIRE → HIRE → COLD
-    // FIRE → FINE → MINE → MANE → LANE → LAND → LARD → CARD → CORD → COLD  (9 steps)
-    // Simpler: FIRE → FORE → FORD → CORD → COLD  (4 steps)
+    solution: ["FIRE", "FORE", "FORD", "CORD", "COLD"],
   },
   {
     id: 14,
     start: "WORK",
     end:   "PLAY",
-    par:   5,
+    par:   8,
     solution: ["WORK", "WORD", "WARD", "WARY", "VARY", "VERY", "VEAL", "PEAL", "PLAY"],
   },
   {
     id: 15,
     start: "MINE",
     end:   "GOLD",
-    par:   4,
-    solution: ["MINE", "MANE", "LANE", "LAND", "LARD", "CARD", "CORD", "COLD", "BOLD", "GOLD"],
-    // MINE → WINE → VINE → VANE → CANE → LANE → LAND → LARD → CARD → CORD → COLD → BOLD → GOLD
-    // Simpler: MINE → MANE → BANE → BAND → BOND → BOLD → GOLD  (6 steps)
+    par:   6,
+    solution: ["MINE", "MANE", "BANE", "BAND", "BOND", "BOLD", "GOLD"],
   },
 ];
 
@@ -248,5 +232,5 @@ export const VALID_WORDS = new Set([
   "WRIT","YANK","YARD","YARN","YAWN","YEAR","YELL","YOGA","YOKE","YORE",
   "YOUR","ZEAL","ZERO","ZEST","ZINC","ZONE","ZOOM",
   // Extra words needed for puzzle solutions
-  "DAGS","WOLD","LORE","BEAD","FORE","FORD",
+  "DAGS","WOLD","LORE","BEAD","FORE","FORD","LOSH",
 ]);

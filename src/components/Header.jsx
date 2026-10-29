@@ -84,7 +84,13 @@ export default function Header({ activeGame, onGoHome, dark, onToggleDark }) {
             <rect width="34" height="34" rx="9" ry="9" fill="url(#logo-bg)" />
 
             {/* Shine overlay */}
-            <rect width="34" height="17" rx="0" fill="url(#logo-shine)" />
+            <rect
+              width="34"
+              height="17"
+              rx="0"
+              fill="url(#logo-shine)"
+              clipPath="url(#logo-clip)"
+            />
 
             {/* Top-left tile — solid white (matched) */}
             <rect

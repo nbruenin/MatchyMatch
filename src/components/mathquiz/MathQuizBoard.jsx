@@ -189,6 +189,7 @@ function SummaryRow({ problem, userAnswer, timeTaken, index }) {
           }}
         >
           {index + 1}. {problem.question} = ?
+          {index + 1}. {problem.problem} = ?
         </p>
         {!correct && (
           <p style={{ fontSize: '0.75rem', color: 'var(--label-tertiary)' }}>
@@ -271,6 +272,10 @@ function Game({ problems, onNewGame }) {
     setTimeout(() => setShaking(false), 450)
   }
 
+  // Initialize start time on mount and question change
+  useEffect(() => {
+    startTime.current = Date.now()
+  }, [qIndex])
   // Focus input on mount and question change
   useEffect(() => {
     if (gameState === 'playing' && !answered) {
@@ -278,12 +283,22 @@ function Game({ problems, onNewGame }) {
     }
   }, [qIndex, gameState, answered])
 
+  const handleTimeout = useCallback(() => {
+    const elapsed = (Date.now() - startTime.current) / 1000
+    setAnswered(true)
+    setIsCorrect(false)
+    setRecords((prev) => [...prev, { userAnswer: null, timeTaken: null }])
+    setTotalTime((t) => t + elapsed)
+    triggerShake()
+    showToast("Time's up! ⏰")
+  }, [showToast])
   // Countdown timer
   useEffect(() => {
     if (answered || gameState !== 'playing') return
 
     if (timeLeft <= 0) {
       // Time's up — auto-skip
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleTimeout()
       return
     }
@@ -302,6 +317,7 @@ function Game({ problems, onNewGame }) {
     triggerShake()
     showToast("Time's up! ⏰")
   }, [showToast])
+  }, [timeLeft, answered, gameState, handleTimeout])
 
   const handleSubmit = () => {
     if (answered || input.trim() === '') return
@@ -663,7 +679,7 @@ function Game({ problems, onNewGame }) {
               textAlign: 'center',
             }}
           >
-            {problem.question} = ?
+            {problem.problem} = ?
           </p>
         </div>
 

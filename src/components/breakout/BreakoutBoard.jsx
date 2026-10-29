@@ -206,6 +206,9 @@ function BreakoutGame() {
     const bgColor = getComputedStyle(document.documentElement)
       .getPropertyValue('--bg-primary')
       .trim()
+    const textColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--label-primary')
+      .trim()
 
     // Clear canvas
     ctx.fillStyle = bgColor

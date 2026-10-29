@@ -49,6 +49,12 @@ import BubblePopBoard from './components/bubblepop/BubblePopBoard'
 import WhackAMoleBoard from './components/whackamole/WhackAMoleBoard'
 import PatternMatchBoard from './components/patternmatch/PatternMatchBoard'
 import PictureMatchBoard from './components/picturematch/PictureMatchBoard'
+import ColorMixerBoard from './components/colormixer/ColorMixerBoard'
+import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
+import HanoiBoard from './components/hanoi/HanoiBoard'
+import HanoiBoard from './components/hanoi/HanoiBoard'
+import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
+import BattleshipBoard from './components/battleship/BattleshipBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -185,6 +191,18 @@ function App() {
           <PatternMatchBoard key={`patternmatch-${gameKey}`} />
         ) : activeGame === 'picturematch' ? (
           <PictureMatchBoard key={`picturematch-${gameKey}`} />
+        ) : activeGame === 'colormixer' ? (
+          <ColorMixerBoard key={`colormixer-${gameKey}`} />
+        ) : activeGame === 'slidepuzzle' ? (
+          <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
+        ) : activeGame === 'hanoi' ? (
+          <HanoiBoard key={`hanoi-${gameKey}`} />
+        ) : activeGame === 'hanoi' ? (
+          <HanoiBoard key={`hanoi-${gameKey}`} />
+        ) : activeGame === 'slidepuzzle' ? (
+          <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
+        ) : activeGame === 'battleship' ? (
+          <BattleshipBoard key={`battleship-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

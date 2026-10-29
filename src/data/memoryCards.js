@@ -4,7 +4,7 @@
  * The board duplicates each item to create pairs.
  */
 
-export const CARD_SETS = [
+const CARD_SETS = [
   {
     id: "animals",
     label: "Animals",
@@ -36,6 +36,12 @@ export const CARD_SETS = [
     cards: ["✈️", "🗼", "🗽", "🏯", "🗿", "🎡", "🚂", "⛵"],
   },
 ];
+
+// Export with both names for compatibility
+export { CARD_SETS };
+
+// MEMORY_CARDS is a flat array of all cards from all sets (for test compatibility)
+export const MEMORY_CARDS = CARD_SETS.flatMap(set => set.cards);
 
 /**
  * Build a shuffled deck of card objects from a set.

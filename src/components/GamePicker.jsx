@@ -321,6 +321,34 @@ const GAMES = [
     description: 'Match picture cards with various themes',
     color: '#FF6B35',
   },
+  {
+    id: 'colormixer',
+    emoji: '🎨',
+    name: 'Color Mixer',
+    description: 'Match RGB values to create the target color',
+    color: '#bf5af2',
+  },
+  {
+    id: 'hanoi',
+    emoji: '🗼',
+    name: 'Tower of Hanoi',
+    description: 'Move the disk stack to the last peg',
+    color: '#0a84ff',
+  },
+  {
+    id: 'slidepuzzle',
+    emoji: '🧮',
+    name: 'Slide Puzzle',
+    description: 'Slide the tiles into numerical order',
+    color: '#5e5ce6',
+  },
+  {
+    id: 'battleship',
+    emoji: '🚢',
+    name: 'Battleship',
+    description: 'Find and sink all enemy ships on the grid',
+    color: '#0a84ff',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { clsx } from "clsx";
 import Toast from "../Toast";
 import { ANAGRAM_WORDS } from "../../data/anagramWords";
 
@@ -54,7 +53,7 @@ function calcPoints(timeLeft) {
 
 // ── Letter tile ──────────────────────────────────────────────────────────────
 
-function LetterTile({ letter, index, state, onClick }) {
+function LetterTile({ letter, state, onClick }) {
   // state: 'scrambled' | 'placed' | 'correct' | 'wrong'
   const base = {
     display: "inline-flex",
@@ -559,7 +558,6 @@ function Game({ onNewGame }) {
             <LetterTile
               key={idx}
               letter={slot.letter}
-              index={idx}
               state={
                 revealState === "correct"
                   ? "correct"
@@ -587,7 +585,6 @@ function Game({ onNewGame }) {
           <LetterTile
             key={slot.id}
             letter={slot.used ? "" : slot.letter}
-            index={slot.id}
             state={slot.used ? "placed" : "scrambled"}
             onClick={() => handleScrambledClick(slot.id)}
           />

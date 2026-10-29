@@ -284,3 +284,5 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 ---
 
 **Made with ❤️ by the MatchyMatch team**
+
+don't forget to be awesome today - text added from Arianna's Forge

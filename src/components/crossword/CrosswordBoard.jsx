@@ -528,7 +528,7 @@ function CrosswordGame({ puzzle, onNewGame }) {
         const next = letters.map((row) => [...row])
         next[r][c] = key
         setLetters(next)
-        const solved = updateSolvedClues(next)
+        updateSolvedClues(next)
         if (checkWin(next)) {
           setTimeout(() => setGameState('won'), 200)
           return

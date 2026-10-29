@@ -4,56 +4,11 @@ import { useDarkMode } from './hooks/useDarkMode'
 import Footer from './components/Footer'
 import GamePicker from './components/GamePicker'
 import GameBoard from './components/GameBoard'
-import WordleBoard from './components/wordle/WordleBoard'
-import NumberCrunchBoard from './components/numbercrunch/NumberCrunchBoard'
-import CrosswordBoard from './components/crossword/CrosswordBoard'
-import WordChainBoard from './components/wordchain/WordChainBoard'
-import ScrambleBoard from './components/scramble/ScrambleBoard'
-import AnagramBoard from './components/anagram/AnagramBoard'
-import BreakoutBoard from './components/breakout/BreakoutBoard'
-import SudokuBoard from './components/sudoku/SudokuBoard'
-import TriviaBoard from './components/trivia/TriviaBoard'
-import MemoryBoard from './components/memory/MemoryBoard'
-import CardMatchBoard from './components/cardmatch/CardMatchBoard'
-import FlipFlopBoard from './components/flipflop/FlipFlopBoard'
-import TypeRaceBoard from './components/typerace/TypeRaceBoard'
-import WordSearchBoard from './components/wordsearch/WordSearchBoard'
-import MathQuizBoard from './components/mathquiz/MathQuizBoard'
-import HangmanBoard from './components/hangman/HangmanBoard'
-import SnakeBoard from './components/snake/SnakeBoard'
-import SpellingBeeBoard from './components/spellingbee/SpellingBeeBoard'
-import Game2048Board from './components/game2048/Game2048Board'
-import DiceRollerBoard from './components/diceroller/DiceRollerBoard'
-import FlappyBirdBoard from './components/flappybird/FlappyBirdBoard'
-import QuizMasterBoard from './components/quizmaster/QuizMasterBoard'
-import TicTacToeBoard from './components/tictactoe/TicTacToeBoard'
-import RouletteBoard from './components/roulette/RouletteBoard'
-import PongBoard from './components/pong/PongBoard'
-import SimonSaysBoard from './components/simonsays/SimonSaysBoard'
-import NumberNinjaBoard from './components/numberninja/NumberNinjaBoard'
-import UnoBoard from './components/uno/UnoBoard'
-import MastermindBoard from './components/mastermind/MastermindBoard'
-import RockPaperScissorsBoard from './components/rockpaperscissors/RockPaperScissorsBoard'
-import ColorMatchBoard from './components/colormatch/ColorMatchBoard'
-import GuessTheNumberBoard from './components/guessthenumber/GuessTheNumberBoard'
-import MinesweeperBoard from './components/minesweeper/MinesweeperBoard'
-import BlackjackBoard from './components/blackjack/BlackjackBoard'
-import MorseCodeBoard from './components/morsecode/MorseCodeBoard'
-import LightsOutBoard from './components/lightsout/LightsOutBoard'
-import ReactionTimeBoard from './components/reactiontime/ReactionTimeBoard'
-import ConnectFourBoard from './components/connectfour/ConnectFourBoard'
-import ColorFloodBoard from './components/colorflood/ColorFloodBoard'
-import TypingSpeedBoard from './components/typingspeed/TypingSpeedBoard'
-import CoinFlipBoard from './components/coinflip/CoinFlipBoard'
-import BubblePopBoard from './components/bubblepop/BubblePopBoard'
-import WhackAMoleBoard from './components/whackamole/WhackAMoleBoard'
-import PatternMatchBoard from './components/patternmatch/PatternMatchBoard'
-import PictureMatchBoard from './components/picturematch/PictureMatchBoard'
-import ColorMixerBoard from './components/colormixer/ColorMixerBoard'
-import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
-import HanoiBoard from './components/hanoi/HanoiBoard'
-import BattleshipBoard from './components/battleship/BattleshipBoard'
-import HigherLowerBoard from './components/higherlower/HigherLowerBoard'
+import {
+  GAME_COMPONENTS,
+  GAME_PROPS,
+  DEFAULT_GAME_COMPONENT,
+} from './gameComponents'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -81,6 +36,8 @@ function App() {
     setActiveGame(null)
   }
 
+  const ActiveBoard = GAME_COMPONENTS[activeGame] ?? DEFAULT_GAME_COMPONENT
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header
@@ -99,113 +56,12 @@ function App() {
             puzzle={puzzles[PUZZLE_INDEX]}
             onNewGame={handleNewGame}
           />
-        ) : activeGame === 'wordle' ? (
-          <WordleBoard key={`wordle-${gameKey}`} />
-        ) : activeGame === 'crunch' ? (
-          <NumberCrunchBoard key={`crunch-${gameKey}`} />
-        ) : activeGame === 'cross' ? (
-          <CrosswordBoard key={`cross-${gameKey}`} />
-        ) : activeGame === 'chain' ? (
-          <WordChainBoard key={`chain-${gameKey}`} />
-        ) : activeGame === 'scramble' ? (
-          <ScrambleBoard key={`scramble-${gameKey}`} />
-        ) : activeGame === 'anagram' ? (
-          <AnagramBoard key={`anagram-${gameKey}`} />
-        ) : activeGame === 'breakout' ? (
-          <BreakoutBoard key={`breakout-${gameKey}`} />
-        ) : activeGame === 'trivia' ? (
-          <TriviaBoard key={`trivia-${gameKey}`} />
-        ) : activeGame === 'memory' ? (
-          <MemoryBoard key={`memory-${gameKey}`} />
-        ) : activeGame === 'cardmatch' ? (
-          <CardMatchBoard key={`cardmatch-${gameKey}`} />
-        ) : activeGame === 'flipflop' ? (
-          <FlipFlopBoard key={`flipflop-${gameKey}`} />
-        ) : activeGame === 'typerace' ? (
-          <TypeRaceBoard key={`typerace-${gameKey}`} />
-        ) : activeGame === 'wordsearch' ? (
-          <WordSearchBoard key={`wordsearch-${gameKey}`} />
-        ) : activeGame === 'mathquiz' ? (
-          <MathQuizBoard key={`mathquiz-${gameKey}`} />
-        ) : activeGame === 'hangman' ? (
-          <HangmanBoard key={`hangman-${gameKey}`} />
-        ) : activeGame === 'snake' ? (
-          <SnakeBoard key={`snake-${gameKey}`} dark={dark} />
-        ) : activeGame === 'spellingbee' ? (
-          <SpellingBeeBoard key={`spellingbee-${gameKey}`} />
-        ) : activeGame === '2048' ? (
-          <Game2048Board key={`2048-${gameKey}`} />
-        ) : activeGame === 'diceroller' ? (
-          <DiceRollerBoard key={`diceroller-${gameKey}`} />
-        ) : activeGame === 'flappybird' ? (
-          <FlappyBirdBoard key={`flappybird-${gameKey}`} />
-        ) : activeGame === 'quizmaster' ? (
-          <QuizMasterBoard key={`quizmaster-${gameKey}`} />
-        ) : activeGame === 'tictactoe' ? (
-          <TicTacToeBoard
-            key={`tictactoe-${gameKey}`}
-            onGoHome={handleGoHome}
-          />
-        ) : activeGame === 'roulette' ? (
-          <RouletteBoard key={`roulette-${gameKey}`} />
-        ) : activeGame === 'pong' ? (
-          <PongBoard key={`pong-${gameKey}`} />
-        ) : activeGame === 'simonsays' ? (
-          <SimonSaysBoard key={`simonsays-${gameKey}`} />
-        ) : activeGame === 'numberninja' ? (
-          <NumberNinjaBoard key={`numberninja-${gameKey}`} />
-        ) : activeGame === 'uno' ? (
-          <UnoBoard key={`uno-${gameKey}`} />
-        ) : activeGame === 'mastermind' ? (
-          <MastermindBoard key={`mastermind-${gameKey}`} />
-        ) : activeGame === 'rockpaperscissors' ? (
-          <RockPaperScissorsBoard key={`rockpaperscissors-${gameKey}`} />
-        ) : activeGame === 'colormatch' ? (
-          <ColorMatchBoard key={`colormatch-${gameKey}`} />
-        ) : activeGame === 'guessthenumber' ? (
-          <GuessTheNumberBoard key={`guessthenumber-${gameKey}`} />
-        ) : activeGame === 'minesweeper' ? (
-          <MinesweeperBoard key={`minesweeper-${gameKey}`} />
-        ) : activeGame === 'blackjack' ? (
-          <BlackjackBoard key={`blackjack-${gameKey}`} />
-        ) : activeGame === 'morsecode' ? (
-          <MorseCodeBoard key={`morsecode-${gameKey}`} />
-        ) : activeGame === 'lightsout' ? (
-          <LightsOutBoard key={`lightsout-${gameKey}`} />
-        ) : activeGame === 'reactiontime' ? (
-          <ReactionTimeBoard key={`reactiontime-${gameKey}`} />
-        ) : activeGame === 'connectfour' ? (
-          <ConnectFourBoard key={`connectfour-${gameKey}`} />
-        ) : activeGame === 'colorflood' ? (
-          <ColorFloodBoard key={`colorflood-${gameKey}`} />
-        ) : activeGame === 'typingspeed' ? (
-          <TypingSpeedBoard key={`typingspeed-${gameKey}`} />
-        ) : activeGame === 'coinflip' ? (
-          <CoinFlipBoard key={`coinflip-${gameKey}`} />
-        ) : activeGame === 'bubblepop' ? (
-          <BubblePopBoard key={`bubblepop-${gameKey}`} />
-        ) : activeGame === 'whackamole' ? (
-          <WhackAMoleBoard key={`whackamole-${gameKey}`} />
-        ) : activeGame === 'patternmatch' ? (
-          <PatternMatchBoard key={`patternmatch-${gameKey}`} />
-        ) : activeGame === 'picturematch' ? (
-          <PictureMatchBoard key={`picturematch-${gameKey}`} />
-        ) : activeGame === 'colormixer' ? (
-          <ColorMixerBoard key={`colormixer-${gameKey}`} />
-        ) : activeGame === 'slidepuzzle' ? (
-          <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
-        ) : activeGame === 'hanoi' ? (
-          <HanoiBoard key={`hanoi-${gameKey}`} />
-        ) : activeGame === 'hanoi' ? (
-          <HanoiBoard key={`hanoi-${gameKey}`} />
-        ) : activeGame === 'slidepuzzle' ? (
-          <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
-        ) : activeGame === 'battleship' ? (
-          <BattleshipBoard key={`battleship-${gameKey}`} />
-        ) : activeGame === 'higherlower' ? (
-          <HigherLowerBoard key={`higherlower-${gameKey}`} />
         ) : (
-          <SudokuBoard key={`sudoku-${gameKey}`} />
+          <ActiveBoard
+            key={`${activeGame}-${gameKey}`}
+            {...(GAME_PROPS[activeGame]?.({ dark, onGoHome: handleGoHome }) ??
+              {})}
+          />
         )}
       </main>
       <Footer />

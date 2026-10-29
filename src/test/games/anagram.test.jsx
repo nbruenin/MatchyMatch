@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import AnagramBoard from '../../components/anagram/AnagramBoard'
 
 // Freeze timers so the countdown doesn't fire during tests
@@ -160,7 +160,7 @@ describe('Anagram – E2E: skip & round progression', () => {
 
     // After skip, either still on a round or game-over screen appears
     // Advance timers to let state settle
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       const stillSkip = screen.queryByRole('button', { name: /skip/i })
@@ -176,12 +176,10 @@ describe('Anagram – E2E: skip & round progression', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runOnlyPendingTimers()
-      // Small pause between rounds
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(
@@ -198,18 +196,17 @@ describe('Anagram – E2E: skip & round progression', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runOnlyPendingTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     const playAgainBtn = await screen.findByRole('button', {
       name: /play again/i,
     })
     fireEvent.click(playAgainBtn)
 
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/Round 1\/5/i)).toBeInTheDocument()
@@ -225,11 +222,10 @@ describe('Anagram – E2E: final score screen', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runOnlyPendingTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/Final Score/i)).toBeInTheDocument()
@@ -243,11 +239,10 @@ describe('Anagram – E2E: final score screen', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runOnlyPendingTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runOnlyPendingTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/out of 500/i)).toBeInTheDocument()

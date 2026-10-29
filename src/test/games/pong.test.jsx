@@ -34,9 +34,7 @@ describe('Pong – Unit: initial render', () => {
 
   it('renders a canvas element', () => {
     render(<PongBoard />)
-    const canvas =
-      screen.getByRole('img', { hidden: true })?.closest('canvas') ||
-      document.querySelector('canvas')
+    const canvas = document.querySelector('canvas')
     expect(canvas).toBeInTheDocument()
   })
 

@@ -54,7 +54,9 @@ async function playRounds(n) {
   for (let i = 0; i < n; i++) {
     triggerGreen()
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Click now!/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Click now!/i })
+      ).toBeInTheDocument()
     })
     fireEvent.click(screen.getByRole('button', { name: /Click now!/i }))
     // Small tick so React can process state updates
@@ -77,7 +79,9 @@ describe('ReactionTime – Unit: initial render', () => {
 
   it('shows the subtitle description', () => {
     render(<ReactionTimeBoard />)
-    expect(screen.getByText(/Click the target the moment it turns green/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Click the target the moment it turns green/i)
+    ).toBeInTheDocument()
   })
 
   it('shows the instructions card with the lightning bolt emoji', () => {
@@ -87,12 +91,14 @@ describe('ReactionTime – Unit: initial render', () => {
 
   it('shows the Start Game button', () => {
     render(<ReactionTimeBoard />)
-    expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Start Game/i })
+    ).toBeInTheDocument()
   })
 
   it('does NOT show the round counter before the game starts', () => {
     render(<ReactionTimeBoard />)
-    expect(screen.queryByText(/Round/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Round \d/i)).not.toBeInTheDocument()
   })
 
   it('does NOT show the red waiting area before the game starts', () => {
@@ -143,7 +149,9 @@ describe('ReactionTime – E2E: too-soon penalty', () => {
     render(<ReactionTimeBoard />)
     fireEvent.click(screen.getByRole('button', { name: /Start Game/i }))
 
-    const waitingArea = await screen.findByRole('button', { name: /Waiting area/i })
+    const waitingArea = await screen.findByRole('button', {
+      name: /Waiting area/i,
+    })
     fireEvent.click(waitingArea)
 
     await waitFor(() => {
@@ -155,11 +163,15 @@ describe('ReactionTime – E2E: too-soon penalty', () => {
     render(<ReactionTimeBoard />)
     fireEvent.click(screen.getByRole('button', { name: /Start Game/i }))
 
-    const waitingArea = await screen.findByRole('button', { name: /Waiting area/i })
+    const waitingArea = await screen.findByRole('button', {
+      name: /Waiting area/i,
+    })
     fireEvent.click(waitingArea)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Try Again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Try Again/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -167,10 +179,14 @@ describe('ReactionTime – E2E: too-soon penalty', () => {
     render(<ReactionTimeBoard />)
     fireEvent.click(screen.getByRole('button', { name: /Start Game/i }))
 
-    const waitingArea = await screen.findByRole('button', { name: /Waiting area/i })
+    const waitingArea = await screen.findByRole('button', {
+      name: /Waiting area/i,
+    })
     fireEvent.click(waitingArea)
 
-    const tryAgainBtn = await screen.findByRole('button', { name: /Try Again/i })
+    const tryAgainBtn = await screen.findByRole('button', {
+      name: /Try Again/i,
+    })
     fireEvent.click(tryAgainBtn)
 
     await waitFor(() => {
@@ -191,7 +207,9 @@ describe('ReactionTime – E2E: green target', () => {
     triggerGreen()
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Click now!/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Click now!/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -212,7 +230,9 @@ describe('ReactionTime – E2E: green target', () => {
 
     triggerGreen()
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Click now!/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Click now!/i })
+      ).toBeInTheDocument()
     )
     fireEvent.click(screen.getByRole('button', { name: /Click now!/i }))
     act(() => vi.advanceTimersByTime(10))
@@ -228,7 +248,9 @@ describe('ReactionTime – E2E: green target', () => {
 
     triggerGreen()
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Click now!/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Click now!/i })
+      ).toBeInTheDocument()
     )
     fireEvent.click(screen.getByRole('button', { name: /Click now!/i }))
     act(() => vi.advanceTimersByTime(10))
@@ -295,7 +317,9 @@ describe('ReactionTime – E2E: completing all rounds', () => {
     await playRounds(5)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Play Again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Play Again/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -305,11 +329,15 @@ describe('ReactionTime – E2E: completing all rounds', () => {
 
     await playRounds(5)
 
-    const playAgainBtn = await screen.findByRole('button', { name: /Play Again/i })
+    const playAgainBtn = await screen.findByRole('button', {
+      name: /Play Again/i,
+    })
     fireEvent.click(playAgainBtn)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Start Game/i })
+      ).toBeInTheDocument()
     })
   })
 })
@@ -344,7 +372,8 @@ describe('ReactionTime – Unit: rating labels', () => {
     let callCount = 0
     const BASE = 1_000_000
     vi.spyOn(Date, 'now').mockImplementation(() => {
-      return callCount++ % 2 === 0 ? BASE : BASE + 600
+      // Each call is 600 ms after the previous one, so every reaction is >= 600 ms
+      return BASE + 600 * callCount++
     })
 
     render(<ReactionTimeBoard />)

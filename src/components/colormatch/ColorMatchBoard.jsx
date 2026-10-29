@@ -13,13 +13,17 @@ function ColorTile({ color, isSelected, isMatched, onClick, disabled }) {
         width: 80,
         height: 80,
         borderRadius: 12,
-        border: isSelected ? '4px solid var(--accent)' : '2px solid var(--fill-secondary)',
+        border: isSelected
+          ? '4px solid var(--accent)'
+          : '2px solid var(--fill-secondary)',
         background: color,
         cursor: disabled || isMatched ? 'not-allowed' : 'pointer',
         opacity: isMatched ? 0.3 : 1,
         transform: isSelected ? 'scale(1.1)' : 'scale(1)',
         transition: 'all 0.2s ease',
-        boxShadow: isSelected ? '0 8px 24px rgba(0,122,255,0.4)' : 'var(--shadow-md)',
+        boxShadow: isSelected
+          ? '0 8px 24px rgba(0,122,255,0.4)'
+          : 'var(--shadow-md)',
       }}
     />
   )
@@ -161,18 +165,32 @@ function WinScreen({ matches, streak, onPlayAgain }) {
 
 export default function ColorMatchBoard() {
   const colors = [
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A',
-    '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2',
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A',
-    '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2',
+    '#FF6B6B',
+    '#4ECDC4',
+    '#45B7D1',
+    '#FFA07A',
+    '#98D8C8',
+    '#F7DC6F',
+    '#BB8FCE',
+    '#85C1E2',
+    '#FF6B6B',
+    '#4ECDC4',
+    '#45B7D1',
+    '#FFA07A',
+    '#98D8C8',
+    '#F7DC6F',
+    '#BB8FCE',
+    '#85C1E2',
   ]
 
   const [tiles, setTiles] = useState(
-    colors.sort(() => Math.random() - 0.5).map((color, idx) => ({
-      id: idx,
-      color,
-      isMatched: false,
-    }))
+    colors
+      .sort(() => Math.random() - 0.5)
+      .map((color, idx) => ({
+        id: idx,
+        color,
+        isMatched: false,
+      }))
   )
 
   const [selected, setSelected] = useState([])
@@ -186,7 +204,7 @@ export default function ColorMatchBoard() {
 
   // Check for matches
   useEffect(() => {
-    if (selected.length !== 2 || isChecking) return
+    if (selected.length !== 2) return
 
     setIsChecking(true)
 
@@ -199,7 +217,9 @@ export default function ColorMatchBoard() {
         // Match found!
         setTiles((prev) =>
           prev.map((tile, idx) =>
-            idx === first || idx === second ? { ...tile, isMatched: true } : tile
+            idx === first || idx === second
+              ? { ...tile, isMatched: true }
+              : tile
           )
         )
         setMatches((m) => m + 1)
@@ -223,7 +243,7 @@ export default function ColorMatchBoard() {
     }, 600)
 
     return () => clearTimeout(timer)
-  }, [selected, tiles, matches, isChecking, showToast])
+  }, [selected, tiles, matches, showToast])
 
   const handleTileClick = (idx) => {
     if (isChecking || tiles[idx].isMatched || selected.includes(idx)) return
@@ -252,7 +272,11 @@ export default function ColorMatchBoard() {
   if (gameState === 'won') {
     return (
       <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 sm:px-6 pt-6 pb-12">
-        <WinScreen matches={matches} streak={streak} onPlayAgain={handlePlayAgain} />
+        <WinScreen
+          matches={matches}
+          streak={streak}
+          onPlayAgain={handlePlayAgain}
+        />
       </div>
     )
   }

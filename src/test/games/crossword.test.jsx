@@ -38,8 +38,10 @@ describe('Crossword – Unit: initial render', () => {
     render(<CrosswordBoard />)
     // Each non-black cell has an onClick; count all clickable divs in the grid
     // We can verify by checking that there are multiple cells rendered
-    const container = document.querySelector('[style*="grid-template-columns: repeat(5"]')
-    expect(container).not.toBeNull()
+    // jsdom drops grid-template-columns, so find the grid by display instead
+    const grid = document.querySelector('[style*="display: grid"]')
+    expect(grid).not.toBeNull()
+    expect(grid.children).toHaveLength(25)
   })
 
   it('shows "Across" section heading', () => {
@@ -94,12 +96,16 @@ describe('Crossword – E2E: keyboard input', () => {
     render(<CrosswordBoard />)
 
     // Grab the initial active clue text from the banner
-    const bannerBefore = document.querySelector('[style*="min-height: 52"]')?.textContent
+    const bannerBefore = document.querySelector(
+      '[style*="min-height: 52"]'
+    )?.textContent
 
     fireEvent.keyDown(window, { key: 'Tab' })
 
     await waitFor(() => {
-      const bannerAfter = document.querySelector('[style*="min-height: 52"]')?.textContent
+      const bannerAfter = document.querySelector(
+        '[style*="min-height: 52"]'
+      )?.textContent
       // The banner text may or may not change (depends on puzzle), but no crash
       expect(document.body).toBeInTheDocument()
     })
@@ -156,15 +162,27 @@ describe('Crossword – E2E: New Puzzle', () => {
     // Puzzle 0 row 0 = S,T,A,R,S; row 2 = A,R,O,M,A; row 4 = E,A,E,S,T
     // We type all correct letters in order via keydown
     const solution = [
-      'S','T','A','R','S', // row 0
-      'H',                  // row 1 col 0
-      'A',                  // row 1 col 2 (skip black)
-      'E',                  // row 1 col 4
-      'A','R','O','M','A', // row 2
-      'R',                  // row 3 col 0
-      'N',                  // row 3 col 2
-      'L',                  // row 3 col 4
-      'E','A','E','S','T', // row 4
+      'S',
+      'T',
+      'A',
+      'R',
+      'S', // row 0
+      'H', // row 1 col 0
+      'A', // row 1 col 2 (skip black)
+      'E', // row 1 col 4
+      'A',
+      'R',
+      'O',
+      'M',
+      'A', // row 2
+      'R', // row 3 col 0
+      'N', // row 3 col 2
+      'L', // row 3 col 4
+      'E',
+      'A',
+      'E',
+      'S',
+      'T', // row 4
     ]
 
     // This is a best-effort fill; the game may not reach won state in all

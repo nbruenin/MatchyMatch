@@ -196,8 +196,9 @@ describe('Snake – E2E: pause/resume', () => {
     vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      const resumeBtn = screen.queryByRole('button', { name: /Resume/i })
-      expect(resumeBtn !== null).toBe(true)
+      expect(
+        screen.queryAllByRole('button', { name: /Resume/i }).length
+      ).toBeGreaterThan(0)
     })
   })
 })

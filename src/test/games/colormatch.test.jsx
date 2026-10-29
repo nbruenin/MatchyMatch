@@ -14,7 +14,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import ColorMatchBoard from '../../components/colormatch/ColorMatchBoard'
 
 beforeEach(() => {
@@ -106,7 +106,7 @@ describe('ColorMatch – E2E: tile interaction', () => {
 
       await waitFor(() => {
         // Toast should appear for match
-        expect(screen.queryByText(/Match/i)).toBeInTheDocument()
+        expect(screen.getAllByText(/Match/i).length).toBeGreaterThan(0)
       })
     }
   })
@@ -137,29 +137,33 @@ describe('ColorMatch – E2E: tile interaction', () => {
 })
 
 describe('ColorMatch – E2E: win condition', () => {
-  it('shows win screen after matching all 8 pairs', async () => {
-    render(<ColorMatchBoard />)
+  const tiles = () =>
+    screen.getAllByRole('button').filter((btn) => btn.style.width === '80px')
 
-    // This is a probabilistic game, so we'll just verify the win screen structure exists
-    // by checking that Play Again button is always present
+  function matchAllPairs() {
+    const byColor = {}
+    tiles().forEach((t) => (byColor[t.style.background] ??= []).push(t))
+    for (const [a, b] of Object.values(byColor)) {
+      fireEvent.click(a)
+      fireEvent.click(b)
+      act(() => vi.advanceTimersByTime(1000))
+    }
+  }
+
+  it('shows win screen after matching all 8 pairs', () => {
+    render(<ColorMatchBoard />)
+    matchAllPairs()
     expect(
       screen.getByRole('button', { name: /Play Again/i })
     ).toBeInTheDocument()
   })
 
-  it('Play Again button resets the game', async () => {
+  it('Play Again button resets the game', () => {
     render(<ColorMatchBoard />)
-    const playAgainBtn = screen.getByRole('button', { name: /Play Again/i })
-
-    // Click it
-    fireEvent.click(playAgainBtn)
-
-    vi.runOnlyPendingTimers()
-
-    // Game should reset - score should be back to 0
-    await waitFor(() => {
-      expect(screen.getByText('Matches')).toBeInTheDocument()
-    })
+    matchAllPairs()
+    fireEvent.click(screen.getByRole('button', { name: /Play Again/i }))
+    expect(tiles()).toHaveLength(16)
+    tiles().forEach((t) => expect(t).not.toBeDisabled())
   })
 })
 

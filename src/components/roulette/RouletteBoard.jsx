@@ -5,9 +5,12 @@ import Toast from '../Toast'
 
 function RouletteWheel({ segments, isSpinning, rotation, onSpinComplete }) {
   const wheelRef = useRef(null)
+  const wasSpinning = useRef(false)
 
   useEffect(() => {
-    if (!isSpinning && wheelRef.current) {
+    const justStopped = wasSpinning.current && !isSpinning
+    wasSpinning.current = isSpinning
+    if (justStopped && wheelRef.current) {
       // Determine which segment is at the top (pointer position)
       const normalizedRotation = ((rotation % 360) + 360) % 360
       const segmentAngle = 360 / segments.length

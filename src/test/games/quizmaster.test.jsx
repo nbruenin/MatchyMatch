@@ -109,10 +109,8 @@ describe('QuizMaster – Unit: initial render', () => {
     render(<QuizMasterBoard />)
     act(() => vi.runOnlyPendingTimers())
     await waitFor(() => {
-      // The progress bar is a div with a gradient background
-      const progressBar = document.querySelector(
-        '[style*="linear-gradient(90deg"]'
-      )
+      // jsdom drops gradient backgrounds, so find the bar by its classes
+      const progressBar = document.querySelector('.h-full.transition-all')
       expect(progressBar).not.toBeNull()
     })
   })

@@ -223,19 +223,19 @@ describe('Data – Unit: word lists and puzzles', () => {
 // ── Data Content Validation ───────────────────────────────────────────────────
 
 describe('Data – Content validation', () => {
-  it('anagramWords contains valid word strings', async () => {
+  it('anagramWords contains entries with valid word strings', async () => {
     const { ANAGRAM_WORDS } = await import('../data/anagramWords')
     ANAGRAM_WORDS.slice(0, 5).forEach((word) => {
-      expect(typeof word).toBe('string')
-      expect(word.length).toBeGreaterThan(0)
+      expect(typeof word.word).toBe('string')
+      expect(word.word.length).toBeGreaterThan(0)
     })
   })
 
-  it('hangmanWords contains valid word strings', async () => {
+  it('hangmanWords contains entries with valid word strings', async () => {
     const { HANGMAN_WORDS } = await import('../data/hangmanWords')
     HANGMAN_WORDS.slice(0, 5).forEach((word) => {
-      expect(typeof word).toBe('string')
-      expect(word.length).toBeGreaterThan(0)
+      expect(typeof word.word).toBe('string')
+      expect(word.word.length).toBeGreaterThan(0)
     })
   })
 

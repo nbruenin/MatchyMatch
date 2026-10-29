@@ -22,6 +22,7 @@ export default function WhackAMoleBoard() {
   const moleTimerRef = useRef(null)
   const comboTimerRef = useRef(null)
   const spawnMoleRef = useRef(null)
+  const scoreRef = useRef(0) // latest score for timer callbacks (avoids stale closure)
 
   const showToast = useCallback((msg) => setToast(msg), [])
 
@@ -98,22 +99,21 @@ export default function WhackAMoleBoard() {
     clearAllTimers()
 
     // Check and update high score
+    const finalScore = scoreRef.current
     setHighScore((currentHighScore) => {
-      setScore((currentScore) => {
-        if (currentScore > currentHighScore) {
-          showToast('🎉 New High Score!')
-          return currentScore
-        }
-        return currentScore
-      })
-      return currentHighScore > score ? currentHighScore : score
+      if (finalScore > currentHighScore) {
+        showToast('🎉 New High Score!')
+        return finalScore
+      }
+      return currentHighScore
     })
-  }, [clearAllTimers, showToast, score])
+  }, [clearAllTimers, showToast])
 
   // Start game
   const handleStartGame = useCallback(() => {
     setGameState('playing')
     setScore(0)
+    scoreRef.current = 0
     setTimeLeft(GAME_DURATION / 1000)
     setActiveMoles(new Set())
     setWhackedMoles(new Set())
@@ -154,6 +154,7 @@ export default function WhackAMoleBoard() {
       // Update score
       const comboBonus = Math.floor(combo / 3)
       const points = 10 + comboBonus * 5
+      scoreRef.current += points
       setScore((prev) => prev + points)
 
       // Update combo

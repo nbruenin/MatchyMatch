@@ -19,7 +19,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import WhackAMoleBoard from '../../components/whackamole/WhackAMoleBoard'
 
 beforeEach(() => {
@@ -251,8 +251,17 @@ describe('WhackAMole – E2E: high score tracking', () => {
     const startButton = screen.getByText('Start Game')
     fireEvent.click(startButton)
 
+    // Let a mole spawn and whack it so the first game has a non-zero score
+    // (the High Score stat is only shown once a score has been recorded)
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+    fireEvent.click(screen.getAllByText('🦫')[0])
+
     // Fast-forward to end of game
-    vi.advanceTimersByTime(30000)
+    act(() => {
+      vi.advanceTimersByTime(30000)
+    })
 
     await waitFor(() => {
       expect(screen.getByText(/Game Over!/i)).toBeInTheDocument()

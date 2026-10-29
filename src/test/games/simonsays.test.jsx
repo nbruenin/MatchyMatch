@@ -41,15 +41,23 @@ beforeEach(() => {
   vi.useFakeTimers()
   vi.stubGlobal(
     'AudioContext',
-    vi.fn(() => {
-      return mockAudioContext
-    })
+    vi.fn(
+      class {
+        constructor() {
+          return mockAudioContext
+        }
+      }
+    )
   )
   vi.stubGlobal(
     'webkitAudioContext',
-    vi.fn(() => {
-      return mockAudioContext
-    })
+    vi.fn(
+      class {
+        constructor() {
+          return mockAudioContext
+        }
+      }
+    )
   )
 })
 

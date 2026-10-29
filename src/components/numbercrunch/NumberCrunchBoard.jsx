@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { clsx } from "clsx";
-import Toast from "../Toast";
+import { useState, useCallback } from 'react'
+import { clsx } from 'clsx'
+import Toast from '../Toast'
 
 // ── Puzzle generation ────────────────────────────────────────────────────────
 
@@ -10,54 +10,58 @@ import Toast from "../Toast";
  * Returns { numbers, target }.
  */
 function generatePuzzle() {
-  const SMALL = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10];
-  const LARGE = [25, 50, 75, 100];
+  const SMALL = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10]
+  const LARGE = [25, 50, 75, 100]
 
   // Pick 1–2 large numbers, rest small
-  const largeCount = Math.random() < 0.5 ? 1 : 2;
-  const large = shuffle([...LARGE]).slice(0, largeCount);
-  const small = shuffle([...SMALL]).slice(0, 6 - largeCount);
-  const numbers = shuffle([...large, ...small]);
+  const largeCount = Math.random() < 0.5 ? 1 : 2
+  const large = shuffle([...LARGE]).slice(0, largeCount)
+  const small = shuffle([...SMALL]).slice(0, 6 - largeCount)
+  const numbers = shuffle([...large, ...small])
 
   // Find a reachable target between 100 and 999
-  const reachable = getAllReachable(numbers);
-  const candidates = reachable.filter((n) => n >= 100 && n <= 999);
-  if (candidates.length === 0) return generatePuzzle(); // retry (rare)
+  const reachable = getAllReachable(numbers)
+  const candidates = reachable.filter((n) => n >= 100 && n <= 999)
+  if (candidates.length === 0) return generatePuzzle() // retry (rare)
 
-  const target = candidates[Math.floor(Math.random() * candidates.length)];
-  return { numbers, target };
+  const target = candidates[Math.floor(Math.random() * candidates.length)]
+  return { numbers, target }
 }
 
 function shuffle(arr) {
-  const a = [...arr];
+  const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
   }
-  return a;
+  return a
 }
 
 /** Return all integers reachable by combining any subset of `nums` with +−×÷ */
 function getAllReachable(nums) {
-  const results = new Set();
+  const results = new Set()
+  const seen = new Set()
   function search(available) {
-    available.forEach((n) => results.add(n));
+    const key = [...available].sort((x, y) => x - y).join(',')
+    if (seen.has(key)) return
+    seen.add(key)
+    available.forEach((n) => results.add(n))
     for (let i = 0; i < available.length; i++) {
       for (let j = 0; j < available.length; j++) {
-        if (i === j) continue;
-        const a = available[i];
-        const b = available[j];
-        const rest = available.filter((_, k) => k !== i && k !== j);
-        const ops = [a + b, a - b, a * b];
-        if (b !== 0 && a % b === 0) ops.push(a / b);
+        if (i === j) continue
+        const a = available[i]
+        const b = available[j]
+        const rest = available.filter((_, k) => k !== i && k !== j)
+        const ops = [a + b, a - b, a * b]
+        if (b !== 0 && a % b === 0) ops.push(a / b)
         ops.forEach((val) => {
-          if (val > 0) search([...rest, val]);
-        });
+          if (val > 0) search([...rest, val])
+        })
       }
     }
   }
-  search(nums);
-  return [...results];
+  search(nums)
+  return [...results]
 }
 
 // ── Operator button ──────────────────────────────────────────────────────────
@@ -66,35 +70,35 @@ function OpButton({ op, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={clsx("op-btn", active && "op-btn--active")}
+      className={clsx('op-btn', active && 'op-btn--active')}
       style={
         active
           ? {
-              background: "var(--accent)",
-              color: "#fff",
-              boxShadow: "0 2px 10px rgba(0,122,255,0.4)",
-              border: "1.5px solid var(--accent)",
+              background: 'var(--accent)',
+              color: '#fff',
+              boxShadow: '0 2px 10px rgba(0,122,255,0.4)',
+              border: '1.5px solid var(--accent)',
             }
           : {
-              background: "var(--bg-surface)",
-              color: "var(--label-secondary)",
-              border: "0.5px solid rgba(0,0,0,0.10)",
-              boxShadow: "var(--shadow-sm)",
+              background: 'var(--bg-surface)',
+              color: 'var(--label-secondary)',
+              border: '0.5px solid rgba(0,0,0,0.10)',
+              boxShadow: 'var(--shadow-sm)',
             }
       }
     >
       {op}
     </button>
-  );
+  )
 }
 
 // ── Number tile ──────────────────────────────────────────────────────────────
 
 function NumberTile({ value, state, onClick }) {
   // state: 'idle' | 'selected' | 'used' | 'result'
-  const isUsed = state === "used";
-  const isSelected = state === "selected";
-  const isResult = state === "result";
+  const isUsed = state === 'used'
+  const isSelected = state === 'selected'
+  const isResult = state === 'result'
 
   return (
     <button
@@ -103,183 +107,200 @@ function NumberTile({ value, state, onClick }) {
       className="tile-transition relative flex items-center justify-center rounded-2xl select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
       style={{
         height: 64,
-        width: "100%",
-        fontSize: "1.25rem",
+        width: '100%',
+        fontSize: '1.25rem',
         fontWeight: 700,
-        letterSpacing: "-0.02em",
-        cursor: isUsed ? "default" : "pointer",
+        letterSpacing: '-0.02em',
+        cursor: isUsed ? 'default' : 'pointer',
         opacity: isUsed ? 0.22 : 1,
         ...(isResult
           ? {
-              background: "linear-gradient(145deg, #34c759, #30d158)",
-              color: "#fff",
-              border: "1.5px solid #28a745",
-              boxShadow: "0 4px 16px rgba(52,199,89,0.35)",
+              background: 'linear-gradient(145deg, #34c759, #30d158)',
+              color: '#fff',
+              border: '1.5px solid #28a745',
+              boxShadow: '0 4px 16px rgba(52,199,89,0.35)',
             }
           : isSelected
-          ? {
-              background: "var(--accent-light)",
-              border: "1.5px solid var(--accent)",
-              color: "var(--accent)",
-              boxShadow: "0 0 0 3px rgba(0,122,255,0.12)",
-              transform: "scale(0.96)",
-            }
-          : {
-              background: "var(--bg-surface)",
-              border: "0.5px solid rgba(0,0,0,0.08)",
-              color: "var(--label-secondary)",
-              boxShadow: "var(--shadow-sm)",
-            }),
+            ? {
+                background: 'var(--accent-light)',
+                border: '1.5px solid var(--accent)',
+                color: 'var(--accent)',
+                boxShadow: '0 0 0 3px rgba(0,122,255,0.12)',
+                transform: 'scale(0.96)',
+              }
+            : {
+                background: 'var(--bg-surface)',
+                border: '0.5px solid rgba(0,0,0,0.08)',
+                color: 'var(--label-secondary)',
+                boxShadow: 'var(--shadow-sm)',
+              }),
       }}
     >
       {value}
     </button>
-  );
+  )
 }
 
 // ── Main board ───────────────────────────────────────────────────────────────
 
-const OPS = ["+", "−", "×", "÷"];
+const OPS = ['+', '−', '×', '÷']
 
 export default function NumberCrunchBoard() {
-  const [puzzle, setPuzzle] = useState(() => generatePuzzle());
-  const [gameKey, setGameKey] = useState(0);
+  const [puzzle, setPuzzle] = useState(() => generatePuzzle())
+  const [gameKey, setGameKey] = useState(0)
 
-  return <Game key={gameKey} puzzle={puzzle} onNewGame={() => {
-    setPuzzle(generatePuzzle());
-    setGameKey((k) => k + 1);
-  }} />;
+  return (
+    <Game
+      key={gameKey}
+      puzzle={puzzle}
+      onNewGame={() => {
+        setPuzzle(generatePuzzle())
+        setGameKey((k) => k + 1)
+      }}
+    />
+  )
 }
 
 function Game({ puzzle, onNewGame }) {
-  const { numbers, target } = puzzle;
+  const { numbers, target } = puzzle
 
   // Each slot: { value, originalIndex, used }
   const [slots, setSlots] = useState(() =>
     numbers.map((v, i) => ({ value: v, originalIndex: i, used: false }))
-  );
-  const [selectedOp, setSelectedOp] = useState(null);
-  const [firstPick, setFirstPick] = useState(null); // index into slots
-  const [toast, setToast] = useState(null);
-  const [gameState, setGameState] = useState("playing"); // 'playing' | 'won'
-  const [shaking, setShaking] = useState(false);
-  const [steps, setSteps] = useState([]); // history of { expr, result }
+  )
+  const [selectedOp, setSelectedOp] = useState(null)
+  const [firstPick, setFirstPick] = useState(null) // index into slots
+  const [toast, setToast] = useState(null)
+  const [gameState, setGameState] = useState('playing') // 'playing' | 'won'
+  const [shaking, setShaking] = useState(false)
+  const [steps, setSteps] = useState([]) // history of { expr, result }
 
-  const showToast = useCallback((msg) => setToast(msg), []);
+  const showToast = useCallback((msg) => setToast(msg), [])
 
   const triggerShake = () => {
-    setShaking(true);
-    setTimeout(() => setShaking(false), 450);
-  };
+    setShaking(true)
+    setTimeout(() => setShaking(false), 450)
+  }
 
   const handleOpSelect = (op) => {
-    if (gameState !== "playing") return;
-    setSelectedOp((prev) => (prev === op ? null : op));
-    setFirstPick(null);
-  };
+    if (gameState !== 'playing') return
+    setSelectedOp((prev) => (prev === op ? null : op))
+    setFirstPick(null)
+  }
 
   const handleTileClick = (idx) => {
-    if (gameState !== "playing") return;
-    const slot = slots[idx];
-    if (slot.used) return;
+    if (gameState !== 'playing') return
+    const slot = slots[idx]
+    if (slot.used) return
 
     // No operator chosen yet — just highlight as first pick
     if (!selectedOp) {
-      setFirstPick((prev) => (prev === idx ? null : idx));
-      return;
+      setFirstPick((prev) => (prev === idx ? null : idx))
+      return
     }
 
     // Operator chosen, no first pick yet
     if (firstPick === null) {
-      setFirstPick(idx);
-      return;
+      setFirstPick(idx)
+      return
     }
 
     // Same tile clicked again → deselect
     if (firstPick === idx) {
-      setFirstPick(null);
-      return;
+      setFirstPick(null)
+      return
     }
 
     // We have both operands — compute
-    const a = slots[firstPick].value;
-    const b = slot.value;
-    let result;
+    const a = slots[firstPick].value
+    const b = slot.value
+    let result
 
-    if (selectedOp === "+") result = a + b;
-    else if (selectedOp === "−") result = a - b;
-    else if (selectedOp === "×") result = a * b;
-    else if (selectedOp === "÷") {
+    if (selectedOp === '+') result = a + b
+    else if (selectedOp === '−') result = a - b
+    else if (selectedOp === '×') result = a * b
+    else if (selectedOp === '÷') {
       if (b === 0 || a % b !== 0) {
-        showToast("Division must be exact and non-zero");
-        triggerShake();
-        setFirstPick(null);
-        return;
+        showToast('Division must be exact and non-zero')
+        triggerShake()
+        setFirstPick(null)
+        return
       }
-      result = a / b;
+      result = a / b
     }
 
     if (result <= 0) {
-      showToast("Result must be positive");
-      triggerShake();
-      setFirstPick(null);
-      return;
+      showToast('Result must be positive')
+      triggerShake()
+      setFirstPick(null)
+      return
     }
 
-    const opSymbol = selectedOp;
-    const expr = `${a} ${opSymbol} ${b} = ${result}`;
+    const opSymbol = selectedOp
+    const expr = `${a} ${opSymbol} ${b} = ${result}`
 
     // Mark both tiles used, add a new result tile
     const newSlots = slots.map((s, i) =>
       i === firstPick || i === idx ? { ...s, used: true } : s
-    );
-    newSlots.push({ value: result, originalIndex: -1, used: false, isResult: true });
+    )
+    newSlots.push({
+      value: result,
+      originalIndex: -1,
+      used: false,
+      isResult: true,
+    })
 
-    setSlots(newSlots);
-    setSteps((prev) => [...prev, { expr, result }]);
-    setFirstPick(null);
-    setSelectedOp(null);
+    setSlots(newSlots)
+    setSteps((prev) => [...prev, { expr, result }])
+    setFirstPick(null)
+    setSelectedOp(null)
 
     if (result === target) {
-      setTimeout(() => setGameState("won"), 200);
+      setTimeout(() => setGameState('won'), 200)
     }
-  };
+  }
 
   const handleUndo = () => {
-    if (steps.length === 0) return;
+    if (steps.length === 0) return
     // Remove the last result tile and un-use the two source tiles
     // Strategy: remove the last isResult tile, then un-use the last two used tiles
-    const lastResultIdx = [...slots].map((s, i) => ({ ...s, i })).reverse().find((s) => s.isResult && !s.used)?.i;
-    if (lastResultIdx === undefined) return;
+    const lastResultIdx = [...slots]
+      .map((s, i) => ({ ...s, i }))
+      .reverse()
+      .find((s) => s.isResult && !s.used)?.i
+    if (lastResultIdx === undefined) return
 
-    const withoutResult = slots.filter((_, i) => i !== lastResultIdx);
+    const withoutResult = slots.filter((_, i) => i !== lastResultIdx)
     // un-use the last two used tiles
-    let undoCount = 0;
-    const restored = [...withoutResult].reverse().map((s) => {
-      if (s.used && undoCount < 2) {
-        undoCount++;
-        return { ...s, used: false };
-      }
-      return s;
-    }).reverse();
+    let undoCount = 0
+    const restored = [...withoutResult]
+      .reverse()
+      .map((s) => {
+        if (s.used && undoCount < 2) {
+          undoCount++
+          return { ...s, used: false }
+        }
+        return s
+      })
+      .reverse()
 
-    setSlots(restored);
-    setSteps((prev) => prev.slice(0, -1));
-    setFirstPick(null);
-    setSelectedOp(null);
-  };
+    setSlots(restored)
+    setSteps((prev) => prev.slice(0, -1))
+    setFirstPick(null)
+    setSelectedOp(null)
+  }
 
   const handleReset = () => {
-    setSlots(numbers.map((v, i) => ({ value: v, originalIndex: i, used: false })));
-    setSteps([]);
-    setFirstPick(null);
-    setSelectedOp(null);
-  };
+    setSlots(
+      numbers.map((v, i) => ({ value: v, originalIndex: i, used: false }))
+    )
+    setSteps([])
+    setFirstPick(null)
+    setSelectedOp(null)
+  }
 
-  const closestResult = steps.length > 0
-    ? steps[steps.length - 1].result
-    : null;
-  const diff = closestResult !== null ? Math.abs(closestResult - target) : null;
+  const closestResult = steps.length > 0 ? steps[steps.length - 1].result : null
+  const diff = closestResult !== null ? Math.abs(closestResult - target) : null
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 sm:px-6 pt-6 pb-12">
@@ -287,20 +308,31 @@ function Game({ puzzle, onNewGame }) {
 
       {/* Target */}
       <div className="flex flex-col items-center gap-1">
-        <p style={{ fontSize: "0.75rem", fontWeight: 500, color: "var(--label-tertiary)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+        <p
+          style={{
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            color: 'var(--label-tertiary)',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
           Target
         </p>
         <div
-          className={clsx("flex items-center justify-center rounded-3xl", shaking && "wordle-shake")}
+          className={clsx(
+            'flex items-center justify-center rounded-3xl',
+            shaking && 'wordle-shake'
+          )}
           style={{
             width: 140,
             height: 80,
-            background: "linear-gradient(145deg, #007aff, #5856d6)",
-            boxShadow: "0 8px 28px rgba(0,122,255,0.35)",
-            fontSize: "2.75rem",
+            background: 'linear-gradient(145deg, #007aff, #5856d6)',
+            boxShadow: '0 8px 28px rgba(0,122,255,0.35)',
+            fontSize: '2.75rem',
             fontWeight: 800,
-            letterSpacing: "-0.04em",
-            color: "#fff",
+            letterSpacing: '-0.04em',
+            color: '#fff',
           }}
         >
           {target}
@@ -311,17 +343,21 @@ function Game({ puzzle, onNewGame }) {
       {steps.length > 0 && (
         <div
           className="w-full rounded-2xl px-4 py-3 flex flex-col gap-1.5"
-          style={{ background: "var(--bg-surface)", boxShadow: "var(--shadow-sm)" }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
         >
           {steps.map((s, i) => (
             <p
               key={i}
               style={{
-                fontSize: "0.85rem",
+                fontSize: '0.85rem',
                 fontWeight: 600,
-                letterSpacing: "-0.01em",
-                color: s.result === target ? "#34c759" : "var(--label-secondary)",
-                fontVariantNumeric: "tabular-nums",
+                letterSpacing: '-0.01em',
+                color:
+                  s.result === target ? '#34c759' : 'var(--label-secondary)',
+                fontVariantNumeric: 'tabular-nums',
               }}
             >
               {s.expr}
@@ -338,12 +374,12 @@ function Game({ puzzle, onNewGame }) {
             value={slot.value}
             state={
               slot.used
-                ? "used"
+                ? 'used'
                 : firstPick === idx
-                ? "selected"
-                : slot.isResult
-                ? "result"
-                : "idle"
+                  ? 'selected'
+                  : slot.isResult
+                    ? 'result'
+                    : 'idle'
             }
             onClick={() => handleTileClick(idx)}
           />
@@ -351,7 +387,7 @@ function Game({ puzzle, onNewGame }) {
       </div>
 
       {/* Operator row */}
-      {gameState === "playing" && (
+      {gameState === 'playing' && (
         <div className="flex gap-2 justify-center w-full">
           {OPS.map((op) => (
             <OpButton
@@ -365,23 +401,41 @@ function Game({ puzzle, onNewGame }) {
       )}
 
       {/* Action buttons */}
-      {gameState === "playing" && (
+      {gameState === 'playing' && (
         <div className="flex gap-2 flex-wrap justify-center">
           <button
             onClick={handleUndo}
             disabled={steps.length === 0}
             className="btn-outline"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 14 4 9 9 4"/>
-              <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 14 4 9 9 4" />
+              <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
             </svg>
             Undo
           </button>
           <button onClick={handleReset} className="btn-outline">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="1 4 1 10 7 10"/>
-              <path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 .49-4.95" />
             </svg>
             Reset
           </button>
@@ -389,65 +443,110 @@ function Game({ puzzle, onNewGame }) {
       )}
 
       {/* Hint: how close */}
-      {gameState === "playing" && diff !== null && diff > 0 && (
-        <p style={{ fontSize: "0.8rem", color: "var(--label-tertiary)", letterSpacing: "-0.01em" }}>
-          Last result is{" "}
-          <span style={{ fontWeight: 600, color: diff <= 5 ? "#ff9f0a" : "var(--label-secondary)" }}>
+      {gameState === 'playing' && diff !== null && diff > 0 && (
+        <p
+          style={{
+            fontSize: '0.8rem',
+            color: 'var(--label-tertiary)',
+            letterSpacing: '-0.01em',
+          }}
+        >
+          Last result is{' '}
+          <span
+            style={{
+              fontWeight: 600,
+              color: diff <= 5 ? '#ff9f0a' : 'var(--label-secondary)',
+            }}
+          >
             {diff} away
-          </span>{" "}
+          </span>{' '}
           from the target
         </p>
       )}
 
       {/* Instructions */}
-      {gameState === "playing" && steps.length === 0 && (
+      {gameState === 'playing' && steps.length === 0 && (
         <p
           className="text-center"
-          style={{ fontSize: "0.8rem", color: "var(--label-tertiary)", letterSpacing: "-0.01em", maxWidth: 300 }}
+          style={{
+            fontSize: '0.8rem',
+            color: 'var(--label-tertiary)',
+            letterSpacing: '-0.01em',
+            maxWidth: 300,
+          }}
         >
-          Pick an operator, then tap two numbers to combine them. Reach the target using as few steps as possible!
+          Pick an operator, then tap two numbers to combine them. Reach the
+          target using as few steps as possible!
         </p>
       )}
 
       {/* Win state */}
-      {gameState === "won" && (
+      {gameState === 'won' && (
         <div
           className="spring-pop flex flex-col items-center gap-6 mt-2 p-8 rounded-3xl w-full"
-          style={{ background: "var(--bg-surface)", boxShadow: "var(--shadow-xl)" }}
+          style={{
+            background: 'var(--bg-surface)',
+            boxShadow: 'var(--shadow-xl)',
+          }}
         >
           <div
             style={{
               width: 72,
               height: 72,
               borderRadius: 20,
-              background: "linear-gradient(145deg, #34c759, #30d158)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              background: 'linear-gradient(145deg, #34c759, #30d158)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: 32,
-              boxShadow: "0 8px 24px rgba(52,199,89,0.35)",
+              boxShadow: '0 8px 24px rgba(52,199,89,0.35)',
             }}
           >
             🎯
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <h2
-              style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--label-primary)" }}
+              style={{
+                fontSize: '1.75rem',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                color: 'var(--label-primary)',
+              }}
             >
-              {steps.length === 1 ? "One-shot!" : steps.length <= 3 ? "Nailed it!" : "You got there!"}
+              {steps.length === 1
+                ? 'One-shot!'
+                : steps.length <= 3
+                  ? 'Nailed it!'
+                  : 'You got there!'}
             </h2>
-            <p style={{ fontSize: "0.9rem", color: "var(--label-tertiary)", letterSpacing: "-0.01em" }}>
-              Reached{" "}
-              <span style={{ color: "var(--label-primary)", fontWeight: 700 }}>{target}</span>
-              {" "}in{" "}
-              <span style={{ color: "var(--accent)", fontWeight: 600 }}>
-                {steps.length} {steps.length === 1 ? "step" : "steps"}
+            <p
+              style={{
+                fontSize: '0.9rem',
+                color: 'var(--label-tertiary)',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Reached{' '}
+              <span style={{ color: 'var(--label-primary)', fontWeight: 700 }}>
+                {target}
+              </span>{' '}
+              in{' '}
+              <span style={{ color: 'var(--accent)', fontWeight: 600 }}>
+                {steps.length} {steps.length === 1 ? 'step' : 'steps'}
               </span>
             </p>
             {/* Show the solution steps */}
             <div className="flex flex-col items-center gap-0.5 mt-2">
               {steps.map((s, i) => (
-                <p key={i} style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--label-secondary)", fontVariantNumeric: "tabular-nums" }}>
+                <p
+                  key={i}
+                  style={{
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    color: 'var(--label-secondary)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
                   {s.expr}
                 </p>
               ))}
@@ -459,5 +558,5 @@ function Game({ puzzle, onNewGame }) {
         </div>
       )}
     </div>
-  );
+  )
 }

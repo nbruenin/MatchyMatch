@@ -335,6 +335,13 @@ const GAMES = [
     description: 'Slide the tiles into numerical order',
     color: '#5e5ce6',
   },
+  {
+    id: 'battleship',
+    emoji: '🚢',
+    name: 'Battleship',
+    description: 'Find and sink all enemy ships on the grid',
+    color: '#0a84ff',
+  },
 ]
 
 export default function GamePicker({ onGameSelect }) {

@@ -55,18 +55,18 @@ describe('Sudoku – Unit: initial render', () => {
   it('shows number pad buttons 1 through 6', () => {
     render(<SudokuBoard />)
     for (let n = 1; n <= 6; n++) {
-      const numBtns = screen.getAllByRole('button').filter(
-        (b) => b.textContent?.trim() === String(n)
-      )
+      const numBtns = screen
+        .getAllByRole('button')
+        .filter((b) => b.textContent?.trim() === String(n))
       expect(numBtns.length).toBeGreaterThan(0)
     }
   })
 
   it('shows erase button (✕)', () => {
     render(<SudokuBoard />)
-    const eraseBtns = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '✕'
-    )
+    const eraseBtns = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '✕')
     expect(eraseBtns.length).toBeGreaterThan(0)
   })
 
@@ -81,9 +81,9 @@ describe('Sudoku – E2E: cell interaction', () => {
   it('clicking an empty cell selects it (highlights it)', () => {
     render(<SudokuBoard />)
     // Find an empty cell (value is empty string)
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '' && !b.disabled
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '' && !b.disabled)
     expect(emptyCells.length).toBeGreaterThan(0)
 
     fireEvent.click(emptyCells[0])
@@ -95,26 +95,28 @@ describe('Sudoku – E2E: cell interaction', () => {
   it('clicking a number after selecting a cell fills it', async () => {
     render(<SudokuBoard />)
     // Find an empty cell
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '' && !b.disabled
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '' && !b.disabled)
     if (emptyCells.length === 0) return // all cells given (unlikely)
 
     fireEvent.click(emptyCells[0])
 
     // Click number 1 in the numpad
-    const numBtns = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '1'
-    )
+    const numBtns = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '1')
     // The numpad button (not a cell)
-    const numpadBtn = numBtns.find((b) => b.closest('[style*="grid-template-columns: repeat(6"]') === null)
+    const numpadBtn = numBtns.find(
+      (b) => b.closest('[style*="grid-template-columns: repeat(6"]') === null
+    )
     if (numpadBtn) {
       fireEvent.click(numpadBtn)
     } else {
       fireEvent.click(numBtns[0])
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()
@@ -134,9 +136,9 @@ describe('Sudoku – E2E: cell interaction', () => {
 describe('Sudoku – Unit: keyboard navigation', () => {
   it('pressing a number key fills the selected cell', async () => {
     render(<SudokuBoard />)
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '' && !b.disabled
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '' && !b.disabled)
     if (emptyCells.length === 0) return
 
     fireEvent.click(emptyCells[0])
@@ -144,7 +146,7 @@ describe('Sudoku – Unit: keyboard navigation', () => {
     // Press key '3'
     fireEvent.keyDown(window, { key: '3' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()
@@ -153,16 +155,16 @@ describe('Sudoku – Unit: keyboard navigation', () => {
 
   it('pressing Backspace erases the selected cell', async () => {
     render(<SudokuBoard />)
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.textContent?.trim() === '' && !b.disabled
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.textContent?.trim() === '' && !b.disabled)
     if (emptyCells.length === 0) return
 
     fireEvent.click(emptyCells[0])
     fireEvent.keyDown(window, { key: '2' })
     fireEvent.keyDown(window, { key: 'Backspace' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()

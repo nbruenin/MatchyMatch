@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import AnagramBoard from '../../components/anagram/AnagramBoard'
 
 // Freeze timers so the countdown doesn't fire during tests
@@ -49,9 +49,9 @@ describe('Anagram – Unit: initial render', () => {
   it('renders scrambled letter tiles as buttons', () => {
     render(<AnagramBoard />)
     // Filter for single uppercase-letter buttons (the scrambled tiles)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent ?? ''))
     expect(letterBtns.length).toBeGreaterThan(0)
   })
 
@@ -97,9 +97,9 @@ describe('Anagram – Unit: initial render', () => {
 describe('Anagram – E2E: letter interaction', () => {
   it('clicking a scrambled letter removes the placeholder text', () => {
     render(<AnagramBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent ?? ''))
     expect(letterBtns.length).toBeGreaterThan(0)
 
     fireEvent.click(letterBtns[0])
@@ -116,9 +116,9 @@ describe('Anagram – E2E: letter interaction', () => {
     const clearBtn = screen.getByRole('button', { name: /clear/i })
     expect(clearBtn).toBeDisabled()
 
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent ?? ''))
     fireEvent.click(letterBtns[0])
 
     expect(clearBtn).toBeEnabled()
@@ -127,9 +127,9 @@ describe('Anagram – E2E: letter interaction', () => {
   it('clicking Clear returns letters to the scrambled row', () => {
     render(<AnagramBoard />)
     const letterBtns = () =>
-      screen.getAllByRole('button').filter(
-        (b) => /^[A-Z]$/.test(b.textContent ?? '')
-      )
+      screen
+        .getAllByRole('button')
+        .filter((b) => /^[A-Z]$/.test(b.textContent ?? ''))
 
     const initialCount = letterBtns().length
     fireEvent.click(letterBtns()[0])
@@ -160,7 +160,7 @@ describe('Anagram – E2E: skip & round progression', () => {
 
     // After skip, either still on a round or game-over screen appears
     // Advance timers to let state settle
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       const stillSkip = screen.queryByRole('button', { name: /skip/i })
@@ -176,12 +176,10 @@ describe('Anagram – E2E: skip & round progression', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runAllTimers()
-      // Small pause between rounds
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(
@@ -198,16 +196,17 @@ describe('Anagram – E2E: skip & round progression', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runAllTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
-    const playAgainBtn = await screen.findByRole('button', { name: /play again/i })
+    const playAgainBtn = await screen.findByRole('button', {
+      name: /play again/i,
+    })
     fireEvent.click(playAgainBtn)
 
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/Round 1\/5/i)).toBeInTheDocument()
@@ -223,11 +222,10 @@ describe('Anagram – E2E: final score screen', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runAllTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/Final Score/i)).toBeInTheDocument()
@@ -241,11 +239,10 @@ describe('Anagram – E2E: final score screen', () => {
       const skipBtn = screen.queryByRole('button', { name: /skip/i })
       if (!skipBtn) break
       fireEvent.click(skipBtn)
-      vi.runAllTimers()
-      await waitFor(() => {}, { timeout: 50 })
+      act(() => vi.advanceTimersByTime(300))
     }
 
-    vi.runAllTimers()
+    act(() => vi.advanceTimersByTime(300))
 
     await waitFor(() => {
       expect(screen.getByText(/out of 500/i)).toBeInTheDocument()

@@ -49,9 +49,9 @@ describe('SpellingBee – Unit: initial render', () => {
 
   it('renders 7 letter buttons (1 center + 6 outer)', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     expect(letterBtns.length).toBe(7)
   })
 
@@ -110,7 +110,9 @@ describe('SpellingBee – Unit: initial render', () => {
 
   it('shows New Puzzle button', () => {
     render(<SpellingBeeBoard />)
-    expect(screen.getByRole('button', { name: /New Puzzle/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /New Puzzle/i })
+    ).toBeInTheDocument()
   })
 
   it('shows rank hint text', () => {
@@ -127,9 +129,9 @@ describe('SpellingBee – Unit: initial render', () => {
 describe('SpellingBee – E2E: letter interaction', () => {
   it('clicking a letter adds it to the input display', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     expect(letterBtns.length).toBeGreaterThan(0)
 
     fireEvent.click(letterBtns[0])
@@ -140,9 +142,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('clicking a letter enables the Delete button', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     fireEvent.click(letterBtns[0])
 
     const deleteBtn = screen.getByRole('button', { name: /Delete/i })
@@ -151,9 +153,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('clicking a letter enables the Clear button', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     fireEvent.click(letterBtns[0])
 
     const clearBtn = screen.getByRole('button', { name: /Clear/i })
@@ -162,9 +164,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('clicking Delete removes the last letter', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     fireEvent.click(letterBtns[0])
 
     // Placeholder gone
@@ -179,9 +181,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('clicking Clear clears all letters', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     // Click multiple letters
     fireEvent.click(letterBtns[0])
     fireEvent.click(letterBtns[1])
@@ -194,9 +196,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('Enter button is disabled when input has fewer than 4 letters', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     // Click only 2 letters
     fireEvent.click(letterBtns[0])
     fireEvent.click(letterBtns[1])
@@ -207,9 +209,9 @@ describe('SpellingBee – E2E: letter interaction', () => {
 
   it('Enter button is enabled when input has 4+ letters', () => {
     render(<SpellingBeeBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     // Click 4 letters
     for (let i = 0; i < 4; i++) {
       fireEvent.click(letterBtns[i % letterBtns.length])
@@ -224,7 +226,7 @@ describe('SpellingBee – E2E: letter interaction', () => {
     const newPuzzleBtn = screen.getByRole('button', { name: /New Puzzle/i })
 
     fireEvent.click(newPuzzleBtn)
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Found words \(0\)/i)).toBeInTheDocument()

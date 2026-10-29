@@ -9,19 +9,19 @@ describe('Memory Game - Unit Tests', () => {
   describe('Game Initialization', () => {
     it('should render the game board', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
 
     it('should display game tiles', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
 
     it('should have game controls', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
   })
@@ -29,13 +29,13 @@ describe('Memory Game - Unit Tests', () => {
   describe('Game State', () => {
     it('should initialize with tiles', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
 
     it('should track game progress', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
   })
@@ -48,7 +48,7 @@ describe('Memory Game - E2E Tests', () => {
   describe('Game Flow', () => {
     it('should allow tile interaction', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
       }
@@ -56,7 +56,7 @@ describe('Memory Game - E2E Tests', () => {
 
     it('should handle tile flipping', async () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
 
       if (buttons.length > 0) {
         fireEvent.click(buttons[0])
@@ -72,7 +72,7 @@ describe('Memory Game - E2E Tests', () => {
 
     it('should process matches', async () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
 
       if (buttons.length >= 2) {
         fireEvent.click(buttons[0])
@@ -91,13 +91,13 @@ describe('Memory Game - E2E Tests', () => {
   describe('User Interactions', () => {
     it('should handle game reset', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
 
     it('should track moves and matches', () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
   })
@@ -105,7 +105,7 @@ describe('Memory Game - E2E Tests', () => {
   describe('Game Completion', () => {
     it('should show completion state', async () => {
       render(<MemoryBoard />)
-      const buttons = screen.getAllByRole('button')
+      const buttons = screen.getAllByRole('button', { name: 'Hidden card' })
       expect(buttons.length).toBeGreaterThan(0)
     })
   })

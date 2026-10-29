@@ -61,17 +61,17 @@ describe('TicTacToe – Unit: initial render', () => {
 
   it('renders 9 empty cell buttons', () => {
     render(<TicTacToeBoard />)
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
     expect(emptyCells.length).toBe(9)
   })
 
   it('all 9 cells are enabled initially', () => {
     render(<TicTacToeBoard />)
-    const emptyCells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const emptyCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
     emptyCells.forEach((cell) => {
       expect(cell).not.toBeDisabled()
     })
@@ -79,10 +79,12 @@ describe('TicTacToe – Unit: initial render', () => {
 
   it('shows New Game button', () => {
     render(<TicTacToeBoard />)
-    expect(screen.getByRole('button', { name: /New Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /New Game/i })
+    ).toBeInTheDocument()
   })
 
-  it('shows hint text about X\'s turn', () => {
+  it("shows hint text about X's turn", () => {
     render(<TicTacToeBoard />)
     expect(screen.getByText(/X's turn/i)).toBeInTheDocument()
   })
@@ -91,9 +93,9 @@ describe('TicTacToe – Unit: initial render', () => {
 describe('TicTacToe – E2E: gameplay', () => {
   it('clicking a cell places X', () => {
     render(<TicTacToeBoard />)
-    const cells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const cells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     fireEvent.click(cells[0])
 
@@ -103,9 +105,9 @@ describe('TicTacToe – E2E: gameplay', () => {
 
   it('clicking the same cell again does nothing', () => {
     render(<TicTacToeBoard />)
-    const cells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const cells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     fireEvent.click(cells[0])
     // Cell is now X, clicking again should not change anything
@@ -118,9 +120,10 @@ describe('TicTacToe – E2E: gameplay', () => {
 
   it('second click places O', () => {
     render(<TicTacToeBoard />)
-    const cells = () => screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const cells = () =>
+      screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     fireEvent.click(cells()[0]) // X
     fireEvent.click(cells()[0]) // O (next empty cell)
@@ -130,9 +133,9 @@ describe('TicTacToe – E2E: gameplay', () => {
 
   it('current player switches from X to O after a move', () => {
     render(<TicTacToeBoard />)
-    const cells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const cells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     fireEvent.click(cells[0])
 
@@ -142,9 +145,9 @@ describe('TicTacToe – E2E: gameplay', () => {
 
   it('New Game button resets the board', () => {
     render(<TicTacToeBoard />)
-    const cells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const cells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     // Make a move
     fireEvent.click(cells[0])
@@ -155,9 +158,9 @@ describe('TicTacToe – E2E: gameplay', () => {
     fireEvent.click(newGameBtn)
 
     // Board should be reset
-    const emptyCellsAfter = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const emptyCellsAfter = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
     expect(emptyCellsAfter.length).toBe(9)
   })
 })
@@ -167,21 +170,25 @@ describe('TicTacToe – E2E: win condition', () => {
     render(<TicTacToeBoard />)
 
     // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
-    const getEmptyCells = () => screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const getEmptyCells = () =>
+      screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0]) // X at 0
-    fireEvent.click(getEmptyCells()[0]) // O at 3 (next empty)
-    fireEvent.click(getEmptyCells()[0]) // X at 1
-    fireEvent.click(getEmptyCells()[0]) // O at 4
-    fireEvent.click(getEmptyCells()[0]) // X at 2 → win
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      const winText = screen.queryByText(/X Wins!/i) || screen.queryByText(/Wins!/i)
+      const winText =
+        screen.queryByText(/X Wins!/i) || screen.queryByText(/Wins!/i)
       expect(winText).toBeInTheDocument()
     })
   })
@@ -189,49 +196,59 @@ describe('TicTacToe – E2E: win condition', () => {
   it('win screen shows Play Again button', async () => {
     render(<TicTacToeBoard />)
 
-    const getEmptyCells = () => screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const getEmptyCells = () =>
+      screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0]) // X at 0
-    fireEvent.click(getEmptyCells()[0]) // O
-    fireEvent.click(getEmptyCells()[0]) // X at 1
-    fireEvent.click(getEmptyCells()[0]) // O
-    fireEvent.click(getEmptyCells()[0]) // X at 2 → win
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Play Again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Play Again/i })
+      ).toBeInTheDocument()
     })
   })
 
   it('Play Again resets the board to 9 empty cells', async () => {
     render(<TicTacToeBoard />)
 
-    const getEmptyCells = () => screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const getEmptyCells = () =>
+      screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
-    const playAgainBtn = await screen.findByRole('button', { name: /Play Again/i })
+    const playAgainBtn = await screen.findByRole('button', {
+      name: /Play Again/i,
+    })
     fireEvent.click(playAgainBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      const emptyCells = screen.getAllByRole('button').filter(
-        (b) => b.getAttribute('aria-label') === 'Empty cell'
-      )
+      const emptyCells = screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
       expect(emptyCells.length).toBe(9)
     })
   })
@@ -249,33 +266,34 @@ describe('TicTacToe – E2E: draw condition', () => {
     // Use a known draw: X:0 O:1 X:3 O:4 X:2 O:6 X:5 O:8 X:7
     // Board: X O X / X O X / O X O — no winner
 
-    const getEmptyCells = () => screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const getEmptyCells = () =>
+      screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     // We'll click cells in order: 0,1,3,4,2,6,5,8,7
     // But we can only click "empty cells" in order, so let's just fill all 9
     // in a non-winning pattern by using specific indices
-    const allCells = screen.getAllByRole('button').filter(
-      (b) => b.getAttribute('aria-label') === 'Empty cell'
-    )
+    const allCells = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
     // Click all 9 in order — may or may not produce a draw depending on board
     // Just verify the game handles a full board
     for (let i = 0; i < allCells.length; i++) {
-      const emptyCells = screen.getAllByRole('button').filter(
-        (b) => b.getAttribute('aria-label') === 'Empty cell'
-      )
+      const emptyCells = screen
+        .getAllByRole('button')
+        .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
       if (emptyCells.length === 0) break
       fireEvent.click(emptyCells[0])
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       // Stop if game ended
       const playAgain = screen.queryByRole('button', { name: /Play Again/i })
       if (playAgain) break
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // Either a win or draw — game should have ended
     await waitFor(() => {

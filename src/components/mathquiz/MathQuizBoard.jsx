@@ -188,7 +188,7 @@ function SummaryRow({ problem, userAnswer, timeTaken, index }) {
             letterSpacing: '-0.01em',
           }}
         >
-          {index + 1}. {problem.question} = ?{index + 1}. {problem.problem} = ?
+          {index + 1}. {problem.problem} = ?
         </p>
         {!correct && (
           <p style={{ fontSize: '0.75rem', color: 'var(--label-tertiary)' }}>

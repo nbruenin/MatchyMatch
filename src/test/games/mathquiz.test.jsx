@@ -116,7 +116,14 @@ describe('MathQuiz Component – initial render', () => {
 
   it('shows the hint text about Submit / Enter', () => {
     render(<MathQuizBoard />)
-    expect(screen.getByText(/Submit.*Enter|Enter.*Submit/i)).toBeInTheDocument()
+    // The hint wraps Submit / Enter in <strong>, so match on the element's full text
+    expect(
+      screen.getByText(
+        (_, el) =>
+          el.tagName === 'P' &&
+          /Submit.*Enter|Enter.*Submit/i.test(el.textContent)
+      )
+    ).toBeInTheDocument()
   })
 })
 
@@ -206,7 +213,10 @@ describe('MathQuiz Component – timer', () => {
     render(<MathQuizBoard />)
     expect(screen.getByText('15')).toBeInTheDocument()
 
-    act(() => vi.advanceTimersByTime(3000))
+    // The countdown re-arms its timeout after each render, so tick one second at a time
+    for (let i = 0; i < 3; i++) {
+      act(() => vi.advanceTimersByTime(1000))
+    }
 
     await waitFor(() => {
       expect(screen.getByText('12')).toBeInTheDocument()
@@ -216,7 +226,10 @@ describe('MathQuiz Component – timer', () => {
   it('timer expiry auto-skips and shows "Time\'s up!" toast', async () => {
     render(<MathQuizBoard />)
 
-    act(() => vi.advanceTimersByTime(16000))
+    // The countdown re-arms its timeout after each render, so tick one second at a time
+    for (let i = 0; i < 16; i++) {
+      act(() => vi.advanceTimersByTime(1000))
+    }
 
     await waitFor(() => {
       // After timeout, either Next button appears or question advanced
@@ -238,12 +251,16 @@ describe('MathQuiz Component – results screen', () => {
       fireEvent.change(input, { target: { value: '99999' } })
       fireEvent.click(screen.getByRole('button', { name: /submit/i }))
 
-      const nextBtn = await screen.findByRole('button', { name: /next|see results/i })
+      const nextBtn = await screen.findByRole('button', {
+        name: /next|see results/i,
+      })
       fireEvent.click(nextBtn)
     }
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /play again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /play again/i })
+      ).toBeInTheDocument()
     })
   })
 })

@@ -188,7 +188,7 @@ function SummaryRow({ problem, userAnswer, timeTaken, index }) {
             letterSpacing: '-0.01em',
           }}
         >
-          {index + 1}. {problem.problem} = ?
+          {index + 1}. {problem.question} = ?{index + 1}. {problem.problem} = ?
         </p>
         {!correct && (
           <p style={{ fontSize: '0.75rem', color: 'var(--label-tertiary)' }}>
@@ -260,7 +260,7 @@ function Game({ problems, onNewGame }) {
   const [records, setRecords] = useState([])
 
   const inputRef = useRef(null)
-  const startTime = useRef(null)
+  const startTime = useRef(Date.now())
 
   const problem = problems[qIndex]
 
@@ -291,13 +291,13 @@ function Game({ problems, onNewGame }) {
     triggerShake()
     showToast("Time's up! ⏰")
   }, [showToast])
+
   // Countdown timer
   useEffect(() => {
     if (answered || gameState !== 'playing') return
 
     if (timeLeft <= 0) {
       // Time's up — auto-skip
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       handleTimeout()
       return
     }

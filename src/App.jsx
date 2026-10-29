@@ -52,8 +52,6 @@ import PictureMatchBoard from './components/picturematch/PictureMatchBoard'
 import ColorMixerBoard from './components/colormixer/ColorMixerBoard'
 import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
 import HanoiBoard from './components/hanoi/HanoiBoard'
-import HanoiBoard from './components/hanoi/HanoiBoard'
-import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
 import BattleshipBoard from './components/battleship/BattleshipBoard'
 import { puzzles } from './data/puzzles'
 

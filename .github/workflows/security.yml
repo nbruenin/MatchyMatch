@@ -89,14 +89,14 @@ jobs:
     name: 📋 Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    # Dependency graph is disabled for this repository, so the action cannot run.
-    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
+        # Dependency graph is disabled for this repository, so the action cannot run.
+        continue-on-error: true
         with:
           fail-on-severity: high
           deny-licenses: GPL-2.0, AGPL-3.0

@@ -9,7 +9,7 @@ describe('FlipFlop Game - Unit Tests', () => {
   describe('Game Initialization', () => {
     it('should render the game board', () => {
       render(<FlipFlopBoard />)
-      expect(screen.getByText(/Pairs/i)).toBeInTheDocument()
+      expect(screen.getAllByText(/Pairs/i).length).toBeGreaterThan(0)
     })
 
     it('should display initial stats', () => {
@@ -159,7 +159,7 @@ describe('FlipFlop Game - E2E Tests', () => {
       // Timer should be running
       await waitFor(
         () => {
-          expect(screen.getByText(/Time/i)).toBeInTheDocument()
+          expect(screen.getAllByText(/Time/i).length).toBeGreaterThan(0)
         },
         { timeout: 2000 }
       )

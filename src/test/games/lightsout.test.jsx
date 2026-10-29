@@ -317,147 +317,75 @@ describe('Lights Out – E2E: cell toggling', () => {
   })
 })
 
-describe('Lights Out – E2E: win condition', () => {
-  it.skip('solving the puzzle shows the win screen', async () => {
-    render(<LightsOutBoard />)
-
-    // Inject a known solvable 1-move puzzle by mocking Math.random so
-    // generatePuzzle applies exactly one toggle at (0,0).
-    // Instead of mocking internals, we use a simpler approach:
-    // start a game and manually drive the grid to all-off by clicking
-    // the same cell twice (double-toggle = no-op on that cell, but
-    // we need a board that is already one move away from solved).
-    //
-    // The safest approach: start Easy, then brute-force click cells until
-    // all lights are off. We verify the win screen appears.
-    //
-    // We'll use a deterministic shortcut: render the component with a
-    // controlled grid by testing the pure helper logic separately.
-    // For the integration test we just verify the win screen can appear.
-
-    fireEvent.click(screen.getByRole('button', { name: /Easy difficulty/i }))
-
-    await waitFor(() => getCells().length === 25)
-
-    // Click every cell — this is guaranteed to produce a solvable state
-    // because toggling every cell is a valid sequence of moves.
-    // After toggling all 25 cells, the board may or may not be solved,
-    // but we just need to confirm the win screen renders when it is.
-    // We'll keep clicking until either won or 200 moves (safety limit).
-    let won = false
-    for (let attempt = 0; attempt < 200 && !won; attempt++) {
-      const cells = getCells()
-      if (cells.length === 0) {
-        won = true
-        break
-      }
-      // Click the first lit cell, or any cell if none are lit
-      const litCell = cells.find(
-        (c) => c.getAttribute('aria-pressed') === 'true'
-      )
-      fireEvent.click(litCell ?? cells[0])
-
-      if (screen.queryByText(/Lights Out!/i)) {
-        won = true
-      }
+// Each click toggles a cell and its orthogonal neighbours. Solve lit · x = A · x over GF(2)
+// with Gaussian elimination and return the cells to click.
+function solveLightsOut(lit, size = 5) {
+  const n = size * size
+  const rows = Array.from({ length: n }, (_, i) => {
+    const row = Array(n + 1).fill(0)
+    const r = Math.floor(i / size)
+    const c = i % size
+    for (const [dr, dc] of [
+      [0, 0],
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ]) {
+      const rr = r + dr
+      const cc = c + dc
+      if (rr >= 0 && rr < size && cc >= 0 && cc < size) row[rr * size + cc] = 1
     }
+    row[n] = lit[i] ? 1 : 0
+    return row
+  })
+  let pivotRow = 0
+  const pivots = []
+  for (let col = 0; col < n && pivotRow < n; col++) {
+    const sel = rows.findIndex((row, k) => k >= pivotRow && row[col])
+    if (sel < 0) continue
+    ;[rows[pivotRow], rows[sel]] = [rows[sel], rows[pivotRow]]
+    rows.forEach((row, k) => {
+      if (k !== pivotRow && row[col]) {
+        for (let j = col; j <= n; j++) row[j] ^= rows[pivotRow][j]
+      }
+    })
+    pivots.push(col)
+    pivotRow++
+  }
+  return pivots.filter((col, k) => rows[k][n])
+}
 
-    // Either we won, or the game is still in progress — both are valid
-    // (the puzzle may need more moves). Just assert no crash occurred.
-    expect(document.body).toBeInTheDocument()
+async function solveEasyGame() {
+  render(<LightsOutBoard />)
+  fireEvent.click(screen.getByRole('button', { name: /Easy difficulty/i }))
+  await waitFor(() => expect(getCells()).toHaveLength(25))
+  const lit = getCells().map((c) => c.getAttribute('aria-pressed') === 'true')
+  for (const i of solveLightsOut(lit)) fireEvent.click(getCells()[i])
+}
+
+describe('Lights Out – E2E: win condition', () => {
+  it('solving the puzzle shows the win screen', async () => {
+    await solveEasyGame()
+    expect(screen.getByText(/Lights Out!/i)).toBeInTheDocument()
   })
 
-  it.skip('win screen shows Play Again button after solving', async () => {
-    // We'll verify the win screen structure by directly checking that
-    // when the win state is reached the Play Again button is present.
-    // Use a spy on Math.random to produce a deterministic 1-cell puzzle.
-
-    // Spy: first call returns 0 (row 0), second returns 0 (col 0) → toggle (0,0)
-    // This produces a board where only (0,0), (0,1), and (1,0) are lit.
-    // Clicking (0,0) again turns them all off → win.
-    const spy = vi
-      .spyOn(Math, 'random')
-      // moves() call: Math.floor(Math.random() * 3) + 8 → need a value < 1/3 to get 8
-      .mockReturnValueOnce(0) // moves = 8
-      // generatePuzzle loop: 8 unique cells
-      .mockReturnValueOnce(0) // r=0
-      .mockReturnValueOnce(0) // c=0
-      .mockReturnValueOnce(0.2) // r=1
-      .mockReturnValueOnce(0.2) // c=1
-      .mockReturnValueOnce(0.4) // r=2
-      .mockReturnValueOnce(0.4) // c=2
-      .mockReturnValueOnce(0.6) // r=3
-      .mockReturnValueOnce(0.6) // c=3
-      .mockReturnValueOnce(0.8) // r=4
-      .mockReturnValueOnce(0.8) // c=4
-      .mockReturnValueOnce(0.1) // r=0
-      .mockReturnValueOnce(0.3) // c=1
-      .mockReturnValueOnce(0.3) // r=1
-      .mockReturnValueOnce(0.1) // c=0
-      .mockReturnValueOnce(0.5) // r=2
-      .mockReturnValueOnce(0.1) // c=0
-
-    render(<LightsOutBoard />)
-    fireEvent.click(screen.getByRole('button', { name: /Easy difficulty/i }))
-
-    spy.mockRestore()
-
-    await waitFor(() => getCells().length === 25)
-
-    // Click cells until we win or exhaust attempts
-    for (let i = 0; i < 150; i++) {
-      const cells = getCells()
-      if (!cells.length) break
-      const litCell = cells.find(
-        (c) => c.getAttribute('aria-pressed') === 'true'
-      )
-      if (!litCell) break // all off → win should have triggered
-      fireEvent.click(litCell)
-      if (screen.queryByRole('button', { name: /Play Again/i })) break
-    }
-
-    // If we reached the win screen, verify the button; otherwise just pass
-    const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
-    if (playAgainBtn) {
-      expect(playAgainBtn).toBeInTheDocument()
-    } else {
-      expect(document.body).toBeInTheDocument()
-    }
+  it('win screen shows Play Again button after solving', async () => {
+    await solveEasyGame()
+    expect(
+      screen.getByRole('button', { name: /Play Again/i })
+    ).toBeInTheDocument()
   })
 })
 
 describe('Lights Out – E2E: Play Again', () => {
-  it.skip('Play Again returns to the difficulty selector', async () => {
-    render(<LightsOutBoard />)
-    fireEvent.click(screen.getByRole('button', { name: /Easy difficulty/i }))
-
-    await waitFor(() => getCells().length === 25)
-
-    // Click cells until we win
-    for (let i = 0; i < 150; i++) {
-      const cells = getCells()
-      if (!cells.length) break
-      const litCell = cells.find(
-        (c) => c.getAttribute('aria-pressed') === 'true'
-      )
-      if (!litCell) break
-      fireEvent.click(litCell)
-      if (screen.queryByRole('button', { name: /Play Again/i })) break
-    }
-
-    const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
-    if (playAgainBtn) {
-      fireEvent.click(playAgainBtn)
-      await waitFor(() => {
-        expect(screen.getByText('Lights Out')).toBeInTheDocument()
-        expect(
-          screen.getByRole('button', { name: /Easy difficulty/i })
-        ).toBeInTheDocument()
-      })
-    } else {
-      // Game not yet won — just verify stability
-      expect(document.body).toBeInTheDocument()
-    }
+  it('Play Again returns to the difficulty selector', async () => {
+    await solveEasyGame()
+    fireEvent.click(screen.getByRole('button', { name: /Play Again/i }))
+    expect(screen.getByText('Lights Out')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Easy difficulty/i })
+    ).toBeInTheDocument()
   })
 })
 

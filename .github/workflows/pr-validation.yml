@@ -33,13 +33,11 @@ jobs:
             perf
             ci
           requireScope: false
-          # Conventional Commits subjects are conventionally lowercase
-          # (e.g. "feat(ci): implement ..."), so accept any non-empty subject.
-          subjectPattern: ^.+$
+          subjectPattern: ^[A-Z].+$
           subjectPatternError: |
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
-            is not empty.
+            starts with an uppercase character.
 
       - name: Check PR description
         uses: actions/github-script@v7

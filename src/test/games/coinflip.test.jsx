@@ -40,7 +40,9 @@ describe('CoinFlip – Unit: initial render', () => {
 
   it('shows the game description', () => {
     render(<CoinFlipBoard />)
-    expect(screen.getByText(/Predict the coin flip and test your luck/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Predict the coin flip and test your luck/i)
+    ).toBeInTheDocument()
   })
 
   it('shows 0 wins initially', () => {
@@ -73,7 +75,7 @@ describe('CoinFlip – Unit: initial render', () => {
 describe('CoinFlip – E2E: gameplay', () => {
   it('clicking Heads shows flipping animation', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -83,7 +85,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('clicking Tails shows flipping animation', async () => {
     render(<CoinFlipBoard />)
-    
+
     const tailsButton = screen.getByText('Tails')
     fireEvent.click(tailsButton)
 
@@ -93,7 +95,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('shows result after flip completes', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -110,7 +112,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('shows Flip Again button after result', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -123,7 +125,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('shows Reset Stats button after result', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -136,7 +138,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('updates flip count after a flip', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -149,7 +151,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('Flip Again button resets to choice screen', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -166,7 +168,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 
   it('Reset Stats button clears all stats', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -186,7 +188,7 @@ describe('CoinFlip – E2E: gameplay', () => {
 describe('CoinFlip – E2E: stats tracking', () => {
   it('tracks multiple flips correctly', async () => {
     render(<CoinFlipBoard />)
-    
+
     // First flip
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
@@ -219,14 +221,14 @@ describe('CoinFlip – E2E: stats tracking', () => {
     })
 
     render(<CoinFlipBoard />)
-    
+
     // First flip - choose heads (will win)
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
     vi.advanceTimersByTime(1200)
 
     await waitFor(() => {
-      expect(screen.getByText('50%')).toBeInTheDocument() // 1 win out of 1 = 100%, but we need to check after 2 flips
+      expect(screen.getByText('100%')).toBeInTheDocument() // 1 win out of 1
     })
 
     // Second flip - choose heads (will lose because result is tails)
@@ -250,7 +252,7 @@ describe('CoinFlip – E2E: stats tracking', () => {
 describe('CoinFlip – E2E: UI states', () => {
   it('disables interaction during flip animation', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -260,7 +262,7 @@ describe('CoinFlip – E2E: UI states', () => {
 
   it('shows player choice in result screen', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 
@@ -273,7 +275,7 @@ describe('CoinFlip – E2E: UI states', () => {
 
   it('shows coin result in result screen', async () => {
     render(<CoinFlipBoard />)
-    
+
     const headsButton = screen.getByText('Heads')
     fireEvent.click(headsButton)
 

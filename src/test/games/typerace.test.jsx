@@ -43,12 +43,12 @@ describe('TypeRace – Unit: initial render', () => {
 
   it('shows Accuracy stat chip', () => {
     render(<TypeRaceBoard />)
-    expect(screen.getByText('ACCURACY')).toBeInTheDocument()
+    expect(screen.getByText('Accuracy')).toBeInTheDocument()
   })
 
   it('shows Time stat chip', () => {
     render(<TypeRaceBoard />)
-    expect(screen.getByText('TIME')).toBeInTheDocument()
+    expect(screen.getByText('Time')).toBeInTheDocument()
   })
 
   it('shows "—" for WPM in idle state', () => {
@@ -69,7 +69,9 @@ describe('TypeRace – Unit: initial render', () => {
 
   it('shows New Phrase button', () => {
     render(<TypeRaceBoard />)
-    expect(screen.getByRole('button', { name: /New Phrase/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /New Phrase/i })
+    ).toBeInTheDocument()
   })
 
   it('renders the textarea for typing', () => {
@@ -93,7 +95,10 @@ describe('TypeRace – Unit: initial render', () => {
     // Category pill is a span with uppercase text
     const pills = document.querySelectorAll('span')
     const hasCategoryPill = Array.from(pills).some(
-      (el) => el.textContent && el.textContent.length > 0 && el.textContent === el.textContent.toUpperCase()
+      (el) =>
+        el.textContent &&
+        el.textContent.length > 0 &&
+        el.textContent === el.textContent.toUpperCase()
     )
     expect(hasCategoryPill).toBe(true)
   })
@@ -106,7 +111,7 @@ describe('TypeRace – E2E: typing interaction', () => {
 
     fireEvent.change(textarea, { target: { value: 'T' } })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(textarea.value).toBe('T')
@@ -119,7 +124,7 @@ describe('TypeRace – E2E: typing interaction', () => {
 
     fireEvent.change(textarea, { target: { value: 'T' } })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const keepGoing = screen.queryByText(/Keep going/i)
@@ -133,7 +138,7 @@ describe('TypeRace – E2E: typing interaction', () => {
 
     fireEvent.click(newPhraseBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Game should reset
@@ -162,7 +167,7 @@ describe('TypeRace – E2E: game completion', () => {
     if (phraseText && phraseText.length > 0) {
       // Type the complete phrase
       fireEvent.change(textarea, { target: { value: phraseText } })
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         // Result screen should appear

@@ -45,9 +45,11 @@ describe('Trivia – Unit: initial render', () => {
   it('shows 4 answer choice buttons', () => {
     render(<TriviaBoard />)
     // Choice buttons have letter badges A, B, C, D
-    const choiceBtns = screen.getAllByRole('button').filter(
-      (b) => /^[ABCD]$/.test(b.querySelector('span')?.textContent?.trim() ?? '')
-    )
+    const choiceBtns = screen
+      .getAllByRole('button')
+      .filter((b) =>
+        /^[ABCD]$/.test(b.querySelector('span')?.textContent?.trim() ?? '')
+      )
     expect(choiceBtns.length).toBe(4)
   })
 
@@ -98,9 +100,9 @@ describe('Trivia – E2E: answer selection', () => {
     expect(confirmBtn).toBeDisabled()
 
     // Click choice A
-    const choiceA = screen.getAllByRole('button').find(
-      (b) => b.textContent?.includes('A')
-    )
+    const choiceA = screen
+      .getAllByRole('button')
+      .find((b) => b.textContent?.includes('A'))
     if (choiceA) fireEvent.click(choiceA)
 
     expect(confirmBtn).not.toBeDisabled()
@@ -109,15 +111,15 @@ describe('Trivia – E2E: answer selection', () => {
   it('clicking Confirm after selecting an answer locks in the answer', async () => {
     render(<TriviaBoard />)
 
-    const choiceA = screen.getAllByRole('button').find(
-      (b) => b.textContent?.includes('A')
-    )
+    const choiceA = screen
+      .getAllByRole('button')
+      .find((b) => b.textContent?.includes('A'))
     if (choiceA) fireEvent.click(choiceA)
 
     const confirmBtn = screen.getByRole('button', { name: /Confirm/i })
     fireEvent.click(confirmBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // After confirming, Next Question button appears
@@ -130,22 +132,22 @@ describe('Trivia – E2E: answer selection', () => {
   it('clicking Next Question advances to question 2', async () => {
     render(<TriviaBoard />)
 
-    const choiceA = screen.getAllByRole('button').find(
-      (b) => b.textContent?.includes('A')
-    )
+    const choiceA = screen
+      .getAllByRole('button')
+      .find((b) => b.textContent?.includes('A'))
     if (choiceA) fireEvent.click(choiceA)
 
     const confirmBtn = screen.getByRole('button', { name: /Confirm/i })
     fireEvent.click(confirmBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const nextBtn = screen.queryByRole('button', { name: /Next Question/i })
       if (nextBtn) fireEvent.click(nextBtn)
     })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Question 2 of 10/i)).toBeInTheDocument()
@@ -159,15 +161,15 @@ describe('Trivia – E2E: complete game', () => {
 
     for (let q = 0; q < 10; q++) {
       // Select choice A
-      const choiceA = screen.getAllByRole('button').find(
-        (b) => b.textContent?.includes('A') && !b.disabled
-      )
+      const choiceA = screen
+        .getAllByRole('button')
+        .find((b) => b.textContent?.includes('A') && !b.disabled)
       if (choiceA) fireEvent.click(choiceA)
 
       const confirmBtn = screen.queryByRole('button', { name: /Confirm/i })
       if (confirmBtn && !confirmBtn.disabled) {
         fireEvent.click(confirmBtn)
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
       }
 
       await waitFor(() => {}, { timeout: 50 })
@@ -183,7 +185,7 @@ describe('Trivia – E2E: complete game', () => {
       }
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       const playAgain = screen.queryByRole('button', { name: /Play Again/i })
@@ -195,15 +197,15 @@ describe('Trivia – E2E: complete game', () => {
     render(<TriviaBoard />)
 
     for (let q = 0; q < 10; q++) {
-      const choiceA = screen.getAllByRole('button').find(
-        (b) => b.textContent?.includes('A') && !b.disabled
-      )
+      const choiceA = screen
+        .getAllByRole('button')
+        .find((b) => b.textContent?.includes('A') && !b.disabled)
       if (choiceA) fireEvent.click(choiceA)
 
       const confirmBtn = screen.queryByRole('button', { name: /Confirm/i })
       if (confirmBtn && !confirmBtn.disabled) {
         fireEvent.click(confirmBtn)
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
       }
 
       await waitFor(() => {}, { timeout: 50 })
@@ -219,7 +221,7 @@ describe('Trivia – E2E: complete game', () => {
       }
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Results show "X out of 10"
@@ -231,15 +233,15 @@ describe('Trivia – E2E: complete game', () => {
     render(<TriviaBoard />)
 
     for (let q = 0; q < 10; q++) {
-      const choiceA = screen.getAllByRole('button').find(
-        (b) => b.textContent?.includes('A') && !b.disabled
-      )
+      const choiceA = screen
+        .getAllByRole('button')
+        .find((b) => b.textContent?.includes('A') && !b.disabled)
       if (choiceA) fireEvent.click(choiceA)
 
       const confirmBtn = screen.queryByRole('button', { name: /Confirm/i })
       if (confirmBtn && !confirmBtn.disabled) {
         fireEvent.click(confirmBtn)
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
       }
 
       await waitFor(() => {}, { timeout: 50 })
@@ -255,12 +257,12 @@ describe('Trivia – E2E: complete game', () => {
       }
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     const playAgain = await screen.findByRole('button', { name: /Play Again/i })
     fireEvent.click(playAgain)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Question 1 of 10/i)).toBeInTheDocument()

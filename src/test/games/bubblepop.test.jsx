@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import BubblePopBoard from '../../components/bubblepop/BubblePopBoard'
 
 describe('BubblePopBoard', () => {
@@ -44,7 +44,7 @@ describe('BubblePopBoard', () => {
 
   it('should have a game area', () => {
     const { container } = render(<BubblePopBoard />)
-    const gameArea = container.querySelector('[style*="aspectRatio"]')
+    const gameArea = container.querySelector('[style*="aspect-ratio"]')
     expect(gameArea).toBeInTheDocument()
   })
 
@@ -58,7 +58,7 @@ describe('BubblePopBoard', () => {
     render(<BubblePopBoard />)
 
     // Fast forward time to trigger game over
-    vi.advanceTimersByTime(31000)
+    for (let s = 0; s < 31; s++) act(() => vi.advanceTimersByTime(1000))
 
     await waitFor(() => {
       expect(screen.getByText(/Time's up/)).toBeInTheDocument()
@@ -68,7 +68,7 @@ describe('BubblePopBoard', () => {
   it('should display play again button on game over', async () => {
     render(<BubblePopBoard />)
 
-    vi.advanceTimersByTime(31000)
+    for (let s = 0; s < 31; s++) act(() => vi.advanceTimersByTime(1000))
 
     await waitFor(() => {
       expect(screen.getByText('Play Again')).toBeInTheDocument()
@@ -78,7 +78,7 @@ describe('BubblePopBoard', () => {
   it('should reset game when play again is clicked', async () => {
     render(<BubblePopBoard />)
 
-    vi.advanceTimersByTime(31000)
+    for (let s = 0; s < 31; s++) act(() => vi.advanceTimersByTime(1000))
 
     await waitFor(() => {
       const playAgainButton = screen.getByText('Play Again')
@@ -93,7 +93,7 @@ describe('BubblePopBoard', () => {
   it('should show rating based on score', async () => {
     render(<BubblePopBoard />)
 
-    vi.advanceTimersByTime(31000)
+    for (let s = 0; s < 31; s++) act(() => vi.advanceTimersByTime(1000))
 
     await waitFor(() => {
       // Should show one of the rating messages

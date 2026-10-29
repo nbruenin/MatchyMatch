@@ -17,7 +17,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import HangmanBoard from '../../components/hangman/HangmanBoard'
 
 beforeEach(() => vi.useFakeTimers())
@@ -32,7 +32,9 @@ describe('Hangman – Unit: initial render', () => {
   it('renders a category badge', () => {
     render(<HangmanBoard />)
     // Category is shown as an uppercase badge; at least one such element exists
-    const badges = document.querySelectorAll('[style*="textTransform: uppercase"]')
+    const badges = document.querySelectorAll(
+      '[style*="text-transform: uppercase"]'
+    )
     expect(badges.length).toBeGreaterThan(0)
   })
 
@@ -53,22 +55,26 @@ describe('Hangman – Unit: initial render', () => {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
     alphabet.forEach((letter) => {
       expect(
-        screen.getByRole('button', { name: new RegExp(`Letter ${letter}$`, 'i') })
+        screen.getByRole('button', {
+          name: new RegExp(`Letter ${letter}$`, 'i'),
+        })
       ).toBeInTheDocument()
     })
   })
 
   it('all letter keys start enabled', () => {
     render(<HangmanBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (b) => /^Letter [A-Z]$/.test(b.getAttribute('aria-label') ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^Letter [A-Z]$/.test(b.getAttribute('aria-label') ?? ''))
     expect(letterBtns.every((b) => !b.disabled)).toBe(true)
   })
 
   it('shows the instruction to tap or use keyboard', () => {
     render(<HangmanBoard />)
-    expect(screen.getByText(/Tap a letter or use your keyboard/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Tap a letter or use your keyboard/i)
+    ).toBeInTheDocument()
   })
 
   it('shows the word length info', () => {
@@ -132,6 +138,8 @@ describe('Hangman – E2E: letter guessing', () => {
 
 describe('Hangman – E2E: game over (loss)', () => {
   it('guessing 6 wrong letters shows the loss screen', async () => {
+    // First word in the bank: PHOTOSYNTHESIS, which has none of the guesses below
+    vi.spyOn(Math, 'random').mockReturnValue(0)
     render(<HangmanBoard />)
 
     // We don't know the word, so we guess letters that are very unlikely to be in it.
@@ -147,13 +155,11 @@ describe('Hangman – E2E: game over (loss)', () => {
       }
     }
 
-    // If all 6 were wrong, we should see the loss screen
-    // If some happened to be correct, we just verify no crash
+    act(() => vi.advanceTimersByTime(2000))
     await waitFor(() => {
-      const hangedTitle = screen.queryByText(/Hanged!/i)
-      const guessesRemaining = screen.queryByText(/guesses remaining/i)
-      expect(hangedTitle !== null || guessesRemaining !== null).toBe(true)
+      expect(screen.getByText(/Hanged!/i)).toBeInTheDocument()
     })
+    vi.restoreAllMocks()
   })
 })
 
@@ -170,12 +176,16 @@ describe('Hangman – E2E: Play Again', () => {
       if (btn && !btn.disabled) fireEvent.click(btn)
     }
 
-    const playAgainBtn = screen.queryByRole('button', { name: /play again|try again/i })
+    const playAgainBtn = screen.queryByRole('button', {
+      name: /play again|try again/i,
+    })
     if (playAgainBtn) {
       fireEvent.click(playAgainBtn)
       await waitFor(() => {
         // After reset, the gallows SVG should be back
-        expect(document.querySelector('svg[aria-label*="Hangman"]')).not.toBeNull()
+        expect(
+          document.querySelector('svg[aria-label*="Hangman"]')
+        ).not.toBeNull()
       })
     } else {
       // Game wasn't lost (some guesses were correct) — just verify stability

@@ -177,7 +177,7 @@ describe('2048 Data – maxTile', () => {
 describe('2048 Component – initial render', () => {
   it('renders the "2048" title', () => {
     render(<Game2048Board />)
-    expect(screen.getByText('2048')).toBeInTheDocument()
+    expect(screen.getAllByText('2048').length).toBeGreaterThan(0)
   })
 
   it('renders the Score badge', () => {
@@ -199,7 +199,9 @@ describe('2048 Component – initial render', () => {
 
   it('renders the New Game button', () => {
     render(<Game2048Board />)
-    expect(screen.getByRole('button', { name: /new game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /new game/i })
+    ).toBeInTheDocument()
   })
 
   it('renders the How to play section', () => {

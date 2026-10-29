@@ -119,6 +119,9 @@ describe('Guess the Number – E2E: game flow', () => {
 })
 
 describe('Guess the Number – E2E: guessing', () => {
+  // Secret is 1, so a guess of 25 is always "Too high" and never wins by chance
+  beforeEach(() => vi.spyOn(Math, 'random').mockReturnValue(0))
+
   it('can enter a guess and submit it', async () => {
     const user = userEvent.setup({ delay: null })
     render(<GuessTheNumberBoard />)
@@ -126,7 +129,9 @@ describe('Guess the Number – E2E: guessing', () => {
     fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/Enter your guess/i)
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByPlaceholderText(/Enter your guess/i)
@@ -147,7 +152,9 @@ describe('Guess the Number – E2E: guessing', () => {
     fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/Enter your guess/i)
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByPlaceholderText(/Enter your guess/i)
@@ -167,7 +174,9 @@ describe('Guess the Number – E2E: guessing', () => {
     fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/Enter your guess/i)
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByPlaceholderText(/Enter your guess/i)
@@ -187,7 +196,9 @@ describe('Guess the Number – E2E: guessing', () => {
     fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/Enter your guess/i)
+      ).toBeInTheDocument()
     })
 
     const input = screen.getByPlaceholderText(/Enter your guess/i)
@@ -200,158 +211,62 @@ describe('Guess the Number – E2E: guessing', () => {
   })
 })
 
+// The secret is Math.floor(Math.random() * max) + 1, so mocking random to 0 makes it 1.
+function startWithSecretOne(difficulty) {
+  vi.spyOn(Math, 'random').mockReturnValue(0)
+  render(<GuessTheNumberBoard />)
+  fireEvent.click(screen.getByRole('button', { name: difficulty }))
+}
+
+function guess(n) {
+  fireEvent.change(screen.getByPlaceholderText(/Enter your guess/i), {
+    target: { value: String(n) },
+  })
+  fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
+}
+
+afterEach(() => vi.restoreAllMocks())
+
 describe('Guess the Number – E2E: win condition', () => {
-  it('shows win screen when correct number is guessed', async () => {
-    const user = userEvent.setup({ delay: null })
-    render(<GuessTheNumberBoard />)
-
-    fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
-    })
-
-    // Try multiple guesses to eventually find the number
-    // This is probabilistic, so we'll just test the structure
-    const input = screen.getByPlaceholderText(/Enter your guess/i)
-    for (let i = 1; i <= 10; i++) {
-      await user.type(input, String(i))
-      fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-      await waitFor(() => {
-        const feedback = screen.queryByText(/Too (high|low)|Correct/i)
-        expect(feedback).toBeInTheDocument()
-      })
-
-      if (screen.queryByText(/You Won/i)) {
-        break
-      }
-    }
+  it('shows win screen when correct number is guessed', () => {
+    startWithSecretOne(/Easy/i)
+    guess(1)
+    expect(screen.getByText(/You Won/i)).toBeInTheDocument()
   })
 
-  it('win screen shows Play Again button', async () => {
-    const user = userEvent.setup({ delay: null })
-    render(<GuessTheNumberBoard />)
-
-    fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
-    })
-
-    // Brute force to find the number
-    const input = screen.getByPlaceholderText(/Enter your guess/i)
-    for (let i = 1; i <= 50; i++) {
-      await user.type(input, String(i))
-      fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-      await waitFor(() => {
-        const feedback = screen.queryByText(/Too (high|low)|Correct/i)
-        expect(feedback).toBeInTheDocument()
-      })
-
-      if (screen.queryByRole('button', { name: /Play Again/i })) {
-        expect(screen.getByRole('button', { name: /Play Again/i })).toBeInTheDocument()
-        break
-      }
-    }
+  it('win screen shows Play Again button', () => {
+    startWithSecretOne(/Easy/i)
+    guess(1)
+    expect(
+      screen.getByRole('button', { name: /Play Again/i })
+    ).toBeInTheDocument()
   })
 })
 
 describe('Guess the Number – E2E: lose condition', () => {
-  it('shows game over screen when attempts are exhausted', async () => {
-    const user = userEvent.setup({ delay: null })
-    render(<GuessTheNumberBoard />)
-
-    fireEvent.click(screen.getByRole('button', { name: /Hard/i }))
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
-    })
-
-    // Make 5 wrong guesses (Hard mode has 5 attempts)
-    const input = screen.getByPlaceholderText(/Enter your guess/i)
-    for (let i = 1; i <= 5; i++) {
-      await user.type(input, String(i * 100))
-      fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-      await waitFor(() => {
-        const feedback = screen.queryByText(/Too (high|low)/i)
-        expect(feedback).toBeInTheDocument()
-      })
-    }
-
-    await waitFor(() => {
-      expect(screen.getByText(/Game Over/i)).toBeInTheDocument()
-    })
+  it('shows game over screen when attempts are exhausted', () => {
+    startWithSecretOne(/Hard/i)
+    for (let i = 1; i <= 5; i++) guess(i * 100)
+    expect(screen.getByText(/Game Over/i)).toBeInTheDocument()
   })
 
-  it('game over screen shows Try Again button', async () => {
-    const user = userEvent.setup({ delay: null })
-    render(<GuessTheNumberBoard />)
-
-    fireEvent.click(screen.getByRole('button', { name: /Hard/i }))
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
-    })
-
-    const input = screen.getByPlaceholderText(/Enter your guess/i)
-    for (let i = 1; i <= 5; i++) {
-      await user.type(input, String(i * 100))
-      fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-      await waitFor(() => {
-        const feedback = screen.queryByText(/Too (high|low)/i)
-        expect(feedback).toBeInTheDocument()
-      })
-    }
-
-    await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Try Again/i })).toBeInTheDocument()
-    })
+  it('game over screen shows Try Again button', () => {
+    startWithSecretOne(/Hard/i)
+    for (let i = 1; i <= 5; i++) guess(i * 100)
+    expect(
+      screen.getByRole('button', { name: /Try Again/i })
+    ).toBeInTheDocument()
   })
 })
 
 describe('Guess the Number – E2E: reset', () => {
-  it('clicking Play Again returns to difficulty selection', async () => {
-    const user = userEvent.setup({ delay: null })
-    render(<GuessTheNumberBoard />)
-
-    fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
-
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/Enter your guess/i)).toBeInTheDocument()
-    })
-
-    // Make a guess to get feedback
-    const input = screen.getByPlaceholderText(/Enter your guess/i)
-    await user.type(input, '25')
-    fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-    // Try to win by guessing many times
-    for (let i = 1; i <= 50; i++) {
-      const currentInput = screen.getByPlaceholderText(/Enter your guess/i)
-      if (currentInput) {
-        await user.type(currentInput, String(i))
-        fireEvent.click(screen.getByRole('button', { name: /Guess/i }))
-
-        await waitFor(() => {
-          const feedback = screen.queryByText(/Too (high|low)|Correct/i)
-          if (feedback) {
-            expect(feedback).toBeInTheDocument()
-          }
-        })
-
-        if (screen.queryByRole('button', { name: /Play Again/i })) {
-          fireEvent.click(screen.getByRole('button', { name: /Play Again/i }))
-          break
-        }
-      }
-    }
-
-    await waitFor(() => {
-      expect(screen.getByText('Choose Difficulty')).toBeInTheDocument()
-    })
+  it('clicking Play Again returns to difficulty selection', () => {
+    startWithSecretOne(/Easy/i)
+    guess(1)
+    fireEvent.click(screen.getByRole('button', { name: /Play Again/i }))
+    expect(screen.getByRole('button', { name: /Easy/i })).toBeInTheDocument()
+    expect(
+      screen.queryByPlaceholderText(/Enter your guess/i)
+    ).not.toBeInTheDocument()
   })
 })

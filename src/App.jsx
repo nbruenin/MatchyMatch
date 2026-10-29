@@ -53,6 +53,7 @@ import ColorMixerBoard from './components/colormixer/ColorMixerBoard'
 import SlidePuzzleBoard from './components/slidepuzzle/SlidePuzzleBoard'
 import HanoiBoard from './components/hanoi/HanoiBoard'
 import BattleshipBoard from './components/battleship/BattleshipBoard'
+import HigherLowerBoard from './components/higherlower/HigherLowerBoard'
 import { puzzles } from './data/puzzles'
 
 const envIndex = parseInt(import.meta.env.VITE_PUZZLE_INDEX, 10)
@@ -201,6 +202,8 @@ function App() {
           <SlidePuzzleBoard key={`slidepuzzle-${gameKey}`} />
         ) : activeGame === 'battleship' ? (
           <BattleshipBoard key={`battleship-${gameKey}`} />
+        ) : activeGame === 'higherlower' ? (
+          <HigherLowerBoard key={`higherlower-${gameKey}`} />
         ) : (
           <SudokuBoard key={`sudoku-${gameKey}`} />
         )}

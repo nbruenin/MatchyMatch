@@ -329,6 +329,13 @@ const GAMES = [
     color: '#bf5af2',
   },
   {
+    id: 'hanoi',
+    emoji: '🗼',
+    name: 'Tower of Hanoi',
+    description: 'Move the disk stack to the last peg',
+    color: '#0a84ff',
+  },
+  {
     id: 'slidepuzzle',
     emoji: '🧮',
     name: 'Slide Puzzle',
@@ -336,10 +343,10 @@ const GAMES = [
     color: '#5e5ce6',
   },
   {
-    id: 'hanoi',
-    emoji: '🗼',
-    name: 'Tower of Hanoi',
-    description: 'Move the disk stack to the last peg',
+    id: 'battleship',
+    emoji: '🚢',
+    name: 'Battleship',
+    description: 'Find and sink all enemy ships on the grid',
     color: '#0a84ff',
   },
 ]

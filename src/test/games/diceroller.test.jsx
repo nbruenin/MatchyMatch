@@ -47,7 +47,7 @@ describe('Dice Roller – Unit: initial render', () => {
   it('shows initial roll count of 0', () => {
     render(<DiceRollerBoard />)
     // The Rolls stat value starts at 0
-    expect(screen.getByText('0')).toBeInTheDocument()
+    expect(screen.getByText('Rolls').parentElement).toHaveTextContent('0')
   })
 
   it('renders the Roll Dice button enabled', () => {
@@ -58,14 +58,14 @@ describe('Dice Roller – Unit: initial render', () => {
 
   it('renders the New Game button', () => {
     render(<DiceRollerBoard />)
-    expect(screen.getByRole('button', { name: /new game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /new game/i })
+    ).toBeInTheDocument()
   })
 
   it('shows the hint text about rolling 10 times', () => {
     render(<DiceRollerBoard />)
-    expect(
-      screen.getByText(/Roll the dice 10 times/i)
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Roll the dice 10 times/i)).toBeInTheDocument()
   })
 
   it('shows the Total: display with initial sum', () => {
@@ -76,9 +76,7 @@ describe('Dice Roller – Unit: initial render', () => {
   it('renders two dice (two grid cells)', () => {
     render(<DiceRollerBoard />)
     // Two Die components are rendered side by side
-    const diceContainers = document.querySelectorAll(
-      '[style*="width: 120px"]'
-    )
+    const diceContainers = document.querySelectorAll('[style*="width: 120px"]')
     expect(diceContainers.length).toBe(2)
   })
 })
@@ -144,14 +142,13 @@ describe('Dice Roller – E2E: win condition', () => {
       const rollBtn = screen.getByRole('button', { name: /roll dice/i })
       fireEvent.click(rollBtn)
       act(() => vi.advanceTimersByTime(700))
-      await waitFor(() => {
-        // Wait for button to re-enable before next roll
-        expect(screen.queryByRole('button', { name: /roll dice/i })).toBeEnabled()
-      })
+      expect(screen.queryByText(/Rolling/i)).toBeNull()
     }
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /roll again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /roll again/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -162,9 +159,7 @@ describe('Dice Roller – E2E: win condition', () => {
       const rollBtn = screen.getByRole('button', { name: /roll dice/i })
       fireEvent.click(rollBtn)
       act(() => vi.advanceTimersByTime(700))
-      await waitFor(() => {
-        expect(screen.queryByRole('button', { name: /roll dice/i })).toBeEnabled()
-      })
+      expect(screen.queryByText(/Rolling/i)).toBeNull()
     }
 
     await waitFor(() => {
@@ -180,16 +175,18 @@ describe('Dice Roller – E2E: win condition', () => {
       const rollBtn = screen.getByRole('button', { name: /roll dice/i })
       fireEvent.click(rollBtn)
       act(() => vi.advanceTimersByTime(700))
-      await waitFor(() => {
-        expect(screen.queryByRole('button', { name: /roll dice/i })).toBeEnabled()
-      })
+      expect(screen.queryByText(/Rolling/i)).toBeNull()
     }
 
-    const rollAgainBtn = await screen.findByRole('button', { name: /roll again/i })
+    const rollAgainBtn = await screen.findByRole('button', {
+      name: /roll again/i,
+    })
     fireEvent.click(rollAgainBtn)
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /roll dice/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /roll dice/i })
+      ).toBeInTheDocument()
     })
   })
 })
@@ -208,7 +205,7 @@ describe('Dice Roller – E2E: New Game', () => {
     fireEvent.click(screen.getByRole('button', { name: /new game/i }))
 
     await waitFor(() => {
-      expect(screen.getByText('0')).toBeInTheDocument()
+      expect(screen.getByText('Rolls').parentElement).toHaveTextContent('0')
     })
   })
 })

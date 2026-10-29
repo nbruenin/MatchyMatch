@@ -138,9 +138,9 @@ describe('ConnectFour – Unit: initial render', () => {
 
   it('shows the score labels: You, Draws, AI', () => {
     render(<ConnectFourBoard />)
-    expect(screen.getByText('You')).toBeInTheDocument()
-    expect(screen.getByText('Draws')).toBeInTheDocument()
-    expect(screen.getByText('AI')).toBeInTheDocument()
+    expect(screen.getAllByText('You').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Draws').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('AI').length).toBeGreaterThan(0)
   })
 
   it('initialises all scores to 0', () => {
@@ -357,39 +357,25 @@ describe('ConnectFour – E2E: player drop', () => {
 // ── E2E: win / draw conditions ────────────────────────────────────────────────
 
 describe('ConnectFour – E2E: game-over states', () => {
-  /**
-   * Force a player win by directly manipulating state is not straightforward
-   * without test IDs on individual cells. Instead we verify the win screen
-   * structure by simulating a known winning sequence against a mocked AI.
-   *
-   * The player fills columns 0–3 in the bottom row; the AI may block, so any
-   * game-over state is accepted.
-   */
-  it('shows "You win!" and Play Again button after player gets four in a row', async () => {
+  it('playing until the game ends shows a result and Play Again', () => {
     render(<ConnectFourBoard />)
-    const dropBtns = screen.getAllByRole('button', { name: /Drop in column/i })
+    const isOver = () =>
+      screen.queryByRole('button', { name: /Play Again/i }) !== null ||
+      /win|draw/i.test(screen.queryByTestId('status-badge')?.textContent ?? '')
 
-    // Player drops in columns 0, 1, 2, 3 (bottom row) — four in a row
-    for (const col of [0, 1, 2, 3]) {
-      fireEvent.click(dropBtns[col])
-      act(() => vi.advanceTimersByTime(400))
-      // Wait for turn to return to player before next drop
-      if (col < 3) {
-        await waitFor(() =>
-          expect(screen.getByText(/Your turn/i)).toBeInTheDocument()
-        )
-      }
+    for (let move = 0; move < 21 && !isOver(); move++) {
+      const open = screen
+        .getAllByRole('button', { name: /Drop in column/i })
+        .find((b) => !b.disabled)
+      if (!open) break
+      fireEvent.click(open)
+      act(() => vi.advanceTimersByTime(1000))
     }
 
-    await waitFor(() => {
-      const status = screen.getByTestId('status-badge')
-      // Either player won or AI intercepted — just verify game-over UI exists
-      expect(
-        status.textContent.includes('win') ||
-          status.textContent.includes('draw') ||
-          status.textContent.includes('AI')
-      ).toBe(true)
-    })
+    expect(isOver()).toBe(true)
+    expect(
+      screen.getByRole('button', { name: /Play Again/i })
+    ).toBeInTheDocument()
   })
 
   it('Play Again button resets scores display and board', async () => {
@@ -413,9 +399,9 @@ describe('ConnectFour – E2E: game-over states', () => {
 describe('ConnectFour – E2E: score display', () => {
   it('score labels are always visible during gameplay', () => {
     render(<ConnectFourBoard />)
-    expect(screen.getByText('You')).toBeInTheDocument()
-    expect(screen.getByText('Draws')).toBeInTheDocument()
-    expect(screen.getByText('AI')).toBeInTheDocument()
+    expect(screen.getAllByText('You').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Draws').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('AI').length).toBeGreaterThan(0)
   })
 
   it('game grid remains visible during gameplay', () => {

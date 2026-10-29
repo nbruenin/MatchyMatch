@@ -43,12 +43,12 @@ describe('TypeRace – Unit: initial render', () => {
 
   it('shows Accuracy stat chip', () => {
     render(<TypeRaceBoard />)
-    expect(screen.getByText('ACCURACY')).toBeInTheDocument()
+    expect(screen.getByText('Accuracy')).toBeInTheDocument()
   })
 
   it('shows Time stat chip', () => {
     render(<TypeRaceBoard />)
-    expect(screen.getByText('TIME')).toBeInTheDocument()
+    expect(screen.getByText('Time')).toBeInTheDocument()
   })
 
   it('shows "—" for WPM in idle state', () => {

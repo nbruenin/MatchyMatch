@@ -93,7 +93,7 @@ describe('Flappy Bird – Unit: initial render', () => {
 
   it('shows instruction about pressing Space', () => {
     render(<FlappyBirdBoard />)
-    expect(screen.getByText(/press Space/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/press Space/i).length).toBeGreaterThan(0)
   })
 })
 

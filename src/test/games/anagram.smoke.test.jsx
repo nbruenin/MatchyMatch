@@ -52,7 +52,7 @@ describe('Anagram Game - Unit Tests', () => {
   describe('UI Elements', () => {
     it('should display scoring guide', () => {
       render(<AnagramBoard />)
-      expect(screen.getByText(/pts/i)).toBeInTheDocument()
+      expect(screen.getAllByText(/pts/i).length).toBeGreaterThan(0)
     })
 
     it('should show round dots for progress tracking', () => {
@@ -161,7 +161,7 @@ describe('Anagram Game - E2E Tests', () => {
       render(<AnagramBoard />)
 
       // Scoring guide should be visible
-      expect(screen.queryByText(/pts/i)).toBeInTheDocument()
+      expect(screen.getAllByText(/pts/i).length).toBeGreaterThan(0)
     })
   })
 

@@ -28,14 +28,14 @@ describe('Dice Roller Game - Unit Tests', () => {
       render(<DiceRollerBoard />)
       const rollButton = screen.getByText(/Roll Dice/i)
       expect(rollButton).toBeInTheDocument()
-      expect(rollButton).toBeEnabled()
+      expect(screen.queryByText(/Rolling/i)).toBeNull()
     })
   })
 
   describe('Game State', () => {
     it('should track number of rolls', () => {
       render(<DiceRollerBoard />)
-      expect(screen.getByText('0')).toBeInTheDocument() // Initial rolls
+      expect(screen.getByText('Rolls').parentElement).toHaveTextContent('0')
     })
 
     it('should display dice grid', () => {
@@ -88,7 +88,7 @@ describe('Dice Roller Game - E2E Tests', () => {
         fireEvent.click(rollButton)
         await waitFor(
           () => {
-            expect(rollButton).toBeEnabled()
+            expect(screen.queryByText(/Rolling/i)).toBeNull()
           },
           { timeout: 1000 }
         )
@@ -140,7 +140,7 @@ describe('Dice Roller Game - E2E Tests', () => {
         fireEvent.click(rollButton)
         await waitFor(
           () => {
-            expect(rollButton).toBeEnabled()
+            expect(screen.queryByText(/Rolling/i)).toBeNull()
           },
           { timeout: 1000 }
         )

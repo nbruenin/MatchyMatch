@@ -175,12 +175,14 @@ describe('TicTacToe – E2E: win condition', () => {
         .getAllByRole('button')
         .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0]) // X at 0
-    fireEvent.click(getEmptyCells()[0]) // O at 3 (next empty)
-    fireEvent.click(getEmptyCells()[0]) // X at 1
-    fireEvent.click(getEmptyCells()[0]) // O at 4
-    fireEvent.click(getEmptyCells()[0]) // X at 2 → win
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
     vi.runOnlyPendingTimers()
 
@@ -199,12 +201,14 @@ describe('TicTacToe – E2E: win condition', () => {
         .getAllByRole('button')
         .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0]) // X at 0
-    fireEvent.click(getEmptyCells()[0]) // O
-    fireEvent.click(getEmptyCells()[0]) // X at 1
-    fireEvent.click(getEmptyCells()[0]) // O
-    fireEvent.click(getEmptyCells()[0]) // X at 2 → win
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
     vi.runOnlyPendingTimers()
 
@@ -223,12 +227,14 @@ describe('TicTacToe – E2E: win condition', () => {
         .getAllByRole('button')
         .filter((b) => b.getAttribute('aria-label') === 'Empty cell')
 
-    const cells = getEmptyCells()
-    fireEvent.click(cells[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
-    fireEvent.click(getEmptyCells()[0])
+    const cell = (i) =>
+      screen
+        .getAllByRole('button')
+        .filter((b) =>
+          ['Empty cell', 'X', 'O'].includes(b.getAttribute('aria-label'))
+        )[i]
+    // X: 0, O: 3, X: 1, O: 4, X: 2 → X wins top row
+    for (const i of [0, 3, 1, 4, 2]) fireEvent.click(cell(i))
 
     vi.runOnlyPendingTimers()
 

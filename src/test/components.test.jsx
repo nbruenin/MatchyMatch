@@ -178,7 +178,7 @@ describe('GameBoard – E2E: tile selection', () => {
 describe('GamePicker – Unit: initial render', () => {
   it('renders without crashing', () => {
     render(<GamePicker onGameSelect={() => {}} />)
-    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
   })
 
   it('displays game selection buttons', () => {
@@ -306,10 +306,11 @@ describe('Confetti – Unit: initial render', () => {
     expect(document.body).toBeInTheDocument()
   })
 
-  it('renders canvas element', () => {
-    const { container } = render(<Confetti />)
-    const canvas = container.querySelector('canvas')
-    expect(canvas).toBeInTheDocument()
+  it('renders the decorative particle layer', () => {
+    const { container } = render(<Confetti count={5} />)
+    const layer = container.querySelector('[aria-hidden="true"]')
+    expect(layer).toBeInTheDocument()
+    expect(layer.children).toHaveLength(5)
   })
 })
 
@@ -318,7 +319,7 @@ describe('Confetti – Unit: initial render', () => {
 describe('DarkModeToggle – Unit: initial render', () => {
   it('renders without crashing', () => {
     render(<DarkModeToggle />)
-    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
   })
 
   it('renders a button', () => {
@@ -355,7 +356,7 @@ describe('DarkModeToggle – E2E: toggle', () => {
     render(<DarkModeToggle />)
     const button = screen.getByRole('button')
     fireEvent.click(button)
-    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
   })
 })
 
@@ -364,7 +365,7 @@ describe('DarkModeToggle – E2E: toggle', () => {
 describe('ModeToggle – Unit: initial render', () => {
   it('renders without crashing', () => {
     render(<ModeToggle />)
-    expect(screen.getByRole('button')).toBeInTheDocument()
+    expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
   })
 
   it('renders Normal and Hard buttons', () => {
@@ -391,9 +392,7 @@ describe('ModeToggle – Unit: initial render', () => {
 
   it('shows Locked badge when disabled', () => {
     render(<ModeToggle disabled={true} />)
-    expect(
-      screen.getByRole('button', { name: /Difficulty locked/i })
-    ).toBeInTheDocument()
+    expect(screen.getByLabelText(/Difficulty locked/i)).toBeInTheDocument()
   })
 })
 

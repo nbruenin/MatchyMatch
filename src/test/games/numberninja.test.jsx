@@ -279,7 +279,7 @@ describe('NumberNinja – E2E: game over screens', () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Score:/i)).toBeInTheDocument()
-        expect(screen.getByText(/Round:/i)).toBeInTheDocument()
+        expect(screen.getByText(/Rounds:/i)).toBeInTheDocument()
       })
     }
   })

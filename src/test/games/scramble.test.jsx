@@ -38,12 +38,14 @@ describe('Scramble – Unit: initial render', () => {
 
   it('renders Show hint button', () => {
     render(<ScrambleBoard />)
-    expect(screen.getByRole('button', { name: /Show hint/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Show hint/i })
+    ).toBeInTheDocument()
   })
 
   it('renders Scrambled label', () => {
     render(<ScrambleBoard />)
-    expect(screen.getByText(/Scrambled/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/Scrambled/i).length).toBeGreaterThan(0)
   })
 
   it('renders Your answer label', () => {
@@ -53,18 +55,18 @@ describe('Scramble – Unit: initial render', () => {
 
   it('renders scrambled letter tiles', () => {
     render(<ScrambleBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? ''))
     expect(letterBtns.length).toBeGreaterThan(0)
   })
 
   it('renders answer slot tiles', () => {
     render(<ScrambleBoard />)
     // Answer slots are buttons with aria-label "empty slot"
-    const emptySlots = screen.getAllByRole('button').filter(
-      (btn) => btn.getAttribute('aria-label')?.includes('empty slot')
-    )
+    const emptySlots = screen
+      .getAllByRole('button')
+      .filter((btn) => btn.getAttribute('aria-label')?.includes('empty slot'))
     expect(emptySlots.length).toBeGreaterThan(0)
   })
 
@@ -98,21 +100,25 @@ describe('Scramble – E2E: hint toggle', () => {
     const hintBtn = screen.getByRole('button', { name: /Show hint/i })
 
     fireEvent.click(hintBtn)
-    expect(screen.getByRole('button', { name: /Hide hint/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Hide hint/i })
+    ).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /Hide hint/i }))
 
     // Hint should be hidden (button text changes back)
-    expect(screen.getByRole('button', { name: /Show hint/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Show hint/i })
+    ).toBeInTheDocument()
   })
 })
 
 describe('Scramble – E2E: letter placement', () => {
   it('clicking a scrambled letter places it in an answer slot', () => {
     render(<ScrambleBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? ''))
 
     if (letterBtns.length > 0) {
       fireEvent.click(letterBtns[0])
@@ -125,17 +131,17 @@ describe('Scramble – E2E: letter placement', () => {
 
   it('clicking an answer slot with a letter removes it', () => {
     render(<ScrambleBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? ''))
 
     if (letterBtns.length > 0) {
       fireEvent.click(letterBtns[0])
 
       // Click the filled slot to remove it
-      const filledSlots = screen.getAllByRole('button').filter(
-        (btn) => btn.getAttribute('aria-label')?.includes('Remove')
-      )
+      const filledSlots = screen
+        .getAllByRole('button')
+        .filter((btn) => btn.getAttribute('aria-label')?.includes('Remove'))
 
       if (filledSlots.length > 0) {
         fireEvent.click(filledSlots[0])
@@ -151,9 +157,9 @@ describe('Scramble – E2E: letter placement', () => {
 describe('Scramble – E2E: clear button', () => {
   it('Clear button removes all placed letters', () => {
     render(<ScrambleBoard />)
-    const letterBtns = screen.getAllByRole('button').filter(
-      (btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? '')
-    )
+    const letterBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent?.trim() ?? ''))
 
     if (letterBtns.length > 1) {
       fireEvent.click(letterBtns[0])

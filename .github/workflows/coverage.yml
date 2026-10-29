@@ -1,7 +1,10 @@
 name: 📊 Code Coverage
 
-# Manual-only until the test suite passes; restore push/pull_request triggers then.
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:

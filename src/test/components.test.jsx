@@ -165,7 +165,7 @@ describe('GameBoard – E2E: tile selection', () => {
     const submitBtn = screen.getByRole('button', { name: /Submit/i })
     fireEvent.click(submitBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText('Things that fly')).toBeInTheDocument()
@@ -409,7 +409,7 @@ describe('Toast – Unit: initial render', () => {
     const mockOnDone = vi.fn()
     render(<Toast message="Test" onDone={mockOnDone} />)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(mockOnDone).toHaveBeenCalled()

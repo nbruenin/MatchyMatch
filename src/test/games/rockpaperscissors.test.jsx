@@ -37,7 +37,9 @@ describe('RockPaperScissors – Unit: initial render', () => {
 
   it('shows game description', () => {
     render(<RockPaperScissorsBoard />)
-    expect(screen.getByText(/Beat the AI in this classic game/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Beat the AI in this classic game/i)
+    ).toBeInTheDocument()
   })
 
   it('displays score board with You and AI sections', () => {
@@ -56,7 +58,9 @@ describe('RockPaperScissors – Unit: initial render', () => {
     render(<RockPaperScissorsBoard />)
     expect(screen.getByRole('button', { name: /Rock/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Paper/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Scissors/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Scissors/i })
+    ).toBeInTheDocument()
   })
 
   it('shows "Make your choice:" prompt', () => {
@@ -72,15 +76,15 @@ describe('RockPaperScissors – E2E: choice selection', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Should show AI thinking or result
       expect(
         screen.queryByText(/AI is thinking/i) ||
-        screen.queryByText(/You Win/i) ||
-        screen.queryByText(/You Lose/i) ||
-        screen.queryByText(/It's a Tie/i)
+          screen.queryByText(/You Win/i) ||
+          screen.queryByText(/You Lose/i) ||
+          screen.queryByText(/It's a Tie/i)
       ).toBeTruthy()
     })
   })
@@ -91,14 +95,14 @@ describe('RockPaperScissors – E2E: choice selection', () => {
 
     fireEvent.click(paperBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(
         screen.queryByText(/AI is thinking/i) ||
-        screen.queryByText(/You Win/i) ||
-        screen.queryByText(/You Lose/i) ||
-        screen.queryByText(/It's a Tie/i)
+          screen.queryByText(/You Win/i) ||
+          screen.queryByText(/You Lose/i) ||
+          screen.queryByText(/It's a Tie/i)
       ).toBeTruthy()
     })
   })
@@ -109,14 +113,14 @@ describe('RockPaperScissors – E2E: choice selection', () => {
 
     fireEvent.click(scissorsBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(
         screen.queryByText(/AI is thinking/i) ||
-        screen.queryByText(/You Win/i) ||
-        screen.queryByText(/You Lose/i) ||
-        screen.queryByText(/It's a Tie/i)
+          screen.queryByText(/You Win/i) ||
+          screen.queryByText(/You Lose/i) ||
+          screen.queryByText(/It's a Tie/i)
       ).toBeTruthy()
     })
   })
@@ -139,13 +143,14 @@ describe('RockPaperScissors – E2E: game flow', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Should show one of the result messages
-      const resultMsg = screen.queryByText(/You Win/i) ||
-                       screen.queryByText(/You Lose/i) ||
-                       screen.queryByText(/It's a Tie/i)
+      const resultMsg =
+        screen.queryByText(/You Win/i) ||
+        screen.queryByText(/You Lose/i) ||
+        screen.queryByText(/It's a Tie/i)
       expect(resultMsg).toBeTruthy()
     })
   })
@@ -156,7 +161,7 @@ describe('RockPaperScissors – E2E: game flow', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText('You')).toBeInTheDocument()
@@ -170,10 +175,12 @@ describe('RockPaperScissors – E2E: game flow', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Play Again/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Play Again/i })
+      ).toBeInTheDocument()
     })
   })
 })
@@ -187,21 +194,26 @@ describe('RockPaperScissors – E2E: scoring', () => {
       const rockBtn = screen.getByRole('button', { name: /Rock/i })
       if (rockBtn) {
         fireEvent.click(rockBtn)
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
 
-        await waitFor(() => {
-          const winMsg = screen.queryByText(/You Win/i)
-          if (winMsg) {
-            // Found a win, check score increased
-            const scores = screen.getAllByText(/\d+/)
-            expect(scores.length).toBeGreaterThan(0)
-          }
-        }, { timeout: 100 })
+        await waitFor(
+          () => {
+            const winMsg = screen.queryByText(/You Win/i)
+            if (winMsg) {
+              // Found a win, check score increased
+              const scores = screen.getAllByText(/\d+/)
+              expect(scores.length).toBeGreaterThan(0)
+            }
+          },
+          { timeout: 100 }
+        )
 
-        const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
+        const playAgainBtn = screen.queryByRole('button', {
+          name: /Play Again/i,
+        })
         if (playAgainBtn) {
           fireEvent.click(playAgainBtn)
-          vi.runAllTimers()
+          vi.runOnlyPendingTimers()
         }
       }
     }
@@ -215,21 +227,26 @@ describe('RockPaperScissors – E2E: scoring', () => {
       const rockBtn = screen.getByRole('button', { name: /Rock/i })
       if (rockBtn) {
         fireEvent.click(rockBtn)
-        vi.runAllTimers()
+        vi.runOnlyPendingTimers()
 
-        await waitFor(() => {
-          const loseMsg = screen.queryByText(/You Lose/i)
-          if (loseMsg) {
-            // Found a loss, check AI score increased
-            const scores = screen.getAllByText(/\d+/)
-            expect(scores.length).toBeGreaterThan(0)
-          }
-        }, { timeout: 100 })
+        await waitFor(
+          () => {
+            const loseMsg = screen.queryByText(/You Lose/i)
+            if (loseMsg) {
+              // Found a loss, check AI score increased
+              const scores = screen.getAllByText(/\d+/)
+              expect(scores.length).toBeGreaterThan(0)
+            }
+          },
+          { timeout: 100 }
+        )
 
-        const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
+        const playAgainBtn = screen.queryByRole('button', {
+          name: /Play Again/i,
+        })
         if (playAgainBtn) {
           fireEvent.click(playAgainBtn)
-          vi.runAllTimers()
+          vi.runOnlyPendingTimers()
         }
       }
     }
@@ -243,7 +260,7 @@ describe('RockPaperScissors – E2E: round counter', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Round 1/i)).toBeInTheDocument()
@@ -258,16 +275,18 @@ describe('RockPaperScissors – E2E: reset', () => {
 
     fireEvent.click(rockBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Reset Score/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Reset Score/i })
+      ).toBeInTheDocument()
     })
 
     const resetBtn = screen.getByRole('button', { name: /Reset Score/i })
     fireEvent.click(resetBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Should be back to initial state

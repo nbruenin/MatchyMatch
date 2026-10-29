@@ -93,7 +93,7 @@ describe('Wordle – E2E: keyboard input', () => {
     fireEvent.keyDown(window, { key: 'L' })
     fireEvent.keyDown(window, { key: 'O' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // Letters should appear in the active row
     const letters = screen.getAllByText('H')
@@ -107,7 +107,7 @@ describe('Wordle – E2E: keyboard input', () => {
     fireEvent.keyDown(window, { key: 'E' })
     fireEvent.keyDown(window, { key: 'Backspace' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // H should still be there
     const hLetters = screen.queryAllByText('H')
@@ -121,7 +121,7 @@ describe('Wordle – E2E: keyboard input', () => {
     fireEvent.keyDown(window, { key: 'E' })
     fireEvent.keyDown(window, { key: 'Enter' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     expect(screen.getByText(/Not enough letters/i)).toBeInTheDocument()
   })
@@ -135,7 +135,7 @@ describe('Wordle – E2E: keyboard input', () => {
     })
     fireEvent.keyDown(window, { key: 'Enter' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     expect(screen.getByText(/Not in word list/i)).toBeInTheDocument()
   })
@@ -146,7 +146,7 @@ describe('Wordle – E2E: keyboard input', () => {
     const hKey = screen.getByRole('button', { name: 'H' })
     fireEvent.click(hKey)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     const hLetters = screen.getAllByText('H')
     expect(hLetters.length).toBeGreaterThan(0)
@@ -158,12 +158,12 @@ describe('Wordle – E2E: keyboard input', () => {
     const hKey = screen.getByRole('button', { name: 'H' })
     fireEvent.click(hKey)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     const backspaceBtn = screen.getByRole('button', { name: /⌫/i })
     fireEvent.click(backspaceBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     // H should be gone from the active row
     expect(document.body).toBeInTheDocument()
@@ -186,7 +186,7 @@ describe('Wordle – E2E: win/lose states', () => {
     })
     fireEvent.keyDown(window, { key: 'Enter' })
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
     vi.advanceTimersByTime(1500)
 
     // Either it's correct (win) or wrong (still playing)
@@ -211,11 +211,11 @@ describe('Wordle – E2E: win/lose states', () => {
       })
       fireEvent.keyDown(window, { key: 'Enter' })
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
       vi.advanceTimersByTime(1500)
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
     vi.advanceTimersByTime(2000)
 
     const soClose = screen.queryByText(/So close/i)

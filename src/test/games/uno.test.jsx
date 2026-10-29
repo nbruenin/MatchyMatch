@@ -67,7 +67,8 @@ describe('Uno – Unit: initial render', () => {
 
   it('shows turn indicator', () => {
     render(<UnoBoard />)
-    const turnText = screen.queryByText(/Your turn/i) || screen.queryByText(/AI's turn/i)
+    const turnText =
+      screen.queryByText(/Your turn/i) || screen.queryByText(/AI's turn/i)
     expect(turnText).toBeInTheDocument()
   })
 
@@ -101,7 +102,7 @@ describe('Uno – E2E: gameplay', () => {
     const deckBtn = screen.getByText('🂠').closest('button')
     if (deckBtn && !deckBtn.disabled) {
       fireEvent.click(deckBtn)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         // Player hand should have grown
@@ -128,7 +129,7 @@ describe('Uno – E2E: gameplay', () => {
       }
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()
@@ -142,7 +143,7 @@ describe('Uno – E2E: gameplay', () => {
     const playAgain = screen.queryByRole('button', { name: /Play Again/i })
     if (playAgain) {
       fireEvent.click(playAgain)
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/Your hand/i)).toBeInTheDocument()

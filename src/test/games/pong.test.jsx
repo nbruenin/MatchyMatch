@@ -34,8 +34,9 @@ describe('Pong – Unit: initial render', () => {
 
   it('renders a canvas element', () => {
     render(<PongBoard />)
-    const canvas = screen.getByRole('img', { hidden: true })?.closest('canvas') ||
-                   document.querySelector('canvas')
+    const canvas =
+      screen.getByRole('img', { hidden: true })?.closest('canvas') ||
+      document.querySelector('canvas')
     expect(canvas).toBeInTheDocument()
   })
 
@@ -73,12 +74,15 @@ describe('Pong – E2E: gameplay', () => {
     render(<PongBoard />)
 
     // Run timers to let game loop execute
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
-    await waitFor(() => {
-      // Score should still be visible
-      expect(screen.getByText(/You:/i)).toBeInTheDocument()
-    }, { timeout: 100 })
+    await waitFor(
+      () => {
+        // Score should still be visible
+        expect(screen.getByText(/You:/i)).toBeInTheDocument()
+      },
+      { timeout: 100 }
+    )
   })
 })
 
@@ -91,14 +95,19 @@ describe('Pong – E2E: win/lose conditions', () => {
       vi.runOnlyPendingTimers()
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
-    await waitFor(() => {
-      // Either still playing or showing win/lose screen
-      const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
-      const gameTitle = screen.queryByText('Pong')
-      expect(playAgainBtn || gameTitle).toBeTruthy()
-    }, { timeout: 200 })
+    await waitFor(
+      () => {
+        // Either still playing or showing win/lose screen
+        const playAgainBtn = screen.queryByRole('button', {
+          name: /Play Again/i,
+        })
+        const gameTitle = screen.queryByText('Pong')
+        expect(playAgainBtn || gameTitle).toBeTruthy()
+      },
+      { timeout: 200 }
+    )
   })
 
   it('shows lose screen when AI reaches 5 points', async () => {
@@ -109,13 +118,18 @@ describe('Pong – E2E: win/lose conditions', () => {
       vi.runOnlyPendingTimers()
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
-    await waitFor(() => {
-      const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
-      const gameTitle = screen.queryByText('Pong')
-      expect(playAgainBtn || gameTitle).toBeTruthy()
-    }, { timeout: 200 })
+    await waitFor(
+      () => {
+        const playAgainBtn = screen.queryByRole('button', {
+          name: /Play Again/i,
+        })
+        const gameTitle = screen.queryByText('Pong')
+        expect(playAgainBtn || gameTitle).toBeTruthy()
+      },
+      { timeout: 200 }
+    )
   })
 
   it('Play Again button resets the game', async () => {
@@ -126,13 +140,13 @@ describe('Pong – E2E: win/lose conditions', () => {
       vi.runOnlyPendingTimers()
     }
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     const playAgainBtn = screen.queryByRole('button', { name: /Play Again/i })
     if (playAgainBtn) {
       fireEvent.click(playAgainBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/You: 0 - AI: 0/i)).toBeInTheDocument()

@@ -57,7 +57,9 @@ describe('NumberNinja – Unit: initial render', () => {
 
   it('renders Start Game button', () => {
     render(<NumberNinjaBoard />)
-    expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Start Game/i })
+    ).toBeInTheDocument()
   })
 })
 
@@ -88,7 +90,7 @@ describe('NumberNinja – E2E: game start', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Should show target number and timer
@@ -102,13 +104,13 @@ describe('NumberNinja – E2E: game start', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       // Timer should be visible (a number)
-      const timerElements = screen.getAllByRole('button').filter(
-        (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-      )
+      const timerElements = screen
+        .getAllByRole('button')
+        .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
       expect(timerElements.length).toBeGreaterThan(0)
     })
   })
@@ -119,14 +121,14 @@ describe('NumberNinja – E2E: game start', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
       // Should have number buttons to click
-      const numberBtns = screen.getAllByRole('button').filter(
-        (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
-      )
+      const numberBtns = screen
+        .getAllByRole('button')
+        .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
       expect(numberBtns.length).toBeGreaterThan(0)
     })
   })
@@ -139,30 +141,35 @@ describe('NumberNinja – E2E: gameplay', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
     })
 
     // Get the target number text
-    const targetText = screen.getByText(/Find the number:/).nextElementSibling?.textContent
+    const targetText =
+      screen.getByText(/Find the number:/).nextElementSibling?.textContent
     const targetNum = parseInt(targetText)
 
     // Find and click the button with the target number
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
+    const correctBtn = numberBtns.find(
+      (btn) => parseInt(btn.textContent) === targetNum
     )
-    const correctBtn = numberBtns.find((btn) => parseInt(btn.textContent) === targetNum)
 
     if (correctBtn) {
       fireEvent.click(correctBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         // Should show success message or advance to next round
-        expect(screen.queryByText(/Correct/i) || screen.queryByText(/Round/i)).toBeTruthy()
+        expect(
+          screen.queryByText(/Correct/i) || screen.queryByText(/Round/i)
+        ).toBeTruthy()
       })
     }
   })
@@ -173,30 +180,35 @@ describe('NumberNinja – E2E: gameplay', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
     })
 
     // Get the target number
-    const targetText = screen.getByText(/Find the number:/).nextElementSibling?.textContent
+    const targetText =
+      screen.getByText(/Find the number:/).nextElementSibling?.textContent
     const targetNum = parseInt(targetText)
 
     // Find a button with a different number
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
+    const wrongBtn = numberBtns.find(
+      (btn) => parseInt(btn.textContent) !== targetNum
     )
-    const wrongBtn = numberBtns.find((btn) => parseInt(btn.textContent) !== targetNum)
 
     if (wrongBtn) {
       fireEvent.click(wrongBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         // Should show game over or error
-        expect(screen.queryByText(/Game Over/i) || screen.queryByText(/Wrong/i)).toBeTruthy()
+        expect(
+          screen.queryByText(/Game Over/i) || screen.queryByText(/Wrong/i)
+        ).toBeTruthy()
       })
     }
   })
@@ -209,24 +221,27 @@ describe('NumberNinja – E2E: game over screens', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
     })
 
-    const targetText = screen.getByText(/Find the number:/).nextElementSibling?.textContent
+    const targetText =
+      screen.getByText(/Find the number:/).nextElementSibling?.textContent
     const targetNum = parseInt(targetText)
 
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
+    const wrongBtn = numberBtns.find(
+      (btn) => parseInt(btn.textContent) !== targetNum
     )
-    const wrongBtn = numberBtns.find((btn) => parseInt(btn.textContent) !== targetNum)
 
     if (wrongBtn) {
       fireEvent.click(wrongBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/Game Over/i)).toBeInTheDocument()
@@ -240,24 +255,27 @@ describe('NumberNinja – E2E: game over screens', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
     })
 
-    const targetText = screen.getByText(/Find the number:/).nextElementSibling?.textContent
+    const targetText =
+      screen.getByText(/Find the number:/).nextElementSibling?.textContent
     const targetNum = parseInt(targetText)
 
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
+    const wrongBtn = numberBtns.find(
+      (btn) => parseInt(btn.textContent) !== targetNum
     )
-    const wrongBtn = numberBtns.find((btn) => parseInt(btn.textContent) !== targetNum)
 
     if (wrongBtn) {
       fireEvent.click(wrongBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/Score:/i)).toBeInTheDocument()
@@ -272,24 +290,27 @@ describe('NumberNinja – E2E: game over screens', () => {
 
     fireEvent.click(startBtn)
 
-    vi.runAllTimers()
+    vi.runOnlyPendingTimers()
 
     await waitFor(() => {
       expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
     })
 
-    const targetText = screen.getByText(/Find the number:/).nextElementSibling?.textContent
+    const targetText =
+      screen.getByText(/Find the number:/).nextElementSibling?.textContent
     const targetNum = parseInt(targetText)
 
-    const numberBtns = screen.getAllByRole('button').filter(
-      (btn) => /^\d+$/.test(btn.textContent?.trim() ?? '')
+    const numberBtns = screen
+      .getAllByRole('button')
+      .filter((btn) => /^\d+$/.test(btn.textContent?.trim() ?? ''))
+    const wrongBtn = numberBtns.find(
+      (btn) => parseInt(btn.textContent) !== targetNum
     )
-    const wrongBtn = numberBtns.find((btn) => parseInt(btn.textContent) !== targetNum)
 
     if (wrongBtn) {
       fireEvent.click(wrongBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/Game Over/i)).toBeInTheDocument()
@@ -298,7 +319,7 @@ describe('NumberNinja – E2E: game over screens', () => {
       const tryAgainBtn = screen.getByRole('button', { name: /Try Again/i })
       fireEvent.click(tryAgainBtn)
 
-      vi.runAllTimers()
+      vi.runOnlyPendingTimers()
 
       await waitFor(() => {
         expect(screen.getByText(/Find the number:/i)).toBeInTheDocument()
@@ -311,6 +332,8 @@ describe('NumberNinja – Unit: game states', () => {
   it('starts in ready state', () => {
     render(<NumberNinjaBoard />)
     expect(screen.getByText('Number Ninja')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Start Game/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Start Game/i })
+    ).toBeInTheDocument()
   })
 })

@@ -17,7 +17,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import WordleBoard from '../../components/wordle/WordleBoard'
 
 // Mock window.location.reload for Play Again
@@ -56,17 +56,17 @@ describe('Wordle – Unit: initial render', () => {
   it('shows the on-screen keyboard', () => {
     render(<WordleBoard />)
     // Keyboard has letter buttons
-    const keyBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const keyBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     expect(keyBtns.length).toBeGreaterThan(0)
   })
 
   it('shows all 26 letter keys', () => {
     render(<WordleBoard />)
-    const keyBtns = screen.getAllByRole('button').filter(
-      (b) => /^[A-Z]$/.test(b.textContent?.trim() ?? '')
-    )
+    const keyBtns = screen
+      .getAllByRole('button')
+      .filter((b) => /^[A-Z]$/.test(b.textContent?.trim() ?? ''))
     expect(keyBtns.length).toBe(26)
   })
 
@@ -83,7 +83,7 @@ describe('Wordle – Unit: initial render', () => {
 })
 
 describe('Wordle – E2E: keyboard input', () => {
-  it('pressing letter keys adds letters to the current guess', async () => {
+  it('pressing letter keys adds letters to the current guess', () => {
     render(<WordleBoard />)
 
     // Fire keyboard events
@@ -95,14 +95,12 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // Letters should appear in the active row
-      const letters = screen.getAllByText('H')
-      expect(letters.length).toBeGreaterThan(0)
-    })
+    // Letters should appear in the active row
+    const letters = screen.getAllByText('H')
+    expect(letters.length).toBeGreaterThan(0)
   })
 
-  it('pressing Backspace removes the last letter', async () => {
+  it('pressing Backspace removes the last letter', () => {
     render(<WordleBoard />)
 
     fireEvent.keyDown(window, { key: 'H' })
@@ -111,16 +109,12 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // E should be gone, H should remain
-      const eLetters = screen.queryAllByText('E')
-      // H should still be there
-      const hLetters = screen.queryAllByText('H')
-      expect(hLetters.length).toBeGreaterThan(0)
-    })
+    // H should still be there
+    const hLetters = screen.queryAllByText('H')
+    expect(hLetters.length).toBeGreaterThan(0)
   })
 
-  it('pressing Enter with fewer than 5 letters shows "Not enough letters"', async () => {
+  it('pressing Enter with fewer than 5 letters shows "Not enough letters"', () => {
     render(<WordleBoard />)
 
     fireEvent.keyDown(window, { key: 'H' })
@@ -129,12 +123,10 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      expect(screen.getByText(/Not enough letters/i)).toBeInTheDocument()
-    })
+    expect(screen.getByText(/Not enough letters/i)).toBeInTheDocument()
   })
 
-  it('pressing Enter with an invalid 5-letter word shows "Not in word list"', async () => {
+  it('pressing Enter with an invalid 5-letter word shows "Not in word list"', () => {
     render(<WordleBoard />)
 
     // Type ZZZZZ — not a valid word
@@ -145,12 +137,10 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      expect(screen.getByText(/Not in word list/i)).toBeInTheDocument()
-    })
+    expect(screen.getByText(/Not in word list/i)).toBeInTheDocument()
   })
 
-  it('clicking on-screen letter keys adds letters', async () => {
+  it('clicking on-screen letter keys adds letters', () => {
     render(<WordleBoard />)
 
     const hKey = screen.getByRole('button', { name: 'H' })
@@ -158,13 +148,11 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      const hLetters = screen.getAllByText('H')
-      expect(hLetters.length).toBeGreaterThan(0)
-    })
+    const hLetters = screen.getAllByText('H')
+    expect(hLetters.length).toBeGreaterThan(0)
   })
 
-  it('clicking the backspace key removes a letter', async () => {
+  it('clicking the backspace key removes a letter', () => {
     render(<WordleBoard />)
 
     const hKey = screen.getByRole('button', { name: 'H' })
@@ -177,15 +165,13 @@ describe('Wordle – E2E: keyboard input', () => {
 
     vi.runAllTimers()
 
-    await waitFor(() => {
-      // H should be gone from the active row
-      expect(document.body).toBeInTheDocument()
-    })
+    // H should be gone from the active row
+    expect(document.body).toBeInTheDocument()
   })
 })
 
 describe('Wordle – E2E: win/lose states', () => {
-  it('winning shows "You got it!" heading', async () => {
+  it('winning shows "You got it!" heading', () => {
     render(<WordleBoard />)
 
     // We need to know the answer — it's deterministic based on date
@@ -203,15 +189,13 @@ describe('Wordle – E2E: win/lose states', () => {
     vi.runAllTimers()
     vi.advanceTimersByTime(1500)
 
-    await waitFor(() => {
-      // Either it's correct (win) or wrong (still playing)
-      const wonText = screen.queryByText(/You got it/i)
-      const stillPlaying = screen.queryByRole('button', { name: /ENTER/i })
-      expect(wonText !== null || stillPlaying !== null).toBe(true)
-    })
+    // Either it's correct (win) or wrong (still playing)
+    const wonText = screen.queryByText(/You got it/i)
+    const stillPlaying = screen.queryByRole('button', { name: /ENTER/i })
+    expect(wonText !== null || stillPlaying !== null).toBe(true)
   })
 
-  it('losing after 6 wrong guesses shows "So close!" heading', async () => {
+  it('losing after 6 wrong guesses shows "So close!" heading', () => {
     render(<WordleBoard />)
 
     // Make 6 invalid guesses with valid words that are unlikely to be the answer
@@ -229,19 +213,17 @@ describe('Wordle – E2E: win/lose states', () => {
 
       vi.runAllTimers()
       vi.advanceTimersByTime(1500)
-
-      await waitFor(() => {}, { timeout: 100 })
     }
 
     vi.runAllTimers()
     vi.advanceTimersByTime(2000)
 
-    await waitFor(() => {
-      const soClose = screen.queryByText(/So close/i)
-      const youGotIt = screen.queryByText(/You got it/i)
-      const enterBtn = screen.queryByRole('button', { name: /ENTER/i })
-      // One of these should be true
-      expect(soClose !== null || youGotIt !== null || enterBtn !== null).toBe(true)
-    })
+    const soClose = screen.queryByText(/So close/i)
+    const youGotIt = screen.queryByText(/You got it/i)
+    const enterBtn = screen.queryByRole('button', { name: /ENTER/i })
+    // One of these should be true
+    expect(soClose !== null || youGotIt !== null || enterBtn !== null).toBe(
+      true
+    )
   })
 })

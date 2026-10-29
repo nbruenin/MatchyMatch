@@ -29,9 +29,9 @@ puzzles.forEach(p => {
   for (let i = 1; i < sol.length; i++) {
     const d = diffCount(sol[i-1], sol[i]);
     if (d !== 1) {
-      console.log('FAIL puzzle', p.id, sol[i-1], '->', sol[i], 'diff=', d);
+      console.error('FAIL puzzle', p.id, sol[i-1], '->', sol[i], 'diff=', d);
       ok = false;
     }
   }
-  if (ok) console.log('OK puzzle', p.id, p.start, '->', p.end, 'steps:', sol.length - 1);
+  if (ok) console.warn('OK puzzle', p.id, p.start, '->', p.end, 'steps:', sol.length - 1);
 });

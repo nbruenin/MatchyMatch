@@ -119,10 +119,11 @@ describe('Guess the Number – E2E: game flow', () => {
 })
 
 describe('Guess the Number – E2E: guessing', () => {
+  // Secret is 1, so a guess of 25 is always "Too high" and never wins by chance
+  beforeEach(() => vi.spyOn(Math, 'random').mockReturnValue(0))
+
   it('can enter a guess and submit it', async () => {
     const user = userEvent.setup({ delay: null })
-    // Secret is 1, so 25 is always too high
-    vi.spyOn(Math, 'random').mockReturnValue(0)
     render(<GuessTheNumberBoard />)
 
     fireEvent.click(screen.getByRole('button', { name: /Easy/i }))
